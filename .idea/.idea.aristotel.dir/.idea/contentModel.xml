@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\snowinmars\.Rider2019.1\config\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\snowinmars\.Rider2019.1\config\extensions" t="IncludeRecursive" />
+    <e p="C:\Users\snowinmars\.Rider2019.1\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\snowinmars\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_.19.00" t="ExcludeRecursive" />
+    <e p="D:\prg\aristotel" t="IncludeFlat">
+      <e p="node_modules\@babel\parser" t="IncludeRecursive" />
+      <e p="node_modules\@babel\types" t="IncludeRecursive" />
+      <e p="node_modules\@testing-library\jest-dom" t="IncludeRecursive" />
+      <e p="node_modules\@testing-library\react" t="IncludeRecursive" />
+      <e p="node_modules\@testing-library\user-event" t="IncludeRecursive" />
+      <e p="node_modules\@types" t="IncludeRecursive">
+        <e p="babel__generator" t="IncludeRecursive" />
+        <e p="babel__template" t="IncludeRecursive" />
+        <e p="babel__traverse" t="IncludeRecursive" />
+        <e p="events" t="IncludeRecursive" />
+        <e p="istanbul-lib-coverage" t="IncludeRecursive" />
+        <e p="istanbul-lib-report" t="IncludeRecursive" />
+        <e p="minimatch" t="IncludeRecursive" />
+        <e p="node" t="IncludeRecursive" />
+        <e p="prop-types" t="IncludeRecursive" />
+        <e p="react" t="IncludeRecursive" />
+        <e p="react-dom" t="IncludeRecursive" />
+        <e p="testing-library__dom" t="IncludeRecursive" />
+        <e p="yargs-parser" t="IncludeRecursive" />
+      </e>
+      <e p="node_modules\csstype" t="IncludeRecursive" />
+      <e p="node_modules\node-sass" t="IncludeRecursive" />
+      <e p="node_modules\pretty-format" t="IncludeRecursive" />
+      <e p="node_modules\react" t="IncludeRecursive" />
+      <e p="node_modules\react-dom" t="IncludeRecursive" />
+      <e p="node_modules\react-scripts" t="IncludeRecursive" />
+      <e p="node_modules\sass-loader" t="IncludeRecursive" />
+    </e>
+  </component>
+</project>
