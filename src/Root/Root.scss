@@ -1,0 +1,9 @@
+.root {
+    display: flex;
+    justify-content: space-between;
+    
+    .volume {
+        padding: 0 1em;
+        width: 40%;
+    }
+}

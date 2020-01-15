@@ -6,8 +6,10 @@
     <e p="C:\Users\snowinmars\.Rider2019.1\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\snowinmars\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_.19.00" t="ExcludeRecursive" />
     <e p="D:\prg\aristotel" t="IncludeFlat">
+      <e p="node_modules\@babel\core" t="IncludeRecursive" />
       <e p="node_modules\@babel\parser" t="IncludeRecursive" />
       <e p="node_modules\@babel\types" t="IncludeRecursive" />
+      <e p="node_modules\@svgr\webpack" t="IncludeRecursive" />
       <e p="node_modules\@testing-library\jest-dom" t="IncludeRecursive" />
       <e p="node_modules\@testing-library\react" t="IncludeRecursive" />
       <e p="node_modules\@testing-library\user-event" t="IncludeRecursive" />
@@ -26,13 +28,61 @@
         <e p="testing-library__dom" t="IncludeRecursive" />
         <e p="yargs-parser" t="IncludeRecursive" />
       </e>
+      <e p="node_modules\@typescript-eslint\eslint-plugin" t="IncludeRecursive" />
+      <e p="node_modules\@typescript-eslint\parser" t="IncludeRecursive" />
+      <e p="node_modules\babel-eslint" t="IncludeRecursive" />
+      <e p="node_modules\babel-jest" t="IncludeRecursive" />
+      <e p="node_modules\babel-loader" t="IncludeRecursive" />
+      <e p="node_modules\babel-plugin-named-asset-import" t="IncludeRecursive" />
+      <e p="node_modules\babel-preset-react-app" t="IncludeRecursive" />
+      <e p="node_modules\camelcase" t="IncludeRecursive" />
+      <e p="node_modules\case-sensitive-paths-webpack-plugin" t="IncludeRecursive" />
+      <e p="node_modules\css-loader" t="IncludeRecursive" />
       <e p="node_modules\csstype" t="IncludeRecursive" />
+      <e p="node_modules\dotenv" t="IncludeRecursive" />
+      <e p="node_modules\dotenv-expand" t="IncludeRecursive" />
+      <e p="node_modules\eslint" t="IncludeRecursive" />
+      <e p="node_modules\eslint-config-react-app" t="IncludeRecursive" />
+      <e p="node_modules\eslint-loader" t="IncludeRecursive" />
+      <e p="node_modules\eslint-plugin-flowtype" t="IncludeRecursive" />
+      <e p="node_modules\eslint-plugin-import" t="IncludeRecursive" />
+      <e p="node_modules\eslint-plugin-jsx-a11y" t="IncludeRecursive" />
+      <e p="node_modules\eslint-plugin-react" t="IncludeRecursive" />
+      <e p="node_modules\eslint-plugin-react-hooks" t="IncludeRecursive" />
+      <e p="node_modules\file-loader" t="IncludeRecursive" />
+      <e p="node_modules\fs-extra" t="IncludeRecursive" />
+      <e p="node_modules\html-webpack-plugin" t="IncludeRecursive" />
+      <e p="node_modules\identity-obj-proxy" t="IncludeRecursive" />
+      <e p="node_modules\jest" t="IncludeRecursive" />
+      <e p="node_modules\jest-environment-jsdom-fourteen" t="IncludeRecursive" />
+      <e p="node_modules\jest-resolve" t="IncludeRecursive" />
+      <e p="node_modules\jest-watch-typeahead" t="IncludeRecursive" />
+      <e p="node_modules\mini-css-extract-plugin" t="IncludeRecursive" />
       <e p="node_modules\node-sass" t="IncludeRecursive" />
+      <e p="node_modules\optimize-css-assets-webpack-plugin" t="IncludeRecursive" />
+      <e p="node_modules\pnp-webpack-plugin" t="IncludeRecursive" />
+      <e p="node_modules\postcss-flexbugs-fixes" t="IncludeRecursive" />
+      <e p="node_modules\postcss-loader" t="IncludeRecursive" />
+      <e p="node_modules\postcss-normalize" t="IncludeRecursive" />
+      <e p="node_modules\postcss-preset-env" t="IncludeRecursive" />
+      <e p="node_modules\postcss-safe-parser" t="IncludeRecursive" />
       <e p="node_modules\pretty-format" t="IncludeRecursive" />
       <e p="node_modules\react" t="IncludeRecursive" />
+      <e p="node_modules\react-app-polyfill" t="IncludeRecursive" />
+      <e p="node_modules\react-dev-utils" t="IncludeRecursive" />
       <e p="node_modules\react-dom" t="IncludeRecursive" />
-      <e p="node_modules\react-scripts" t="IncludeRecursive" />
+      <e p="node_modules\resolve" t="IncludeRecursive" />
+      <e p="node_modules\resolve-url-loader" t="IncludeRecursive" />
       <e p="node_modules\sass-loader" t="IncludeRecursive" />
+      <e p="node_modules\semver" t="IncludeRecursive" />
+      <e p="node_modules\style-loader" t="IncludeRecursive" />
+      <e p="node_modules\terser-webpack-plugin" t="IncludeRecursive" />
+      <e p="node_modules\ts-pnp" t="IncludeRecursive" />
+      <e p="node_modules\url-loader" t="IncludeRecursive" />
+      <e p="node_modules\webpack" t="IncludeRecursive" />
+      <e p="node_modules\webpack-dev-server" t="IncludeRecursive" />
+      <e p="node_modules\webpack-manifest-plugin" t="IncludeRecursive" />
+      <e p="node_modules\workbox-webpack-plugin" t="IncludeRecursive" />
     </e>
   </component>
 </project>

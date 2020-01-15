@@ -1,23 +1,21 @@
 import React from 'react';
-import './Volume.css';
+import './Volume.scss';
 
 class Volume extends React.Component {
-    render_paragraph = (paragraph) => {
+    render_paragraph = (paragraph, key) => {
         return (
-            <p className={'paragraph'}>{paragraph}</p>
+            <p className={'paragraph'} key={key}>{paragraph}</p>
         );
     };
     
-    render_chapter = (chapter) => {
-        console.log('p', chapter.origin_paragraphs);
-        
+    render_chapter = (chapter, key_prefix) => {
         return (
-            <div className={'chapter'} key={chapter.id}>
+            <div className={'chapter'} key={key_prefix + "_" + chapter.id}>
                 <div className={'chapter-title'}>
                     {chapter.title}
                 </div>
                 <div className={'paragraphs-list'}>
-                    {chapter.origin_paragraphs.map(this.render_paragraph)}
+                    {chapter.origin_paragraphs.map(((paragraph, i) => this.render_paragraph(paragraph, key_prefix + "_" + chapter.id + "_" + i)))}
                 </div>
             </div>
         );
@@ -30,7 +28,7 @@ class Volume extends React.Component {
                     {book.title}
                 </span>
                 <div className={'chapters-list'}>
-                    {book.chapters.map(this.render_chapter)}
+                    {book.chapters.map(chapter => this.render_chapter(chapter, book.id))}
                 </div>
             </div>
         )
@@ -38,7 +36,7 @@ class Volume extends React.Component {
     
     render = () => {
         return (
-          <div className={'origin'}>
+          <div className={'volume'}>
               <div className={'books'}>
                   {this.props.items.map(this.render_book)}
               </div>

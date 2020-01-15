@@ -26,7 +26,7 @@ const chapter_1_2 = {
 };
 
 const book_1 = {
-    id: "book_1",
+    id: "origin_book_1",
     title: "Книга первая",
     chapters: [
         chapter_1_1,
