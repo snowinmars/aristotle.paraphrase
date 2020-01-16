@@ -1,18 +1,43 @@
 import React from 'react';
 import './Root.scss';
-import Volume from "../Volume/Volume";
-import Origin_Books from '../Origin/Origin_books'
-import Paraphrase_Books from '../Paraphrase/Paraphrase_books'
-import Notes_books from '../Notes/Notes_books'
+import Chapter from "../Chapter/Chapter";
+import Origin_Book from '../Origin/Origin_book'
+import Paraphrase_Book from '../Paraphrase/Paraphrase_book'
+import Notes_book from '../Notes/Notes_book'
 
 function Root() {
-  return (
-   <div className={'root'}>
-       <Volume items={Origin_Books} />
-       <Volume items={Notes_books} />
-       <Volume items={Paraphrase_Books} />
-   </div>
-  );
+    if (Origin_Book.chapters.length !== Notes_book.chapters.length ||
+        Notes_book.chapters.length !== Paraphrase_Book.chapters.length ||
+        Paraphrase_Book.chapters.length !== Origin_Book.chapters.length)
+    {
+        throw `Chapters count does not match: origin - ${Origin_Book.chapters.length}, notes - ${Notes_book.chapters.length}, paraphrase - ${Paraphrase_Book.chapters.length}`;
+    }
+    
+    const volumes = Origin_Book.chapters.map((_, i) => {
+        return <React.Fragment key={`chapter_${i}`}>
+            <Chapter item={Origin_Book.chapters[i]} key={`${Origin_Book.id}_${Origin_Book.chapters[i].id}`} />
+            <Chapter item={Notes_book.chapters[i]} key={`${Notes_book.id}_${Notes_book.chapters[i].id}`} />
+            <Chapter item={Paraphrase_Book.chapters[i]} key={`${Paraphrase_Book.id}_${Paraphrase_Book.chapters[i].id}`} />
+        </React.Fragment>
+    });
+    
+    return (
+        <div className={'root'}>
+            <span className={'book-title'}>
+                {Origin_Book.title}
+            </span>
+        
+            <span className={'book-title'}>
+                {Notes_book.title}
+            </span>
+        
+            <span className={'book-title'}>
+                {Paraphrase_Book.title}
+            </span>
+
+            {volumes}
+        </div>
+    );
 }
 
 export default Root;

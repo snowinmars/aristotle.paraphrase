@@ -1,5 +1,5 @@
 import b1_c1_text from './b1_c1';
-import b1_c2_text from './b1_c1';
+import b1_c2_text from './b1_c2';
 
 const chapter_1_1 = {
     id: "chapter_1_1",
@@ -21,7 +21,7 @@ const chapter_1_2 = {
     origin_paragraphs: b1_c2_text.split('\n').filter(_ => _)
 };
 
-const book_1 = {
+export default {
     id: "paraphrase_book_1",
     title: "Книга первая",
     chapters: [
@@ -29,10 +29,3 @@ const book_1 = {
         chapter_1_2
     ]
 };
-
-const Paraphrase_books = [
-    book_1
-];
-
-
-export default Paraphrase_books;

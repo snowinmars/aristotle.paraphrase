@@ -1,9 +1,24 @@
 .root {
     display: flex;
     justify-content: space-between;
-    
-    .volume {
+    flex-wrap: wrap;
+
+    .chapter {
+        flex: 1 1 30%;
+        
         padding: 0 1em;
         width: 40%;
+        
+        margin-top: 1em;
+        border-bottom: 1px solid black;
+    }
+
+    .book-title {
+        flex: 1 1 25%;
+        
+        padding: 0 1em;
+        width: 40%;
+
+        margin-bottom: 2em;
     }
 }
