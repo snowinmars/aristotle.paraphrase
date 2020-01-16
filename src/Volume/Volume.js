@@ -1,10 +1,24 @@
 import React from 'react';
 import './Volume.scss';
+import terms from '../Paraphrase/terms'
+import Highlighter from "../Highlighter/Highlighter";
 
 class Volume extends React.Component {
     render_paragraph = (paragraph, key) => {
+        const highlight = ({ children, highlightIndex }) => (
+            <span className="highlighted-term">{children}</span>
+        );
+
         return (
-            <p className={'paragraph'} key={key}>{paragraph}</p>
+            <p className={'paragraph'} key={key}>
+                <Highlighter
+                    searchWords={terms}
+                    textToHighlight={paragraph}
+                    autoEscape={true}
+                    highlightTag={highlight}
+                    dangerouslySetInnerHTML={true}
+                />
+            </p>
         );
     };
     
