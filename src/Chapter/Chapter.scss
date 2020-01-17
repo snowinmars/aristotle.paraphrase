@@ -26,3 +26,15 @@
         color: #999;
     }
 }
+
+.unhighlighted-paragraph {
+    display: inline-block;
+    border-left: 3px solid transparent;
+    padding-left: 1em;
+}
+
+.highlighted-paragraph {
+    display: inline-block;
+    border-left: 3px solid rgba(100,150,0,0.25);
+    padding-left: 1em;
+}
