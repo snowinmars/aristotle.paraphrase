@@ -3,7 +3,7 @@ import './Chapter.scss';
 import terms from '../Paraphrase/terms'
 import Highlighter from "../Highlighter/Highlighter";
 
-import { highlight_paragraph }  from './../actions/index';
+import { highlight_paragraph }  from './../../actions/index';
 import { connect } from 'react-redux'
 
 class Chapter extends React.Component {
