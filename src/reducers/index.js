@@ -9,7 +9,8 @@ function rootReducer(state = initialState, action) {
         case HIGHLIGHT_PARAGRAPH_REDUCER_TYPE:
             return {
                 ...state,
-                hovered_paragraph: action.payload.hovered_paragraph,
+                from: action.payload.settings.from,
+                to: action.payload.settings.to,
             };
         default:
             return state;

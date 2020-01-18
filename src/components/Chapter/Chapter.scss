@@ -29,12 +29,12 @@
 
 .unhighlighted-paragraph {
     display: inline-block;
-    border-left: 3px solid transparent;
-    padding-left: 1em;
+    border: 7px solid transparent;
+    padding: 0 1em;
 }
 
 .highlighted-paragraph {
     display: inline-block;
-    border-left: 3px solid rgba(100,150,0,0.25);
-    padding-left: 1em;
+    border: 7px solid rgba(100,150,0,0.25);
+    padding: 0 1em;
 }

@@ -9,32 +9,10 @@ import { connect } from 'react-redux'
 class Chapter extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            hovered_paragraph: null,
-            destination: null,
-            book: null,
-            chapter: null
-        }
     }
     
     settings = {
         
-    };
-    
-    highlightasd = (text, terms_to_replace, tag) => {
-        if (!tag) {
-            tag = (t) => `<span class='highlight'>${t}</span>`
-        }
-
-        const reactStringReplace = require('react-string-replace');
-
-        terms_to_replace.map(term => {
-            const regex = new RegExp(term,"g");
-            text = reactStringReplace(text, regex, tag(term))
-        });
-        
-        return text;
     };
     
     render_paragraph = (paragraph, index) => {
@@ -43,7 +21,7 @@ class Chapter extends React.Component {
         );
         
         let tags = null;
-        let hovered_paragraph = null;
+        let highlighted_paragraphs = [];
         let text = paragraph;
         
         if (paragraph.startsWith('[')) {
@@ -66,28 +44,39 @@ class Chapter extends React.Component {
                     throw `Wrong tag value: ${value}`
                 }
 
-                hovered_paragraph = value;
+                let [paragraph_destination, paragraph_index] = value.split(' ');
+                paragraph_index = Number(paragraph_index);
+
+                highlighted_paragraphs.push({
+                    destination: paragraph_destination,
+                    index: paragraph_index
+                });
             })
         }
 
         const raise_paragraph_highlight = (tags) => {
             if (!tags || tags.length  === 0) {
-                this.props.set_hovered_paragraph(null);
+                this.props.set_hovered_paragraph({});
                 return;
             }
+
+            const settings = {
+                from: {
+                    destination: this.settings.destination,
+                    index: index,
+                },
+                to: highlighted_paragraphs
+            };
             
-            this.props.set_hovered_paragraph(hovered_paragraph);
+            this.props.set_hovered_paragraph(settings);
         };
         
         let className = 'unhighlighted-paragraph';
+        const asd = this.props.to && this.props.to.find(x => x.destination === this.settings.destination && x.index === index)
         
-        if (this.props.hovered_paragraph) {
-            const [destination, paragraph] = this.props.hovered_paragraph.split(' ');
-            
-            const chapter = this.props.item;
-            if (destination === 'origin' && chapter.id.startsWith('origin') && index === Number(paragraph)) {
-                className = 'highlighted-paragraph'
-            }
+        if ((asd && asd.destination === this.settings.destination && asd.index === index) ||
+            (this.props.from && this.props.from.destination === this.settings.destination && this.props.from.index === index)) {
+            className = 'highlighted-paragraph'
         }
         
         return (
@@ -134,17 +123,16 @@ class Chapter extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(`mapStateToProps: ${state.hovered_paragraph}`)
-    
     return {
-        hovered_paragraph: state.hovered_paragraph,
+        from: state.from,
+        to: state.to
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        set_hovered_paragraph: (paragraph) => {
-            dispatch(highlight_paragraph(paragraph))
+        set_hovered_paragraph: (settings) => {
+            dispatch(highlight_paragraph(settings))
         }
     }
 };
