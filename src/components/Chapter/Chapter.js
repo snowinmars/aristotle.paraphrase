@@ -144,8 +144,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         set_hovered_paragraph: (paragraph) => {
-            console.log('mapDispatchToProps: ', paragraph)
-            
             dispatch(highlight_paragraph(paragraph))
         }
     }
