@@ -37,6 +37,8 @@ class Chapter extends React.Component {
 
                 highlighted_paragraphs.push({
                     destination: paragraph_destination,
+                    chapter: this.settings.chapter,
+                    book: this.settings.book,
                     index: paragraph_index
                 });
             })
@@ -56,6 +58,8 @@ class Chapter extends React.Component {
         const settings = {
             from: {
                 destination: this.settings.destination,
+                chapter: this.settings.chapter,
+                book: this.settings.book,
                 index: index,
             },
             to: highlighted_paragraphs
@@ -72,10 +76,10 @@ class Chapter extends React.Component {
 
         const parsed = this.parse_tags(paragraph);
 
-        const isInternalParagraph = this.props.from && this.props.from.destination === this.settings.destination && this.props.from.index === index;
+        const isInternalParagraph = this.props.from && this.props.from.destination === this.settings.destination && this.props.from.index === index && this.props.from.chapter === this.settings.chapter && this.props.from.book === this.settings.book;
 
         const to = this.props.to && this.props.to.find(x => x.destination === this.settings.destination && x.index === index);
-        const isExternalParagraph = to && to.destination === this.settings.destination && to.index === index;
+        const isExternalParagraph = to && to.destination === this.settings.destination && to.index === index && to.chapter === this.settings.chapter && to.book === this.settings.book;
 
         let className = 'unhighlighted-paragraph';
 
