@@ -1,20 +1,18 @@
 import b1_c1_notes from './b1_c1.notes';
 import b1_c2_notes from './b1_c2.note';
+import {read_notes} from '../_lib/common'
 
 const chapter_1_1 = {
-    id: "chapter_1_1",
+    id: "notes_b1_c1",
     title: "Примечания к первой главе",
-    origin_paragraphs: b1_c1_notes.split('\n')
-                                    .filter(_ => _)
-                                    .map((note, i) => `[${i + 1}] ${note}`)
+    origin_paragraphs: read_notes(b1_c1_notes)
+                                    
 };
 
 const chapter_1_2 = {
-    id: "chapter_1_2",
+    id: "notes_b1_c2",
     title: "Примечания ко второй главе",
-    origin_paragraphs: b1_c2_notes.split('\n')
-        .filter(_ => _)
-        .map((note, i) => `[${i + 1}] ${note}`)
+    origin_paragraphs: read_notes(b1_c2_notes)
 };
 
 export default {
