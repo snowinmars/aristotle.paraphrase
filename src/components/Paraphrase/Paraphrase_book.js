@@ -19,19 +19,19 @@ const chapter_1_2 = {
 
 const chapter_1_3 = {
     id: "paraphrase_b1_c3",
-    title: "Первопричины, часть 1",
+    title: "Первопричины - основы",
     origin_paragraphs: read_chapter(b1_c3_text)
 };
 
 const chapter_1_4 = {
     id: "paraphrase_b1_c4",
-    title: "Первопричины, часть 2",
+    title: "Первопричины - обзор",
     origin_paragraphs: read_chapter(b1_c4_text)
 };
 
 const chapter_1_5 = {
     id: "paraphrase_b1_c5",
-    title: "Глава пять",
+    title: "Первопричины - пифагорейцы",
     origin_paragraphs: read_chapter(b1_c5_text)
 };
 
