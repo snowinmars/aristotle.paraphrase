@@ -1,5 +1,6 @@
 $notesTemplate = 'const notes = `
 
+[ref:paraphrase 0]
 <sup>(1)</sup> 
 
 `;
@@ -9,7 +10,9 @@ export default notes;
 
 $chapterTemplate = 'const notes = `
 
-
+[ref:origin 0]
+[ref:paraphrase 0]
+[ref:notes 0]
 
 `;
 

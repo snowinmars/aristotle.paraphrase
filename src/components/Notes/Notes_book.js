@@ -3,6 +3,7 @@ import b1_c2_notes from './b1_c2.notes';
 import b1_c3_notes from './b1_c3.notes';
 import b1_c4_notes from './b1_c4.notes';
 import b1_c5_notes from './b1_c5.notes';
+import b1_c6_notes from './b1_c6.notes';
 import {read_notes} from '../_lib/common'
 
 const chapter_1_1 = {
@@ -36,6 +37,12 @@ const chapter_1_5 = {
     origin_paragraphs: read_notes(b1_c5_notes)
 };
 
+const chapter_1_6 = {
+    id: "notes_b1_c6",
+    title: "Примечания к шестой главе",
+    origin_paragraphs: read_notes(b1_c6_notes)
+};
+
 export default {
     id: "notes_book_1",
     title: "",
@@ -45,5 +52,6 @@ export default {
         chapter_1_3,
         chapter_1_4,
         chapter_1_5,
+        chapter_1_6,
     ]
 };
