@@ -1,21 +1,26 @@
 .root {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    .chapters-list {
+        display: flex;
 
-    .chapter {
-        flex: 1 1 30%;
-        
         padding: 0 1em;
-        width: 40%;
-        
+
         margin-top: 1em;
         border-bottom: 1px solid black;
+
+        .chapter {
+            flex: 1 1 30%;
+        }
+
+        .chapter.sticky {
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
+        }
     }
 
     .book-title {
         flex: 1 1 25%;
-        
+
         padding: 0 1em;
         width: 40%;
 

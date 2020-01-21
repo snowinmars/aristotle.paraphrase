@@ -118,7 +118,7 @@ class Chapter extends React.Component {
         this.parse_id(chapter.id);
 
         return (
-            <div className={'chapter'} key={chapter.id}>
+            <div className={[this.props.className, 'chapter'].join(' ')} key={chapter.id}>
                 <div className={'chapter-title'}>
                     {chapter.title}
                 </div>

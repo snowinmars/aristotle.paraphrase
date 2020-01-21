@@ -12,25 +12,27 @@ function Root() {
     {
         throw `Chapters count does not match: origin - ${Origin_Book.chapters.length}, notes - ${Notes_book.chapters.length}, paraphrase - ${Paraphrase_Book.chapters.length}`;
     }
-    
+
     const volumes = Origin_Book.chapters.map((_, i) => {
         return <React.Fragment key={`chapter_${i}`}>
-            <Chapter item={Origin_Book.chapters[i]} key={`${Origin_Book.id}_${Origin_Book.chapters[i].id}`} />
-            <Chapter item={Notes_book.chapters[i]} key={`${Notes_book.id}_${Notes_book.chapters[i].id}`} />
-            <Chapter item={Paraphrase_Book.chapters[i]} key={`${Paraphrase_Book.id}_${Paraphrase_Book.chapters[i].id}`} />
+            <div className={'chapters-list'}>
+                <Chapter item={Origin_Book.chapters[i]} key={`${Origin_Book.id}_${Origin_Book.chapters[i].id}`} />
+                <Chapter item={Notes_book.chapters[i]} className={'sticky'} key={`${Notes_book.id}_${Notes_book.chapters[i].id}`} />
+                <Chapter item={Paraphrase_Book.chapters[i]} key={`${Paraphrase_Book.id}_${Paraphrase_Book.chapters[i].id}`} />
+            </div>
         </React.Fragment>
     });
-    
+
     return (
         <div className={'root'}>
             <span className={'book-title'}>
                 {Origin_Book.title}
             </span>
-        
+
             <span className={'book-title'}>
                 {Notes_book.title}
             </span>
-        
+
             <span className={'book-title'}>
                 {Paraphrase_Book.title}
             </span>
