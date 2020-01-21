@@ -25,17 +25,19 @@ function Root() {
 
     return (
         <div className={'root'}>
-            <span className={'book-title'}>
-                {Origin_Book.title}
-            </span>
+            <div className={'chapters-list'}>
+                <span className={'book-title'}>
+                    {Origin_Book.title}
+                </span>
 
-            <span className={'book-title'}>
-                {Notes_book.title}
-            </span>
+                    <span className={'book-title'}>
+                    {Notes_book.title}
+                </span>
 
-            <span className={'book-title'}>
-                {Paraphrase_Book.title}
-            </span>
+                    <span className={'book-title'}>
+                    {Paraphrase_Book.title}
+                </span>
+            </div>
 
             {volumes}
         </div>

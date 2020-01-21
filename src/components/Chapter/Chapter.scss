@@ -1,39 +1,36 @@
-.book-title {
-    text-decoration: underline;
-    font-size: 150%;
-}
-
-.chapter-title {
-    text-decoration: underline;
-    font-size: 115%;
-}
-
-.highlighted-term {
-    cursor: help;
-
-    background-image: linear-gradient(-100deg, rgba(0, 0, 0, 0), rgba(192, 192, 192, 0.1), rgba(0, 0, 0, 0));
-
-    &:hover {
-        background-image: linear-gradient(-100deg, rgba(0, 0, 0, 0), rgba(192, 192, 192, 0.15), rgba(0, 0, 0, 0));
-        color: lighten(#ccccb5, 10%);
+.chapter {
+    .chapter-title {
+        text-decoration: underline;
+        font-size: 115%;
     }
-}
 
-.paragraph {
-    sup {
+    .highlighted-term {
         cursor: help;
-        color: #999;
+
+        background-image: linear-gradient(-100deg, rgba(0, 0, 0, 0), rgba(192, 192, 192, 0.1), rgba(0, 0, 0, 0));
+
+        &:hover {
+            background-image: linear-gradient(-100deg, rgba(0, 0, 0, 0), rgba(192, 192, 192, 0.15), rgba(0, 0, 0, 0));
+            color: lighten(#ccccb5, 10%);
+        }
     }
-}
 
-.unhighlighted-paragraph {
-    display: inline-block;
-    border: 7px solid transparent;
-    padding: 0 1em;
-}
+    .paragraph {
+        sup {
+            cursor: help;
+            color: #999;
+        }
+    }
 
-.highlighted-paragraph {
-    display: inline-block;
-    border: 7px solid rgba(100,150,0,0.25);
-    padding: 0 1em;
+    .unhighlighted-paragraph {
+        display: inline-block;
+        border: 7px solid transparent;
+        padding: 0 1em;
+    }
+
+    .highlighted-paragraph {
+        display: inline-block;
+        border: 7px solid rgba(100,150,0,0.25);
+        padding: 0 1em;
+    }
 }
