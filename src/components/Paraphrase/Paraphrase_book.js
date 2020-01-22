@@ -22,13 +22,13 @@ const chapter_1_2 = {
 
 const chapter_1_3 = {
     id: "paraphrase_b1_c3",
-    title: "Первопричины - основы",
+    title: "Первопричины",
     origin_paragraphs: read_chapter(b1_c3_text)
 };
 
 const chapter_1_4 = {
     id: "paraphrase_b1_c4",
-    title: "Первопричины - обзор",
+    title: "Первопричины изменеий",
     origin_paragraphs: read_chapter(b1_c4_text)
 };
 
