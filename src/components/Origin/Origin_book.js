@@ -6,6 +6,7 @@ import b1_c5_text from './b1_c5';
 import b1_c6_text from './b1_c6';
 import b1_c7_text from './b1_c7';
 import b1_c8_text from './b1_c8';
+import b1_c9_text from './b1_c9';
 import {read_chapter} from '../_lib/common'
 
 const chapter_1_1 = {
@@ -56,6 +57,12 @@ const chapter_1_8 = {
     origin_paragraphs: read_chapter(b1_c8_text)
 };
 
+const chapter_1_9 = {
+    id: "origin_b1_c9",
+    title: "Глава девятая",
+    origin_paragraphs: read_chapter(b1_c9_text)
+};
+
 export default {
     id: "origin_book_1",
     title: "Книга первая",
@@ -68,5 +75,6 @@ export default {
         chapter_1_6,
         chapter_1_7,
         chapter_1_8,
+        chapter_1_9,
     ]
 };
