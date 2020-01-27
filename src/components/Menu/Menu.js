@@ -1,22 +1,17 @@
 import React from 'react';
-import {
-    Link
-} from "react-router-dom";
 import './Menu.scss';
+import { Button, ButtonGroup } from '@material-ui/core';
 import { withRouter } from 'react-router-dom'
 
 class Root extends React.Component {
     render = () => {
         return (
             <div className={'menu'}>
-                <ul className={'btn-group'}>
-                    <Link to={'/'} className={`btn btn-secondary btn-sm ${this.props.location.pathname === '/' && 'active'}`}>
-                        <li>О проекте</li>
-                    </Link>
-                    <Link to={'/books'} className={`btn btn-secondary btn-sm ${this.props.location.pathname === '/books' && 'active'}`}>
-                        <li>Метафизика</li>
-                    </Link>
-                </ul>
+                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                    <Button href={'/'} className={this.props.location.pathname === '/' && 'active'}>О проекте</Button>
+                    <Button href={'/books'} className={this.props.location.pathname.startsWith('/books') && 'active'}>Метафизика</Button>
+                    <Button href={'/status'} className={this.props.location.pathname.startsWith('/status') && 'active'}>Статус проекта</Button>
+                </ButtonGroup>
             </div>
         );
     };

@@ -1,13 +1,13 @@
-import b1_c1_text from './b1_c1';
-import b1_c2_text from './b1_c2';
-import b1_c3_text from './b1_c3';
-import b1_c4_text from './b1_c4';
-import b1_c5_text from './b1_c5';
-import b1_c6_text from './b1_c6';
-import b1_c7_text from './b1_c7';
-import b1_c8_text from './b1_c8';
-import b1_c9_text from './b1_c9';
-import b1_c10_text from './b1_c10';
+import b1_c1_text from './b1/b1_c1';
+import b1_c2_text from './b1/b1_c2';
+import b1_c3_text from './b1/b1_c3';
+import b1_c4_text from './b1/b1_c4';
+import b1_c5_text from './b1/b1_c5';
+import b1_c6_text from './b1/b1_c6';
+import b1_c7_text from './b1/b1_c7';
+import b1_c8_text from './b1/b1_c8';
+import b1_c9_text from './b1/b1_c9';
+import b1_c10_text from './b1/b1_c10';
 import {read_chapter} from '../_lib/common'
 
 const chapter_1_1 = {
@@ -71,18 +71,20 @@ const chapter_1_10 = {
 };
 
 export default {
-    id: "paraphrase_book_1",
-    title: "Философия - наука о причинах",
-    chapters: [
-        chapter_1_1,
-        chapter_1_2,
-        chapter_1_3,
-        chapter_1_4,
-        chapter_1_5,
-        chapter_1_6,
-        chapter_1_7,
-        chapter_1_8,
-        chapter_1_9,
-        chapter_1_10,
-    ]
+    books: [{
+        id: "paraphrase_book_1",
+        title: "Философия - наука о причинах",
+        chapters: [
+            chapter_1_1,
+            chapter_1_2,
+            chapter_1_3,
+            chapter_1_4,
+            chapter_1_5,
+            chapter_1_6,
+            chapter_1_7,
+            chapter_1_8,
+            chapter_1_9,
+            chapter_1_10,
+        ]
+    }]
 };

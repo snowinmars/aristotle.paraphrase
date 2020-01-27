@@ -1,4 +1,6 @@
 .root {
+    margin: 1em;
+    
     .chapters-list {
         display: flex;
 
@@ -35,6 +37,14 @@
     .menu {
         ul {
             list-style: none;
+        }
+    }
+    
+    a {
+        color: #649600;
+        
+        &:visited {
+            color: #649600;
         }
     }
 }

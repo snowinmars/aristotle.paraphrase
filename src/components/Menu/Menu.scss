@@ -1,40 +1,13 @@
-.root {
-    .chapters-list {
-        display: flex;
-
-        padding: 0 1em;
-
-        margin-top: 1em;
-        border-bottom: 1px solid #999999;
-
-        .chapter {
-            flex: 1 1 30%;
-        }
-
-        .chapter.sticky {
-            position: sticky;
-            top: 0;
-            align-self: flex-start;
-            overflow-y: auto;
-            max-height: 50em;
-        }
+.menu {
+    .btn-group {
+        padding-left: 1em;
     }
-
-    .book-title {
-        flex: 1 1 30%;
-
-        padding: 0 1em;
-        width: 40%;
-
-        margin-bottom: 2em;
-
-        text-decoration: underline;
-        font-size: 150%;
+    
+    ul {
+        list-style: none;
     }
-
-    .menu {
-        ul {
-            list-style: none;
-        }
+    
+    .active {
+        background-color: #222;
     }
 }
