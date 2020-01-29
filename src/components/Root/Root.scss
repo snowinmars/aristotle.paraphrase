@@ -1,6 +1,10 @@
 .root {
     margin: 1em;
     
+    .content {
+        list-style: upper-roman;
+    }
+    
     .chapters-list {
         display: flex;
 

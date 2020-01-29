@@ -73,7 +73,7 @@ const chapter_1_10 = {
 export default {
     books: [{
         id: "paraphrase_book_1",
-        title: "Философия - наука о причинах",
+        title: "Парафраз. Философия - наука о причинах",
         chapters: [
             chapter_1_1,
             chapter_1_2,

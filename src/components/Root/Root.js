@@ -15,6 +15,7 @@ import About from "../About/About";
 import Status from "../Status/Status";
 
 class Root extends React.Component {
+
     render = () => {
         if (Origin_Books.books.length !== Notes_books.books.length ||
             Notes_books.books.length !== Paraphrase_Books.books.length ||
@@ -28,6 +29,15 @@ class Root extends React.Component {
             const notes_book = Notes_books.books[book_index];
             const paraphrase_book = Paraphrase_Books.books[book_index];
             const book_id = `${origin_book.id}_${notes_book.id}_${paraphrase_book.id}`;
+            
+            const content_items = book.chapters.map((_, chapter_index) => {
+                const origin_chapter = origin_book.chapters[chapter_index];
+                const paraphrase_chapter = paraphrase_book.chapters[chapter_index];
+
+                return <React.Fragment key={`${book_id}_contents_chapter${chapter_index}`}>
+                    <li><a href={`#${origin_chapter.id}`}>{paraphrase_chapter.title}</a></li>
+                </React.Fragment>;
+            });
             
             const chapters = book.chapters.map((_, chapter_index) => {
                 const origin_chapter = origin_book.chapters[chapter_index];
@@ -45,6 +55,11 @@ class Root extends React.Component {
             });
             
             return <React.Fragment key={book_id}>
+                Оглавление:
+                <ul className={'content'}>
+                    {content_items}
+                </ul>
+                
                 <div className={'chapters-list'}>
                     <span className={'book-title'}>{origin_book.title}</span>
                     <span className={'book-title'}>{notes_book.title}</span>
