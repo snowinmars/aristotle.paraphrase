@@ -42,7 +42,7 @@ class Status extends React.Component {
 
             const last_commit_datetime_string = last_commit_datetime.toLocaleDateString("ru-RU", datetime_format);
 
-            last_change = <React.Fragment><a href={last_commit_uri}>{last_commit_datetime_string}</a> ({diff} дня назад)</React.Fragment>;
+            last_change = <React.Fragment><a href={last_commit_uri}>{last_commit_datetime_string}</a> (дней назад: {diff})</React.Fragment>;
         }
         
         return (
