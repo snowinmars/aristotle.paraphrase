@@ -29,13 +29,26 @@ class Status extends React.Component {
             minute: '2-digit',
             second: '2-digit',
         };
-        const last_commit_datetime = git_info && new Date(Date.parse(git_info.commit.commit.author.date)).toLocaleDateString("ru-RU", datetime_format);
-        const last_commit_uri = git_info && git_info.commit.html_url
+        
+        let last_change = <React.Fragment>Loading...</React.Fragment>;
+        
+        if (git_info) {
+            const now = Date.now();
+
+            const last_commit_datetime = new Date(Date.parse(git_info.commit.commit.author.date));
+            const diff = Math.round((now - last_commit_datetime.getTime()) / (24*3600*1000));
+
+            const last_commit_uri = git_info.commit.html_url;
+
+            const last_commit_datetime_string = last_commit_datetime.toLocaleDateString("ru-RU", datetime_format);
+
+            last_change = <React.Fragment><a href={last_commit_uri}>{last_commit_datetime_string}</a> ({diff} дня назад)</React.Fragment>;
+        }
         
         return (
           <div className={'status'}>
               <p>Переведено: 1/14 книг</p>
-              <p>Последнее изменение: <a href={last_commit_uri}>{last_commit_datetime}</a></p>
+              <p>Последнее изменение: {last_change}</p>
           </div>  
         );
     }
