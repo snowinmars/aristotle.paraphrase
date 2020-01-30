@@ -34,4 +34,14 @@
         border: 7px solid rgba(100,150,0,0.25);
         padding: 0 1em;
     }
+    
+    .help {
+        text-decoration: underline;
+        color: #f52;
+        cursor: help;
+        
+        &:hover {
+            color: #f63;
+        }
+    }
 }
