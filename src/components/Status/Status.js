@@ -1,5 +1,6 @@
 import React from 'react';
 import './Status.scss';
+import git_commit_hash from './git_commit_hash'
 
 class Status extends React.Component {
     componentDidMount() {
@@ -10,10 +11,10 @@ class Status extends React.Component {
             .then(result => this.setState({git_info: result}),
                 error => console.log(error));
     }
-    
+
     constructor(props) {
         super(props);
-        
+
         this.state = {
             git_info: null
         }
@@ -29,9 +30,9 @@ class Status extends React.Component {
             minute: '2-digit',
             second: '2-digit',
         };
-        
+
         let last_change = <React.Fragment>Loading...</React.Fragment>;
-        
+
         if (git_info) {
             const now = Date.now();
 
@@ -44,12 +45,13 @@ class Status extends React.Component {
 
             last_change = <React.Fragment><a href={last_commit_uri}>{last_commit_datetime_string}</a> (дней назад: {diff})</React.Fragment>;
         }
-        
+
         return (
           <div className={'status'}>
               <p>Переведено: 1/14 книг</p>
               <p>Последнее изменение: {last_change}</p>
-          </div>  
+              <p>Коммит: {git_commit_hash}</p>
+          </div>
         );
     }
 }

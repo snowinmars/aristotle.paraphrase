@@ -24,6 +24,13 @@ def main():
         call(f"docker rm {docker_ids}")
         print(f"Stopped and removed {len(docker_ids)} docker containers.")
 
+    git_commit_hash_path = root.parent/'src'/'components'/'Status'/'git_commit_hash.js'
+
+    with open(git_commit_hash_path, 'w', encoding='utf8') as file:
+        git_commit_hash = call('git rev-parse HEAD').strip()
+        git_commit_hash_template = f'const git_commit_hash = "{git_commit_hash}"; export default git_commit_hash;'
+        file.write(git_commit_hash_template)
+
     print('Build Docker container...')
     call(f"docker build -t snowinmars/aristotel.paraphrase {root.parent}")
 
@@ -37,7 +44,7 @@ def main():
 
     print('Push docker container...')
     call('docker push snowinmars/aristotel.paraphrase')
-    
+
     print('Done')
 
 
