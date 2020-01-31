@@ -13,6 +13,7 @@ import Paraphrase_Books from '../Paraphrase/Paraphrase_book'
 import Menu from "../Menu/Menu";
 import About from "../About/About";
 import Status from "../Status/Status";
+import {TinyButton as ScrollUpButton} from "react-scroll-up-button";
 
 class Root extends React.Component {
 
@@ -81,6 +82,8 @@ class Root extends React.Component {
                         </Route>
                         
                         <Route path={'/books/b1'}>
+                            <ScrollUpButton ContainerClassName={'scroll-up-button'}
+                                            AnimationDuration={100}/>
                             {books[0]}
                         </Route>
 
