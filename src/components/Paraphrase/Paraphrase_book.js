@@ -48,7 +48,7 @@ const chapter_1_6 = {
 
 const chapter_1_7 = {
     id: "paraphrase_b1_c7",
-    title: "Глава седьмая",
+    title: "Проблемы",
     origin_paragraphs: read_chapter(b1_c7_text)
 };
 
