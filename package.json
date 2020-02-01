@@ -61,6 +61,7 @@
     "react-scripts": "^3.3.0",
     "react-scroll-up-button": "^1.6.4",
     "react-string-replace": "^0.4.4",
+    "react-tabs": "^3.1.0",
     "redux": "^4.0.5",
     "resolve": "1.12.2",
     "resolve-url-loader": "3.1.1",

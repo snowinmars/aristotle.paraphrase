@@ -88,7 +88,7 @@ class Chapter extends React.Component {
         }
 
         return (
-            <p className={'paragraph'} key={`${this.props.item.id}_${index}`}>
+            <p className={'paragraph'} key={`${this.props.chapter.id}_${index}`}>
                 <Highlighter
                     searchWords={terms}
                     textToHighlight={parsed.text}
@@ -114,7 +114,7 @@ class Chapter extends React.Component {
     };
 
     render = () => {
-        const chapter = this.props.item;
+        const chapter = this.props.chapter;
         this.parse_id(chapter.id);
 
         return (
