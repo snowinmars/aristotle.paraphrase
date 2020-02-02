@@ -73,7 +73,7 @@ const chapter_1_10 = {
 export default {
     books: [{
         id: "origin_book_1",
-        title: "Аристотель. Книга первая",
+        title: "Аристотель: книга первая",
         chapters: [
             chapter_1_1,
             chapter_1_2,

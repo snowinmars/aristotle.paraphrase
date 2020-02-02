@@ -54,13 +54,13 @@ const chapter_1_7 = {
 
 const chapter_1_8 = {
     id: "paraphrase_b1_c8",
-    title: "Проблемы у пифагорейцев: числа - это не первоначала",
+    title: "У пифагорейцев: числа - это не первоначала",
     origin_paragraphs: read_chapter(b1_c8_text)
 };
 
 const chapter_1_9 = {
     id: "paraphrase_b1_c9",
-    title: "Проблемы у платонистов: эйдосов нет",
+    title: "У платонистов: эйдосов нет",
     origin_paragraphs: read_chapter(b1_c9_text)
 };
 
@@ -73,7 +73,7 @@ const chapter_1_10 = {
 export default {
     books: [{
         id: "paraphrase_book_1",
-        title: "Парафраз. Философия - наука о причинах",
+        title: "Парафраз: причины.",
         chapters: [
             chapter_1_1,
             chapter_1_2,

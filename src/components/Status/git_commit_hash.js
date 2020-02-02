@@ -1,1 +1,1 @@
-const git_commit_hash = "4443c76a774a864f43ccb85b73adcdae7865fa62"; export default git_commit_hash;
+const git_commit_hash = "3956b2051f25f82783c857193f845fceac3098e0"; export default git_commit_hash;
