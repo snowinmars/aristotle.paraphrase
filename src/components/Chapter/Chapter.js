@@ -6,7 +6,26 @@ import Highlighter from "../Highlighter/Highlighter";
 import { highlight_paragraph }  from './../../actions/index';
 import { connect } from 'react-redux'
 
-class Chapter extends React.Component {
+class Chapter extends React.PureComponent {
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        const to = nextProps.to.length && nextProps.to.find(x => x.destination === this.settings.destination);
+
+        if (!to) {
+            return nextProps.from.chapter === this.settings.chapter &&
+                nextProps.from.book === this.settings.book;
+        }
+
+        const isInternalParagraph = nextProps.from.destination === this.settings.destination &&
+            nextProps.from.chapter === this.settings.chapter &&
+            nextProps.from.book === this.settings.book;
+
+        const isExternalParagraph = to.destination === this.settings.destination &&
+            to.chapter === this.settings.chapter &&
+            to.book === this.settings.book;
+
+        return isInternalParagraph || isExternalParagraph;
+    }
+
     settings = {};
 
     parse_tags = (paragraph) => {
@@ -51,7 +70,13 @@ class Chapter extends React.Component {
 
     raise_paragraph_highlight = (highlighted_paragraphs, index) => {
         if (!highlighted_paragraphs) {
-            this.props.set_hovered_paragraph({});
+            this.props.set_hovered_paragraph({
+                    from: {
+                        chapter: this.settings.chapter,
+                        book: this.settings.book
+                    },
+                    to:[]}
+                    );
             return;
         }
 
@@ -76,10 +101,18 @@ class Chapter extends React.Component {
 
         const parsed = this.parse_tags(paragraph);
 
-        const isInternalParagraph = this.props.from && this.props.from.destination === this.settings.destination && this.props.from.index === index && this.props.from.chapter === this.settings.chapter && this.props.from.book === this.settings.book;
+        const isInternalParagraph = this.props.from &&
+            this.props.from.destination === this.settings.destination &&
+            this.props.from.book === this.settings.book &&
+            this.props.from.chapter === this.settings.chapter &&
+            this.props.from.index === index;
 
-        const to = this.props.to && this.props.to.find(x => x.destination === this.settings.destination && x.index === index);
-        const isExternalParagraph = to && to.destination === this.settings.destination && to.index === index && to.chapter === this.settings.chapter && to.book === this.settings.book;
+        const to = this.props.to.length && this.props.to.find(x => x.destination === this.settings.destination && x.index === index);
+        const isExternalParagraph = to &&
+            to.destination === this.settings.destination &&
+            to.book === this.settings.book &&
+            to.chapter === this.settings.chapter &&
+            to.index === index;
 
         let className = 'unhighlighted-paragraph';
 
@@ -129,6 +162,8 @@ class Chapter extends React.Component {
         );
     }
 }
+
+Chapter.whyDidYouRender = true;
 
 const mapStateToProps = (state) => {
     return {

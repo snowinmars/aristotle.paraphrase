@@ -18,7 +18,7 @@ import {TinyButton as ScrollUpButton} from "react-scroll-up-button";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-class Root extends React.Component {
+class Root extends React.PureComponent {
 
     render = () => {
         const books = Origin_Books.books.map((book, book_index) => {

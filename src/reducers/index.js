@@ -1,7 +1,9 @@
 import { HIGHLIGHT_PARAGRAPH_REDUCER_TYPE } from "../constants/types";
 
 const initialState = {
-    hovered_paragraph: null
+    hovered_paragraph: null,
+    from: {},
+    to: []
 };
 
 function rootReducer(state = initialState, action) {
