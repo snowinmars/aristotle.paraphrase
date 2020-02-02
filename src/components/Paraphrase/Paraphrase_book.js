@@ -30,7 +30,7 @@ const chapter_1_3 = {
 
 const chapter_1_4 = {
     id: "paraphrase_b1_c4",
-    title: "Первопричины изменеия вещей",
+    title: "Первопричины изменения вещей",
     origin_paragraphs: read_chapter(b1_c4_text)
 };
 

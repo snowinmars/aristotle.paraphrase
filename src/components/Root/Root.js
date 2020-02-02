@@ -103,7 +103,7 @@ class Root extends React.PureComponent {
                             Оглавление
                             <ul>
                                 <li>
-                                    <Link to={'/books/b1'}>Книга первая. Мудрость - наука о причинах</Link>
+                                    <Link to={'/books/b1'}>Книга первая: причины</Link>
                                 </li>
                             </ul>
                         </Route>
