@@ -46,7 +46,7 @@ class Root extends React.PureComponent {
 
                 let additional_text = null;
 
-                if (this.props.isOnlyParaphrase) {
+                if (this.props.isAdditionalTextVisible) {
                     additional_text = <React.Fragment>
                         <Chapter className={'chapter-column'} chapter={origin_chapter}/>
 
@@ -129,7 +129,7 @@ class Root extends React.PureComponent {
 
 const mapStateToProps = (state) => {
     return {
-        isOnlyParaphrase: state.isOnlyParaphrase,
+        isAdditionalTextVisible: state.isAdditionalTextVisible,
     }
 };
 

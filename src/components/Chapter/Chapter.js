@@ -116,7 +116,7 @@ class Chapter extends React.PureComponent {
 
         let className = 'unhighlighted-paragraph';
 
-        if (this.props.isOnlyParaphrase && (isInternalParagraph || isExternalParagraph)) {
+        if (this.props.isAdditionalTextVisible && (isInternalParagraph || isExternalParagraph)) {
             className = 'highlighted-paragraph'
         }
 
@@ -169,7 +169,7 @@ const mapStateToProps = (state) => {
     return {
         from: state.from,
         to: state.to,
-        isOnlyParaphrase: state.isOnlyParaphrase
+        isAdditionalTextVisible: state.isAdditionalTextVisible
     }
 };
 

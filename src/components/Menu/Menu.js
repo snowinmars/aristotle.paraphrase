@@ -25,12 +25,12 @@ class SiteMenu extends React.Component {
         };
 
         const handleHideAdditionalText = () => {
-            this.setState({target: null}, () => this.props.foo({isOnlyParaphrase: true}));
+            this.setState({target: null}, () => this.props.foo({isAdditionalTextVisible: true}));
 
         };
 
         const handleShowAdditionalText = () => {
-            this.setState({target: null}, () => this.props.foo({isOnlyParaphrase: false}));
+            this.setState({target: null}, () => this.props.foo({isAdditionalTextVisible: false}));
         };
 
         return (
@@ -49,8 +49,8 @@ class SiteMenu extends React.Component {
                         open={Boolean(this.state.target)}
                         onClose={handleClose}
                     >
-                        {this.props.isOnlyParaphrase && <MenuItem onClick={handleShowAdditionalText}>Оставить только парафраз</MenuItem>}
-                        {!this.props.isOnlyParaphrase && <MenuItem onClick={handleHideAdditionalText}>Показать весь текст</MenuItem>}
+                        {this.props.isAdditionalTextVisible && <MenuItem onClick={handleShowAdditionalText}>Оставить только парафраз</MenuItem>}
+                        {!this.props.isAdditionalTextVisible && <MenuItem onClick={handleHideAdditionalText}>Показать весь текст</MenuItem>}
                     </Menu>
                 </ButtonGroup>
             </div>
@@ -60,7 +60,7 @@ class SiteMenu extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        isOnlyParaphrase: state.isOnlyParaphrase,
+        isAdditionalTextVisible: state.isAdditionalTextVisible,
     }
 };
 
