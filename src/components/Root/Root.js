@@ -11,12 +11,13 @@ import Origin_Books from '../Origin/Origin_book'
 import Paraphrase_Books from '../Paraphrase/Paraphrase_book'
 import Origin_notes_books from '../Origin/Origin_book.notes'
 import Paraphrase_notes_books from '../Paraphrase/Paraphrase_book.notes'
-import Menu from "../Menu/Menu";
+import SiteMenu from "../Menu/Menu";
 import About from "../About/About";
 import Status from "../Status/Status";
 import {TinyButton as ScrollUpButton} from "react-scroll-up-button";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import {connect} from "react-redux";
 
 class Root extends React.PureComponent {
 
@@ -43,9 +44,10 @@ class Root extends React.PureComponent {
                 const origin_notes_chapter = origin_notes_books.chapters[chapter_index];
                 const paraphrase_notes_chapter = paraphrase_notes_books.chapters[chapter_index];
 
-                return <React.Fragment
-                    key={`${book_id}_chapter${chapter_index}`}>
-                    <div className={'chapters-list'}>
+                let additional_text = null;
+
+                if (this.props.isOnlyParaphrase) {
+                    additional_text = <React.Fragment>
                         <Chapter className={'chapter-column'} chapter={origin_chapter}/>
 
                         <Tabs defaultIndex={1} className={'sticky chapter-column'}>
@@ -61,6 +63,13 @@ class Root extends React.PureComponent {
                                 <Chapter chapter={paraphrase_notes_chapter} />
                             </TabPanel>
                         </Tabs>
+                    </React.Fragment>
+                }
+
+                return <React.Fragment
+                    key={`${book_id}_chapter${chapter_index}`}>
+                    <div className={'chapters-list'}>
+                        {additional_text}
 
                         <Chapter className={'chapter-column'} chapter={paraphrase_chapter}/>
                     </div>
@@ -86,7 +95,7 @@ class Root extends React.PureComponent {
         return (
             <div className={'root'}>
                 <Router>
-                    <Menu />
+                    <SiteMenu  />
 
                     <Switch>
                         <Route path={'/status'}>
@@ -118,5 +127,11 @@ class Root extends React.PureComponent {
     };
 }
 
-export default Root;
+const mapStateToProps = (state) => {
+    return {
+        isOnlyParaphrase: state.isOnlyParaphrase,
+    }
+};
+
+export default connect(mapStateToProps)(Root);
 

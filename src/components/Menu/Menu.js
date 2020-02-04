@@ -2,19 +2,74 @@ import React from 'react';
 import './Menu.scss';
 import { Button, ButtonGroup } from '@material-ui/core';
 import { withRouter } from 'react-router-dom'
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import {toggle_additional_text} from "../../actions";
+import {connect} from "react-redux";
 
-class Root extends React.Component {
+
+class SiteMenu extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            target: null,
+        }
+    }
+
     render = () => {
+        const handleClick = event => {
+            this.setState({target: event.currentTarget});
+        };
+
+        const handleClose = () => {
+        };
+
+        const handleHideAdditionalText = () => {
+            this.setState({target: null}, () => this.props.foo({isOnlyParaphrase: true}));
+
+        };
+
+        const handleShowAdditionalText = () => {
+            this.setState({target: null}, () => this.props.foo({isOnlyParaphrase: false}));
+        };
+
         return (
             <div className={'menu'}>
                 <ButtonGroup color="primary" aria-label="outlined primary button group">
                     <Button href={'/'} className={this.props.location.pathname === '/' && 'active'}>О проекте</Button>
                     <Button href={'/books'} className={this.props.location.pathname.startsWith('/books') && 'active'}>Метафизика</Button>
                     <Button href={'/status'} className={this.props.location.pathname.startsWith('/status') && 'active'}>Статус проекта</Button>
+                    <Button aria-controls="settings" aria-haspopup="true" onClick={handleClick}>
+                        <i className="material-icons">settings</i>
+                    </Button>
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={this.state.target}
+                        keepMounted
+                        open={Boolean(this.state.target)}
+                        onClose={handleClose}
+                    >
+                        {this.props.isOnlyParaphrase && <MenuItem onClick={handleShowAdditionalText}>Оставить только парафраз</MenuItem>}
+                        {!this.props.isOnlyParaphrase && <MenuItem onClick={handleHideAdditionalText}>Показать весь текст</MenuItem>}
+                    </Menu>
                 </ButtonGroup>
             </div>
         );
     };
 }
 
-export default withRouter(Root);
+const mapStateToProps = (state) => {
+    return {
+        isOnlyParaphrase: state.isOnlyParaphrase,
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        foo: (settings) => {
+            dispatch(toggle_additional_text(settings))
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SiteMenu));

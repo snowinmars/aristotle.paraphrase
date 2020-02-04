@@ -82,7 +82,9 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "startserver": "nodemon -r esm -L /app/server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn startserver\" \"yarn start\""
   },
   "eslintConfig": {
     "extends": "react-app"

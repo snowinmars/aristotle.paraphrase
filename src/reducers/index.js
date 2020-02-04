@@ -1,7 +1,8 @@
-import { HIGHLIGHT_PARAGRAPH_REDUCER_TYPE } from "../constants/types";
+import { HIGHLIGHT_PARAGRAPH_REDUCER_TYPE, TOGGLE_ADDITIONAL_TEXT_REDUCER_TYPE } from "../constants/types";
 
 const initialState = {
     hovered_paragraph: null,
+    isOnlyParaphrase: null,
     from: {},
     to: []
 };
@@ -13,6 +14,11 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 from: action.payload.settings.from,
                 to: action.payload.settings.to,
+            };
+        case TOGGLE_ADDITIONAL_TEXT_REDUCER_TYPE:
+            return {
+                ...state,
+                isOnlyParaphrase: action.payload.settings.isOnlyParaphrase,
             };
         default:
             return state;
