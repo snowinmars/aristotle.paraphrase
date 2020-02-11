@@ -48,6 +48,7 @@ class SiteMenu extends React.Component {
                         keepMounted
                         open={Boolean(this.state.target)}
                         onClose={handleClose}
+                        onBlur={() => this.setState({target: null})}
                     >
                         {this.props.isAdditionalTextVisible && <MenuItem onClick={handleShowAdditionalText}>Оставить только парафраз</MenuItem>}
                         {!this.props.isAdditionalTextVisible && <MenuItem onClick={handleHideAdditionalText}>Показать весь текст</MenuItem>}
