@@ -1,68 +1,58 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## О проекте
+Этот проект посвящён парафразу "Метафизики" Аристотеля. Я хочу упростить стиль лекций, потеряв при этом минимум смысла.
 
-## Available Scripts
+## Что
+"Метафизика" Аристотеля - это набор лекций, записанных его учениками. В нём он рассказывает о своём взгляде на мир - диалектике.
 
-In the project directory, you can run:
+Диалектика - это то, что сейчас мы называем здравым смыслом. То, как надо мыслить.
 
-### `npm start`
+Парафраз - это вольное изложение, пересказ.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Получается, этот проект посвящён пересказу лекций Аристотеля о здравом смысле.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Где почитать парафраз?
 
-### `npm test`
+http://ec2-54-93-191-207.eu-central-1.compute.amazonaws.com
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+На днях поковыряюсь с доменом.
 
-### `npm run build`
+##Зачем
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Есть четыре перевода "Метафизики" на русский язык.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- Первый - незавершённый перевод первых пяти книг от П. Первова и В. Розанова от 1895 года.
+- Второй - перевод тринадцатой и четырнадцатой книг от А.Ф. Лосева от 1929 года.
+- Третий и основной - перевод с древнегреческого от С.И. Еремеева и А.В. Кубицкого 1934 года (ISBN 5-89329-503-X)
+- Четвёртый - перевод с древнегреческого А. Маркова 2018 года (ISBN 978-5-386-10325-5)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+В чём проблемы этих переводов? Первые два незавершены, вторые два мне очень сложно читать. Я предполагаю, что эти переводы были подстрочными. Это отдельный вид переводов, и то, что их сложно воспринимать - это не их вина. Они служат другой цели.
 
-### `npm run eject`
+Когда я начал читать "Метафизику", я понял две вещи. Во-первых, что книга невероятна полезна. А во-вторых, что текст о диалектике сложнее самой диалектики. Я решил найти что-нибудь, что может мне помочь прочитать "Метафизику".
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Об Аристотеле есть несколько видов работ:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Самые понятные - лекции, сжато пересказывающие суть диалектики. Как дополнительный материал - прекрасно, но я хочу читать Аристотеля.
+- Второй по понятности - это исторические исследования про древнюю Грецию. Аналогично: полезно, но это не Аристотель.
+- Вольные сочинения на тему: статьи, рассуждения, трактовки. В большинстве своём, они написаны специалистами для специалистов, поэтому я с трудом могу понять, о чём в них идёт речь.
+- Аудиокниги. Максимально бесполезная вещь, я считаю. Лучше рисовать картинки.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Я не нашёл ни одного разбора "Метафизики" по абзацам или хотя бы по главам. Ближе всех к этому подошёл "Аристотель для всех" М. Адлера, но он сильнее, чем мне надо, отходит в сторону упрощения. Я решил: пока читаю Аристотеля, я буду записывать абзац за абзацем так, как я их понял.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+##Как
 
-## Learn More
+Я разбил текст "Метафизики" на три части. Первая - перевод 1934 года. Третья - мой парафраз. Между ними - вторая: примечания к обоим частям.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+В тексте будут встречаться анахронизмы. Аристотель в парафразе говорит современными нам терминами. Это позволяет одновременно и сократить, и упростить текст. В качестве примера я предлагаю первую книгу, девятую главу, четвёртый абзац. Без привлечения современного языка это просто ад какой-то.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Вообще, у "Метафизики" надо бы первой читать пятую книгу. Она целиком посвящена базисным определениям. Начиная парафраз, я этого не знал, поэтому живём вот так вот.
 
-### Code Splitting
+##ЧаВо
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+####Я нашёл опечатку, ошибку / Ты неправильно понял оригинал / Есть идея
+Пишите: справа указаны контакты. Если правда мой косяк - поправлю.
 
-### Analyzing the Bundle Size
+####Хочу помочь в переводе/разработке
+[GitHub](https://github.com/snowinmars/aristotel.paraphrase)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+####Хочу закинуть денег
+Не надо.
