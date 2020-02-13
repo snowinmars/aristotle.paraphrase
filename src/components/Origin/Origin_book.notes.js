@@ -8,6 +8,10 @@ import b1_c7_notes from './b1_notes/b1_c7.notes';
 import b1_c8_notes from './b1_notes/b1_c8.notes';
 import b1_c9_notes from './b1_notes/b1_c9.notes';
 import b1_c10_notes from './b1_notes/b1_c10.notes';
+
+import b2_c1_notes from './b2_notes/b2_c1.notes';
+import b2_c2_notes from './b2_notes/b2_c2.notes';
+
 import {read_notes} from '../_lib/common'
 
 const chapter_1_1 = {
@@ -71,6 +75,19 @@ const chapter_1_10 = {
     origin_paragraphs: read_notes(b1_c10_notes)
 };
 
+const chapter_2_1 = {
+    id: "origin-notes_b2_c1",
+    title: "К оригиналу первой главы",
+    origin_paragraphs: read_notes(b2_c1_notes)
+};
+
+const chapter_2_2 = {
+    id: "origin-notes_b2_c2",
+    title: "К оригиналу второй главы",
+    origin_paragraphs: read_notes(b2_c2_notes)
+};
+
+
 export default {
     books: [{
         id: "origin-notes_book_1",
@@ -86,6 +103,13 @@ export default {
             chapter_1_8,
             chapter_1_9,
             chapter_1_10,
+        ]
+    }, {
+        id: "origin-notes_book_2",
+        title: "",
+        chapters: [
+            chapter_2_1,
+            chapter_2_2,
         ]
     }]
 };

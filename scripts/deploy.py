@@ -45,7 +45,11 @@ def main():
     print('Push docker container...')
     call('docker push snowinmars/aristotel.paraphrase')
 
-    print('Done')
+    if not (root/'default.pem').exists():
+        raise Exception('Cant find .pem to connect remote server')
+
+    print('Connecting to the remote server')
+   # call('ssh -i default.pem ec2-user@ec2-54-93-191-207.eu-central-1.compute.amazonaws.com')
 
 
 if __name__ == '__main__':

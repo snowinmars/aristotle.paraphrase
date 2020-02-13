@@ -8,7 +8,11 @@ import b1_c7_text from './b1/b1_c7';
 import b1_c8_text from './b1/b1_c8';
 import b1_c9_text from './b1/b1_c9';
 import b1_c10_text from './b1/b1_c10';
-import {read_chapter} from '../_lib/common'
+
+import b2_c1_text from "./b2/b2_c1";
+import b2_c2_text from "./b2/b2_c2";
+
+import {read_chapter} from '../_lib/common';
 
 const chapter_1_1 = {
     id: "paraphrase_b1_c1",
@@ -70,6 +74,18 @@ const chapter_1_10 = {
     origin_paragraphs: read_chapter(b1_c10_text)
 };
 
+const chapter_2_1 = {
+    id: "paraphrase_b2_c1",
+    title: "Глава первая",
+    origin_paragraphs: read_chapter(b2_c1_text)
+};
+
+const chapter_2_2 = {
+    id: "paraphrase_b2_c2",
+    title: "Глава вторая",
+    origin_paragraphs: read_chapter(b2_c2_text)
+};
+
 export default {
     books: [{
         id: "paraphrase_book_1",
@@ -85,6 +101,13 @@ export default {
             chapter_1_8,
             chapter_1_9,
             chapter_1_10,
+        ]
+    }, {
+        id: "paraphrase_book_2",
+        title: "Парафраз: книга вторая",
+        chapters: [
+            chapter_2_1,
+            chapter_2_2,
         ]
     }]
 };

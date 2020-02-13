@@ -34,7 +34,7 @@ class Root extends React.PureComponent {
                 const paraphrase_chapter = paraphrase_book.chapters[chapter_index];
 
                 return <React.Fragment key={`${book_id}_contents_chapter${chapter_index}`}>
-                    <li><a href={`#${origin_chapter.id}`}>{paraphrase_chapter.title}</a></li>
+                    <li><a href={`#${paraphrase_chapter.id}`}>{paraphrase_chapter.title}</a></li>
                 </React.Fragment>;
             });
 
@@ -108,11 +108,20 @@ class Root extends React.PureComponent {
                             {books[0]}
                         </Route>
 
+                        <Route path={'/books/b2'}>
+                            <ScrollUpButton ContainerClassName={'scroll-up-button'}
+                                            AnimationDuration={100}/>
+                            {books[1]}
+                        </Route>
+
                         <Route path={'/books'}>
                             Оглавление
                             <ul>
                                 <li>
                                     <Link to={'/books/b1'}>Книга первая: причины</Link>
+                                </li>
+                                <li>
+                                    <Link to={'/books/b2'}>Книга вторая</Link>
                                 </li>
                             </ul>
                         </Route>

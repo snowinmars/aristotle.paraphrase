@@ -20,8 +20,13 @@ class Status extends React.Component {
         }
     }
 
-    render = () => {
+    get_last_change_block = () => {
         const git_info = this.state.git_info;
+
+        if (!git_info) {
+            return <React.Fragment>Loading...</React.Fragment>;
+        }
+
         const datetime_format = {
             day: '2-digit',
             year: 'numeric',
@@ -31,25 +36,34 @@ class Status extends React.Component {
             second: '2-digit',
         };
 
-        let last_change = <React.Fragment>Loading...</React.Fragment>;
+        const now = Date.now();
 
-        if (git_info) {
-            const now = Date.now();
+        const last_commit_datetime = new Date(Date.parse(git_info.commit.commit.author.date));
+        const diff = Math.round((now - last_commit_datetime.getTime()) / (24 * 3600 * 1000));
 
-            const last_commit_datetime = new Date(Date.parse(git_info.commit.commit.author.date));
-            const diff = Math.round((now - last_commit_datetime.getTime()) / (24*3600*1000));
+        const last_commit_uri = git_info.commit.html_url;
 
-            const last_commit_uri = git_info.commit.html_url;
+        const last_commit_datetime_string = last_commit_datetime.toLocaleDateString("ru-RU", datetime_format);
 
-            const last_commit_datetime_string = last_commit_datetime.toLocaleDateString("ru-RU", datetime_format);
+        return (
+            <React.Fragment>
+                <a href={last_commit_uri}>{last_commit_datetime_string}</a> (дней назад: {diff})
+            </React.Fragment>
+        );
+    };
 
-            last_change = <React.Fragment><a href={last_commit_uri}>{last_commit_datetime_string}</a> (дней назад: {diff})</React.Fragment>;
-        }
+    get_statistics_block = () => {
+
+    };
+
+    render = () => {
+        const last_change_block = this.get_last_change_block();
+        const statistics_block = this.get_statistics_block();
 
         return (
           <div className={'status'}>
               <p>Переведено: 1/14 книг</p>
-              <p>Последнее изменение: {last_change}</p>
+              <p>Последнее изменение: {last_change_block}</p>
               <p>Коммит: {git_commit_hash}</p>
           </div>
         );
