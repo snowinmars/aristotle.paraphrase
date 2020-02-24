@@ -38,17 +38,17 @@ class Chapter extends React.PureComponent {
 
             items.map(tag => {
                 if (!(tag.startsWith('[') && tag.endsWith(']'))) {
-                    throw `Wrong tag format: ${tag}`;
+                    throw new Error(`Wrong tag format: ${tag}`);
                 }
 
                 const [name, value] = tag.slice(1).slice(0, -1).split(':');
 
                 if (name !== 'ref') {
-                    throw `Wrong tag name: ${name}`;
+                    throw new Error(`Wrong tag name: ${name}`);
                 }
 
                 if (+value <= 0) {
-                    throw `Wrong tag value: ${value}`
+                    throw new Error(`Wrong tag value: ${value}`);
                 }
 
                 let [paragraph_destination, paragraph_index] = value.split(' ');
@@ -60,6 +60,8 @@ class Chapter extends React.PureComponent {
                     book: this.settings.book,
                     index: paragraph_index
                 });
+
+                return 0;
             })
         }
 

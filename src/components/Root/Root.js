@@ -30,7 +30,6 @@ class Root extends React.PureComponent {
             const book_id = `${origin_book.id}_${origin_notes_books.id}_${paraphrase_book.id}_${paraphrase_notes_books.id}`;
 
             const content_items = book.chapters.map((_, chapter_index) => {
-                const origin_chapter = origin_book.chapters[chapter_index];
                 const paraphrase_chapter = paraphrase_book.chapters[chapter_index];
 
                 return <React.Fragment key={`${book_id}_contents_chapter${chapter_index}`}>
