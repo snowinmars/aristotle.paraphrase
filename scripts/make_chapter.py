@@ -4,6 +4,7 @@ from pathlib import Path
 
 root = Path(os.path.dirname(os.path.realpath(__file__)))
 
+
 def get_last_filename(path):
     src_root = root.parent/'src'/'components'
     search_root = src_root/path
@@ -20,6 +21,7 @@ def get_last_filename(path):
     last_book_index, last_chapter_index, postfix = get_last_file_info(last_data_file)
 
     return f"b{last_book_index}_c{last_chapter_index + 1}{postfix}"
+
 
 def get_last_file_info(data_file):
     regex_result = re.search(r'b(\d+)_c(\d+)(.*)', data_file)

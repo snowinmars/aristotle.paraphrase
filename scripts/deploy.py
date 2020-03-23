@@ -22,22 +22,30 @@ def call(command):
     return result.stdout
 
 
-def build(container_name, container_tag_name):
-    docker_ids = call('docker ps -a -q')
-    print(f"Found {len(docker_ids)} docker containers...")
-
-    if len(docker_ids) > 0:
-        print(f"Stopping and removing {len(docker_ids)} docker containers...")
-        call(f"docker stop {docker_ids}")
-        call(f"docker rm {docker_ids}")
-        print(f"Stopped and removed {len(docker_ids)} docker containers.")
-
+def create_git_hash_file():
     git_commit_hash_path = root.parent/'src'/'components'/'Status'/'git_commit_hash.js'
 
     with open(git_commit_hash_path, 'w', encoding='utf8') as file:
         git_commit_hash = call('git rev-parse HEAD').strip()
         git_commit_hash_template = f'const git_commit_hash = "{git_commit_hash}"; export default git_commit_hash;'
         file.write(git_commit_hash_template)
+
+    return git_commit_hash_path
+
+
+def build(container_name, container_tag_name):
+    docker_ids = call('docker ps -a -q')
+    docker_ids_length = len(docker_ids)
+    print(f"Found {docker_ids_length} docker containers...")
+
+    if docker_ids_length > 0:
+        print(f"Stopping and removing {docker_ids_length} docker containers...")
+        call(f"docker stop {docker_ids}")
+        call(f"docker rm {docker_ids}")
+        print(f"Stopped and removed {docker_ids_length} docker containers.")
+
+    git_file_path = create_git_hash_file()
+    print(f"Created git hash file at {git_file_path}")
 
     print('Build Docker container...')
     call(f"docker build -t {container_name} {root.parent}")
