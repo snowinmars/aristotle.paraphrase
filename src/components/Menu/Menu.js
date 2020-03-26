@@ -42,6 +42,7 @@ class SiteMenu extends React.Component {
                     <Button aria-controls="settings" aria-haspopup="true" onClick={handleClick}>
                         <i className="material-icons">settings</i>
                     </Button>
+
                     <Menu
                         id="simple-menu"
                         anchorEl={this.state.target}

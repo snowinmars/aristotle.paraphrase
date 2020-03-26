@@ -1,36 +1,36 @@
 .about {
   margin-left: 1em;
   display: flex;
-  
+
   :first-child {
     flex-basis: 60%;
   }
-  
+
   .chapter {
     margin-left: 2em;
     margin-bottom: 3em;
   }
-  
+
   .faq {
     p {
       margin-left: 1em;
     }
   }
-  
+
   .material-icons {
     font-size: 100%;
     margin-left: 1em;
     padding: 0.3em 1em;
-    
+
     background-color: #222;
     cursor: pointer;
     border-radius: 4px;
-    
+
     &:hover {
       background-color: #333;
     }
   }
-  
+
   .contacts {
     >* {
       margin-bottom: 1em;
