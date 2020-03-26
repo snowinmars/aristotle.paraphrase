@@ -60,5 +60,9 @@
         &:visited {
             color: #649600;
         }
+
+        &:hover {
+            color: lighten(#649600, 10%)
+        }
     }
 }
