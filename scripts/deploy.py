@@ -98,6 +98,10 @@ def main(deploy_only):
     print('Remote server: logging in...')
     call(f'{ssh_path} -i "{root/production_pem}" {host} "docker login -u snowinmars --password-stdin asd"')
 
+    # if no space will be available on host - use
+    #   alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
+    #   alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
+
     print('Remote server: pulling...')
     call(f'{ssh_path} -i "{root/production_pem}" {host} "docker pull {container_name}"')
 
