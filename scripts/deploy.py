@@ -67,7 +67,7 @@ def build(container_name, container_tag_name):
 @click.command()
 @click.option('--deploy_only', '-d', is_flag=True, required=True, help='Do not build current files but deploy latest docker image only')
 def main(deploy_only):
-    host = 'ec2-user@ec2-54-93-191-207.eu-central-1.compute.amazonaws.com'
+    host = 'ubuntu@ec2-18-192-68-110.eu-central-1.compute.amazonaws.com'
     production_pem = './production.pem'
     container_tag_name = 'aristotle.paraphrase'
     container_name = f'snowinmars/{container_tag_name}'

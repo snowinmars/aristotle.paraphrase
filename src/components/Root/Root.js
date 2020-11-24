@@ -67,6 +67,10 @@ class Root extends React.PureComponent {
 
                 return <React.Fragment
                     key={`${book_id}_chapter${chapter_index}`}>
+                    <div className={'chapter-core'}>
+                        {origin_chapter.core}
+                    </div>
+
                     <div className={'chapters-list'}>
                         {additional_text}
 

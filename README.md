@@ -12,7 +12,7 @@
 
 ## Где почитать парафраз?
 
-http://ec2-54-93-191-207.eu-central-1.compute.amazonaws.com
+http://ec2-18-192-68-110.eu-central-1.compute.amazonaws.com
 
 На днях поковыряюсь с доменом.
 
