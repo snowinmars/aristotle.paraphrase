@@ -47,7 +47,22 @@ class Root extends React.PureComponent {
 
                 if (this.props.isAdditionalTextVisible) {
                     additional_text = <React.Fragment>
-                        <Chapter className={'chapter-column'} chapter={origin_chapter}/>
+                        <Tabs defaultIndex={0} className={'sticky chapter-column'}>
+                            <TabList>
+                                <Tab>Кубицкий</Tab>
+                                <Tab>Ross</Tab>
+                            </TabList>
+
+                            <TabPanel>
+                                <Chapter className={'chapter-column'} chapter={origin_chapter}/>
+                            </TabPanel>
+                            <TabPanel>
+                                <Chapter className={'chapter-column'} chapter={{
+                                    ...origin_chapter,
+                                    origin_paragraphs: origin_chapter.eng_paragraphs, // ffs, too lazy
+                                }}/>
+                            </TabPanel>
+                        </Tabs>
 
                         <Tabs defaultIndex={1} className={'sticky chapter-column'}>
                             <TabList>
