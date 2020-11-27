@@ -13,7 +13,7 @@ import Paraphrase_Books from '../Paraphrase/Paraphrase_book'
 
 class Status extends React.Component {
     componentDidMount() {
-        const uri = 'https://api.github.com/repos/snowinmars/aristotel.paraphrase/branches/master';
+        const uri = 'https://api.github.com/repos/snowinmars/aristotle.paraphrase/branches/master';
 
         fetch(uri)
             .then(res => res.json())

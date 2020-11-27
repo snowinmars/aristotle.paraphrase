@@ -159,7 +159,7 @@ class About extends React.Component {
                             <li>
                                 <h5>Хочу помочь в переводе/разработке</h5>
                                 <ul>
-                                    <li><a href={'https://github.com/snowinmars/aristotel.paraphrase'}>GitHub</a></li>
+                                    <li><a href={'https://github.com/snowinmars/aristotle.paraphrase'}>GitHub</a></li>
                                     <li>Необходимо перевести примечания W.D. Ross'а с греческо-английского на просто английский.</li>
                                     <li>Необходимо отвалидировать парафраз на соответствие научному консенсусу.</li>
                                 </ul>

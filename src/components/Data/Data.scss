@@ -1,0 +1,36 @@
+.ariph-type-list {
+  display: flex;
+
+  li {
+    width: 30%;
+  }
+}
+
+.ariph-type-block {
+  display: flex;
+  flex-wrap: wrap;
+
+  span {
+    text-align: left;
+  }
+
+  &>span {
+    display: block;
+    width: 100%;
+  }
+
+  div {
+    width: 50%;
+  }
+}
+
+.ariph-data {
+  .MJXc-display {
+    display: inline;
+  }
+}
+
+.mord.text {
+  white-space: pre-line;
+  word-break: break-word;
+}

@@ -1,105 +1,85 @@
-const Paraphrase_books = require('./src/components/Paraphrase/Paraphrase_book');
-const Paraphrase_notes = require('./src/components/Paraphrase/Paraphrase_book.notes');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5002;
-var os = require("os");
+const os = require("os");
+const fs = require('fs');
+
+app.use(cors());
+app.options('*', cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.send('aristotel api host');
+app.get('/api', (req, res) => {
+    res.send('aristotle api host');
 });
 
-app.get('/api/paraphrase', (req, res) => {
-    res.send(Paraphrase_books.default);
+app.get('/api/:bookId/:chapterId/:type/pdf', async (req, res) => {
+    const bookId = req.params.bookId;
+    const chapterId = req.params.chapterId;
+    const type = req.params.type;
+
+    if (!/\d+/.test(bookId)) return await res.json(`Wrong book id: ${bookId}`);
+    if (!/\d+/.test(chapterId)) return await res.json(`Wrong book id: ${bookId}`);
+
+    let path = null;
+
+    switch (type) {
+        case 'origin_rus':
+        case 'origin_rus_notes':
+        case 'origin_eng':
+        case 'origin_eng_notes':
+        case 'paraphrase':
+        case 'paraphrase_notes':
+        case 'core':
+            path = `./src/latex/${type}/b${bookId}/c${chapterId}.pdf`;
+            break;
+        default:
+            return await res.json(`Type is out of range: ${type}`);
+    }
+
+    return fs.readFile(path, 'utf8', (error, content) => {
+        if (error) {
+            return res.json(error);
+        }
+
+        return res.json(content);
+    });
 });
 
-app.get('/api/paraphrase/notes', (req, res) => {
-    res.send(Paraphrase_notes.default);
-});
+app.get('/api/:bookId/:chapterId/:type', async (req, res) => {
+    const bookId = req.params.bookId;
+    const chapterId = req.params.chapterId;
+    const type = req.params.type;
 
-app.get('/api/paraphrase/merge', (req, res) => {
-    const item = Paraphrase_books.default;
+    if (!/\d+/.test(bookId)) return await res.json(`Wrong book id: ${bookId}`);
+    if (!/\d+/.test(chapterId)) return await res.json(`Wrong book id: ${bookId}`);
 
-    const books = item.books.map(map_book);
+    let path = null;
 
-    res.send({books: books});
-});
+    switch (type) {
+        case 'origin_rus':
+        case 'origin_rus_notes':
+        case 'origin_eng':
+        case 'origin_eng_notes':
+        case 'paraphrase':
+        case 'paraphrase_notes':
+        case 'core':
+            path = `./src/latex/${type}/b${bookId}/c${chapterId}.tex`;
+            break;
+        default:
+            return await res.json(`Type is out of range: ${type}`);
+    }
 
-app.get('/api/paraphrase/merge/download', (req, res) => {
-    const item = Paraphrase_books.default;
+    return fs.readFile(path, 'utf8', (error, content) => {
+        if (error) {
+            return res.json(error);
+        }
 
-    const books = item.books.map(map_book);
-    const text = map_books_to_plain_text(books);
-
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Content-disposition', 'attachment; filename=file.txt');
-
-    res.send(text)
+        return res.json(content);
+    });
 });
 
 app.listen(port, () => console.log(`Listening on ${os.hostname()}:${port}`));
-
-///
-
-map_books_to_plain_text = (books) => {
-    let text = '';
-
-    text += 'Аристотель. Парафраз.\n\n';
-    text += `См. https://aristotel-paraphrase.sloppy.zone\n\n`;
-
-    books.map(book => {
-        text += `Книга: ${book.title}\n\n`;
-
-        book.chapters.map(chapter => {
-            text += `### \n Глава: ${chapter.title}\n\n`;
-
-            chapter.paragraphs.map(paragraph => {
-                text += `${paragraph}\n`;
-            });
-
-            text += `\n\n Примечания к главе "${chapter.title}"\n\n`;
-
-            chapter.notes.map(note => {
-                text += `${note}\n`;
-            });
-
-            text += '\n\n';
-        })
-    });
-
-    return text.replace(/<[^\/].*?>/g, ' [ ').replace(/<\/.*?>/g, ' ] ');
-};
-
-map_book = (book, book_index) => {
-    const chapters = book.chapters.map((chapter, chapter_index) => map_chapter(chapter, chapter_index, book_index));
-
-    return {
-        title: book.title,
-        chapters: chapters
-    }
-};
-
-map_chapter = (chapter, chapter_index, book_index) => {
-    const paragraphs = chapter.origin_paragraphs.map(map_paragraph);
-
-    const notes = Paraphrase_notes.default
-        .books[book_index]
-        .chapters[chapter_index]
-        .origin_paragraphs
-        .map(map_paragraph);
-
-    return {
-        title: chapter.title,
-        paragraphs: paragraphs,
-        notes: notes
-    }
-};
-
-map_paragraph = (paragraph) => {
-    const parts = paragraph.split('\n');
-    return parts[parts.length - 1];
-};

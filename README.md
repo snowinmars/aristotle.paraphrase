@@ -52,7 +52,7 @@ http://ec2-18-192-68-110.eu-central-1.compute.amazonaws.com
 Пишите: справа указаны контакты. Если правда мой косяк - поправлю.
 
 #### Хочу помочь в переводе/разработке
-[GitHub](https://github.com/snowinmars/aristotel.paraphrase)
+[GitHub](https://github.com/snowinmars/aristotle.paraphrase)
 
 #### Хочу закинуть денег
 Не надо.
