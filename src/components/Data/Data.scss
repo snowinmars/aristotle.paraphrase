@@ -34,3 +34,51 @@
   white-space: pre-line;
   word-break: break-word;
 }
+
+.ariph-pdf-viewer {
+  .columns {
+    display: flex;
+    justify-content: left;
+    margin-left: 2em;
+
+    .is-size-7 {
+      visibility: hidden;
+    }
+
+    button:disabled:hover {
+      cursor: not-allowed;
+    }
+
+    button:not([disabled]):hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.ariph-pdf-canvas {
+  max-width: 50%;
+}
+
+.react-tabs__tab {
+  background-color: #333;
+  border-color: #444;
+
+  &:hover {
+    background-color: #444;
+  }
+}
+.react-tabs__tab,
+.react-tabs__tab--selected {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin: 0 0.5em;
+}
+
+.react-tabs__tab--selected {
+  background-color: #777;
+  border-color: #888;
+
+  &:hover {
+    background-color: #888;
+  }
+}

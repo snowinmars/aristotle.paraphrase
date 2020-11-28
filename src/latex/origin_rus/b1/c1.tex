@@ -1,12 +1,25 @@
-\documentclass{article}
+\documentclass[oneside, 17pt, dvipsnames]{extbook}
 
-\usepackage[T2A]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
+\usepackage{xltxtra}
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguages{english, greek}
 
+% colors and fonts
+\usepackage{xcolor}
+\definecolor{bgColor}{RGB}{17,17,17}
+\definecolor{fgColor}{RGB}{204,204,214}
+\setromanfont[Color=fgColor]{Liberation Sans}
+\setsansfont{Tahoma}
+\defaultfontfeatures{Ligatures={TeX},Renderer=Basic}
+\pagecolor{bgColor}
+\everymath{\color{fgColor}}
+\everydisplay{\color{fgColor}}
+
+% geometry
 \linespread{1.1}
 \setlength{\parskip}{1em}
-\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
+\usepackage[paperwidth=11in,paperheight=22in,landscape,left=1cm,right=1cm,top=1cm,bottom=2cm,outer=18cm,marginparwidth=15cm]{geometry}
 
 \begin{document}
 
