@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import axios from 'axios';
 import 'react-tabs/style/react-tabs.css';
+import PDFViewer from 'pdf-viewer-reactjs'
 import './Data.scss';
 
 class Data extends React.Component {
@@ -19,28 +19,6 @@ class Data extends React.Component {
     }
   }
 
-  request = (book, chapter, type, callback) => {
-    const host = 'http://localhost:5002';
-    return axios.get(`${host}/api/${book}/${chapter}/${type}/pdf`)
-      .then(r => {
-        callback(r.data);
-      })
-  }
-
-  componentDidMount = () => {
-    const book = this.props.book;
-    const chapter = this.props.chapter;
-
-    return this.request(book, chapter, 'origin_eng', (v) => this.setState({origin_eng: v}));
-    // this.request(book, chapter, 'core_pdf', (v) => this.setState({core: v}))
-    //   .then(() => this.request(book, chapter, 'paraphrase_pdf', (v) => this.setState({paraphrase: v})))
-    //   .then(() => this.request(book, chapter, 'paraphrase_notes_pdf', (v) => this.setState({paraphrase_notes: v})))
-    //   .then(() => this.request(book, chapter, 'origin_rus_pdf', (v) => this.setState({origin_rus: v})))
-    //   .then(() => this.request(book, chapter, 'origin_rus_notes_pdf', (v) => this.setState({origin_rus_notes: v})))
-    //   .then(() => this.request(book, chapter, 'origin_eng_pdf', (v) => this.setState({origin_eng: v})))
-    //   .then(() => this.request(book, chapter, 'origin_eng_notes_pdf', (v) => this.setState({origin_eng_notes: v})));
-  }
-
   renderTypeBlock = (content, notes) => {
     return <TabPanel className={'ariph-type-block'}>
       {
@@ -52,6 +30,7 @@ class Data extends React.Component {
   render = () => {
     const book = this.props.book;
     const chapter = this.props.chapter;
+    const host = 'http://localhost:5002';
 
     return <div className={'ariph-data'}>
       <div>Книга {book}, глава {chapter}</div>
@@ -65,9 +44,22 @@ class Data extends React.Component {
           <Tab>Парафраз</Tab>
         </TabList>
 
-        {this.renderTypeBlock(this.state.origin_rus, this.state.origin_rus_notes)}
         {this.renderTypeBlock(this.state.origin_eng, this.state.origin_eng_notes)}
         {this.renderTypeBlock(this.state.paraphrase, this.state.paraphrase_notes)}
+
+        <TabPanel>
+          <PDFViewer
+            css={'ariph-pdf-viewer'}
+            canvasCss={'ariph-pdf-canvas'}
+            navbarOnTop={true}
+            hideZoom={true}
+            hideRotation={true}
+            document={{
+              url: `${host}/api/${book}/${chapter}/origin_rus/pdf`,
+            }}
+          />
+
+        </TabPanel>
       </Tabs>
     </div>
   }

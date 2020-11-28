@@ -17,61 +17,17 @@ class SiteMenu extends React.Component {
     }
 
     render = () => {
-        const handleClick = event => {
-            this.setState({target: event.currentTarget});
-        };
-
-        const handleClose = () => {
-        };
-
-        const handleHideAdditionalText = () => {
-            this.setState({target: null}, () => this.props.foo({isAdditionalTextVisible: true}));
-
-        };
-
-        const handleShowAdditionalText = () => {
-            this.setState({target: null}, () => this.props.foo({isAdditionalTextVisible: false}));
-        };
-
         return (
             <div className={'menu'}>
                 <ButtonGroup color="primary" aria-label="outlined primary button group">
                     <Button href={'/'} className={this.props.location.pathname === '/' && 'active'}>О проекте</Button>
                     <Button href={'/books'} className={this.props.location.pathname.startsWith('/books') && 'active'}>Метафизика</Button>
                     <Button href={'/status'} className={this.props.location.pathname.startsWith('/status') && 'active'}>Статус проекта</Button>
-                    <Button aria-controls="settings" aria-haspopup="true" onClick={handleClick}>
-                        <i className="material-icons">settings</i>
-                    </Button>
-
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={this.state.target}
-                        keepMounted
-                        open={Boolean(this.state.target)}
-                        onClose={handleClose}
-                        onBlur={() => this.setState({target: null})}
-                    >
-                        {this.props.isAdditionalTextVisible && <MenuItem onClick={handleShowAdditionalText}>Оставить только парафраз</MenuItem>}
-                        {!this.props.isAdditionalTextVisible && <MenuItem onClick={handleHideAdditionalText}>Показать весь текст</MenuItem>}
-                    </Menu>
+                    <Button href={'/downloads'} className={this.props.location.pathname.startsWith('/downloads') && 'active'}>Скачать</Button>
                 </ButtonGroup>
             </div>
         );
     };
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAdditionalTextVisible: state.isAdditionalTextVisible,
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        foo: (settings) => {
-            dispatch(toggle_additional_text(settings))
-        }
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SiteMenu));
+export default withRouter(SiteMenu);

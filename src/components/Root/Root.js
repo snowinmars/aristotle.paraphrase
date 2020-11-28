@@ -10,6 +10,7 @@ import SiteMenu from "../Menu/Menu";
 import About from "../About/About";
 import Status from "../Status/Status";
 import Data from "../Data/Data";
+import Downloads from "../Downloads/Downloads";
 import {TinyButton as ScrollUpButton} from "react-scroll-up-button";
 
 class Root extends React.PureComponent {
@@ -25,6 +26,10 @@ class Root extends React.PureComponent {
                     <Switch>
                         <Route path={'/status'}>
                             <Status />
+                        </Route>
+
+                        <Route path={'/downloads'}>
+                            <Downloads />
                         </Route>
 
                         <Route path={'/books/b1/c1'}>

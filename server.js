@@ -40,13 +40,14 @@ app.get('/api/:bookId/:chapterId/:type/pdf', async (req, res) => {
             return await res.json(`Type is out of range: ${type}`);
     }
 
-    return fs.readFile(path, 'utf8', (error, content) => {
-        if (error) {
-            return res.json(error);
-        }
+    const file = fs.createReadStream(path);
+    const stat = fs.statSync(path);
+    res.set('Content-Length', stat.size);
+    res.set('Content-Type', 'application/pdf');
+    res.set('Content-Disposition', 'attachment; filename=quote.pdf');
+    file.pipe(res);
 
-        return res.json(content);
-    });
+    return res;
 });
 
 app.get('/api/:bookId/:chapterId/:type', async (req, res) => {
