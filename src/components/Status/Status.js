@@ -7,7 +7,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 import './Status.scss';
-import git_commit_hash from './git_commit_hash'
 import Origin_Books from '../Origin/Origin_book'
 import Paraphrase_Books from '../Paraphrase/Paraphrase_book'
 
@@ -186,7 +185,7 @@ class Status extends React.Component {
           <div className={'status'}>
               <p>Переведено: 1/14 книг</p>
               <p>Последнее изменение: {last_change_block}</p>
-              <p>Коммит: {git_commit_hash}</p>
+              <p>Коммит: {window._env_ && window._env_.REACT_GIT_HASH}</p>
               {statistics_block}
           </div>
         );

@@ -4,8 +4,10 @@
 #    docker
 
 set -e
+cd "${0%/*}" # cd to the current dir
 
-find . -name *.pdf -delete
+# there could be not enough permissions due to docker recompiling
+rm -rf `find . -name *.pdf`
 
 texTotal=$(find ~+ -name *.tex | wc -l)
 
@@ -24,6 +26,8 @@ for id in ${ids}; do
     ((count++))
     echo
 done
+
+#
 
 echo "Starting latex tectonic container..."
 docker run --rm -d \

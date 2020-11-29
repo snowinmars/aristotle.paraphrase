@@ -56,3 +56,11 @@ http://ec2-18-192-68-110.eu-central-1.compute.amazonaws.com
 
 #### Хочу закинуть денег
 Не надо.
+
+#### Dev
+
+- Start fe + be `docker build -t snowinmars/aristotle.paraphrase .`
+- Start ui `yarn start`
+- Start be `node server.js`
+- Compile latex image `docker build -t snowinmars/latex --file src/latex/latex.Dockerfile src/latex`
+- Compile latex `./src/latex/recompile.sh`

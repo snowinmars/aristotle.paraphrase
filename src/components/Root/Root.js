@@ -32,15 +32,15 @@ class Root extends React.PureComponent {
                             <Downloads />
                         </Route>
 
-                        <Route path={'/books/b1/c1'}>
-                            <Data book={1} chapter={1} />
+                        <Route path={'/books/b1'}>
+                            <Data book={1} />
                         </Route>
 
                         <Route path={'/books'}>
                             Оглавление
                             <ul>
                                 <li>
-                                    <Link to={'/books/b1/c1'}>Книга первая: причины</Link>
+                                    <Link to={'/books/b1'}>Книга первая: причины</Link>
                                 </li>
                                 <li>
                                     <Link to={'/books/b2'}>Книга вторая</Link>
