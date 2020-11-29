@@ -26,12 +26,14 @@ WORKDIR /app
 
 ARG REACT_GIT_HASH=
 ENV REACT_GIT_HASH=$REACT_GIT_HASH
+ENV REACT_APP_HOST=
 
 RUN mkdir -p /var/log/nginx/logs
 COPY --from=build /app/build /usr/share/nginx/html
 COPY *.conf /etc/nginx/conf.d/
 RUN touch .env.gen && rm -f .env.gen
 # will be used in build-env.sh
+RUN echo "REACT_APP_HOST=$REACT_APP_HOST" >> /usr/share/nginx/html/.env.gen
 RUN echo "REACT_GIT_HASH=$REACT_GIT_HASH" >> /usr/share/nginx/html/.env.gen
 
 EXPOSE 3000

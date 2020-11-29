@@ -1,0 +1,16 @@
+:root {
+  --bgMaster: #111;
+  --bgSlave: #333533;
+  --fgMaster: #ccc;
+  --fgSlave: #649600;
+}
+
+body {
+  background-color: var(--bgMaster);
+  color: var(--fgMaster);
+
+  a {
+    color: var(--fgSlave);
+  }
+}
+

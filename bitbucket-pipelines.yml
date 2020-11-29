@@ -1,0 +1,87 @@
+# This is a sample build configuration for Docker.
+# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: atlassian/default-image:2
+
+pipelines:
+  custom:
+    deploy:
+    - step:
+        caches:
+          - docker
+        services:
+          - docker
+        name: Ariph deploy
+        deployment: test
+        script:
+          - scp $BITBUCKET_CLONE_DIR/_scripts/* $SSH_HOST:/home/ubuntu/_scripts
+          - ssh $SSH_HOST chmod +x /home/ubuntu/_scripts/*.sh
+          - ssh $SSH_HOST /home/ubuntu/_scripts/backup.sh
+
+          - ssh $SSH_HOST /home/ubuntu/_scripts/stop_all.sh
+
+          - scp -r $BITBUCKET_CLONE_DIR/src/db/schemas_migrations $SSH_HOST:/home/ubuntu/_db
+          - scp -r $BITBUCKET_CLONE_DIR/src/db/procedures_migrations $SSH_HOST:/home/ubuntu/_db
+          - ssh $SSH_HOST chmod +x /home/ubuntu/_db/schemas_migrations/*.sh
+          - ssh $SSH_HOST chmod +x /home/ubuntu/_db/procedures_migrations/*.sh
+
+          # todo [snowinmars]: implement secure ssh psql automigrations
+          # - ssh $SSH_HOST /home/ubuntu/_db/schemas_migrations/apply_to_local_db.sh
+          # - ssh $SSH_HOST /home/ubuntu/_db/procedures_migrations/apply_to_local_db.sh
+
+          - ssh $SSH_HOST /home/ubuntu/_scripts/pull.sh
+          - ssh $SSH_HOST IS_PROD=1 /home/ubuntu/_scripts/run.sh
+    build:
+    - parallel:
+      - step:
+          caches:
+            - docker
+          services:
+            - docker
+          name: Ariph db
+          script:
+            - docker build -t ariph/db src/db # todo [snow]: should add env vars
+            - docker login --username ariph --password $DOCKER_HUB_PASSWORD
+            - docker push ariph/db
+      - step:
+          caches:
+            - docker
+          services:
+            - docker
+          name: Ariph ntf
+          script:
+            - docker build -t ariph/be src/ntf
+            - docker login --username ariph --password $DOCKER_HUB_PASSWORD
+            - docker push ariph/ntf
+      - step:
+          caches:
+            - docker
+          services:
+            - docker
+          name: Ariph be
+          script:
+            - docker build -t ariph/be src/be
+            - docker login --username ariph --password $DOCKER_HUB_PASSWORD
+            - docker push ariph/be
+      - step:
+          caches:
+            - docker
+          services:
+            - docker
+          name: Ariph fe
+          script:
+            - docker build -t ariph/fe src/fe
+            - docker login --username ariph --password $DOCKER_HUB_PASSWORD
+            - docker push ariph/fe
+      - step:
+          caches:
+            - docker
+          services:
+            - docker
+          name: Ariph ngx
+          script:
+            - docker build --build-arg LETSENCRYPT_PASSWORD=$LETSENCRYPT_PASSWORD -t ariph/ngx src/ngx
+            - docker login --username ariph --password $DOCKER_HUB_PASSWORD
+            - docker push ariph/ngx

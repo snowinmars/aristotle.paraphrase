@@ -1,66 +1,62 @@
-## О проекте
-Этот проект посвящён парафразу "Метафизики" Аристотеля. Я хочу упростить стиль лекций, потеряв при этом минимум смысла.
+# Ariph
 
-## Что
-"Метафизика" Аристотеля - это набор лекций, записанных его учениками. В нём он рассказывает о своём взгляде на мир - диалектике.
+## How to run
 
-Диалектика - это то, что сейчас мы называем здравым смыслом. То, как надо мыслить.
+1. Install and run docker.
 
-Парафраз - это вольное изложение, пересказ.
+1. Run the database using following. If you use Windows, run scripts from `/scripts/win` folder.
 
-Получается, этот проект посвящён пересказу лекций Аристотеля о здравом смысле.
+```bash
+cd /scripts
 
-## Где почитать парафраз?
+chmod +x *.sh
 
-http://ec2-18-192-68-110.eu-central-1.compute.amazonaws.com
+./stop_all.sh
 
-На днях поковыряюсь с доменом.
+# The following line will return error kinda 'LETSENCRYPT_PASSWORD is not defined'. That's fine
+# It means that nginx proxy container could not be builded, but you don't need it to run the system locally
+./build.sh
 
-## Зачем
+# This will successfully run only 'ariph/db' and 'ariph/ntf' containers.
+# That's fine for now
+./run.sh
+./get_ips.sh # optional
+```
+### Volumes
 
-Есть четыре перевода "Метафизики" на русский язык.
+All volumes mount in `/home/${USER}/ariph/` of the host
 
-- Первый - незавершённый перевод первых пяти книг от П. Первова и В. Розанова от 1895 года.
-- Второй - перевод тринадцатой и четырнадцатой книг от А.Ф. Лосева от 1929 года.
-- Третий и основной - перевод с древнегреческого от С.И. Еремеева и А.В. Кубицкого 1934 года (ISBN 5-89329-503-X)
-- Четвёртый - перевод с древнегреческого А. Маркова 2018 года (ISBN 978-5-386-10325-5)
+- `ariphpsql` - psql volume. You will not have access to this folder - that's ok.
+- `ariphlogs` - logs from all containers.
 
-В чём проблемы этих переводов? Первые два незавершены, вторые два мне очень сложно читать. Я предполагаю, что эти переводы были подстрочными. Это отдельный вид переводов, и то, что их сложно воспринимать - это не их вина. Они служат другой цели.
+### Network
+- `ariph`
+	Set ips and ports in `scripts/variables.sh`.
 
-Когда я начал читать "Метафизику", я понял две вещи. Во-первых, что книга невероятна полезна. А во-вторых, что текст о диалектике сложнее самой диалектики. Я решил найти что-нибудь, что может мне помочь прочитать "Метафизику".
+### Backend container
 
-Об Аристотеле есть несколько видов работ:
+Logs could be finded in `ariphlogs` docker volume with `backend` prefix.
 
-- Самые понятные - лекции, сжато пересказывающие суть диалектики. Как дополнительный материал - прекрасно, но я хочу читать Аристотеля.
-- Второй по понятности - это исторические исследования про древнюю Грецию. Аналогично: полезно, но это не Аристотель.
-- Вольные сочинения на тему: статьи, рассуждения, трактовки. В большинстве своём, они написаны специалистами для специалистов, поэтому я с трудом могу понять, о чём в них идёт речь.
-- Аудиокниги. Максимально бесполезная вещь, я считаю. Лучше рисовать картинки.
+### Frontend container
 
-Я не нашёл ни одного разбора "Метафизики" по абзацам или хотя бы по главам. Ближе всех к этому подошёл "Аристотель для всех" М. Адлера, но он сильнее, чем мне надо, отходит в сторону упрощения. Я решил: пока читаю Аристотеля, я буду записывать абзац за абзацем так, как я их понял.
+Nginx serves frontend. It's impossible to pass `REACT_APP_` env vars into nginx directly, so I made a workaround `/src/fe/build-env.sh`. It generates `.env.gen` file with required variables and inject it as js global object into `Index.html` head tag.
 
-## Как
+This file should exists both remote and locally, so the system uses
+- `dockerentrypoint.sh` to start as remote service
+- `yarnentrypoint.sh` to start locally
 
-Я разбил текст "Метафизики" на три части. Первая - перевод 1934 года. Третья - мой парафраз. Между ними - вторая: примечания к обоим частям.
+Frontend could be binded to docker backend container ip or to production host ip. Is depends on `IS_PROD` env variable:
+- `./run_ariph.sh` - bind with docker
+- `IS_PROD=1 ./run_ariph.sh` - bind with production
 
-В тексте будут встречаться анахронизмы. Аристотель в парафразе говорит современными нам терминами. Это позволяет одновременно и сократить, и упростить текст. В качестве примера я предлагаю первую книгу, девятую главу, четвёртый абзац. Без привлечения современного языка это просто ад какой-то.
+Logs could be finded in `ariphlogs` docker volume with `frontend` prefix.
 
-Вообще, у "Метафизики" надо бы первой читать пятую книгу. Она целиком посвящена базисным определениям. Начиная парафраз, я этого не знал, поэтому живём вот так вот.
+### Nginx container
 
-## ЧаВо
+This is only container that should be public availabe. Its ip should be binded to domain.
 
-#### Я нашёл опечатку, ошибку / Ты неправильно понял оригинал / Есть идея
-Пишите: справа указаны контакты. Если правда мой косяк - поправлю.
+`/src/ngx/proxy.conf.template` file will be builded using `dockerentrypoint.sh`.
 
-#### Хочу помочь в переводе/разработке
-[GitHub](https://github.com/snowinmars/aristotle.paraphrase)
+During docker build flow it downloads a file with certbot ssh keys. It could fails, that's fine. If no local image was found, docker will pull working image from docker hub.
 
-#### Хочу закинуть денег
-Не надо.
-
-#### Dev
-
-- Start fe + be `docker build -t snowinmars/aristotle.paraphrase .`
-- Start ui `yarn start`
-- Start be `node server.js`
-- Compile latex image `docker build -t snowinmars/latex --file src/latex/latex.Dockerfile src/latex`
-- Compile latex `./src/latex/recompile.sh`
+Logs could be finded in `ariphlogs` docker volume with `main_nginx` prefix.

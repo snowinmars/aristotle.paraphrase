@@ -1,0 +1,20 @@
+.ariph-latex-logo {
+  filter: invert(1) sepia(1) saturate(20) hue-rotate(20deg);
+
+  &:hover {
+    filter: invert(1) sepia(1) saturate(8) hue-rotate(20deg);
+  }
+}
+
+.Mui-disabled {
+  .ariph-latex-logo,
+  .MuiButton-label {
+    visibility: hidden;
+  }
+}
+
+.ariph-download-row {
+  &:hover {
+    border-bottom: 1px solid var(--fgSlave);
+  }
+}

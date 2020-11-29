@@ -1,0 +1,14 @@
+.MuiButton-root.MuiButton-outlinedPrimary {
+  color: var(--fgSlave);
+  border-color: var(--bgSlave);
+}
+
+.MuiButton-label {
+  color: var(--fgSlave);
+}
+
+.menu {
+  .active {
+    background-color: var(--bgSlave);
+  }
+}

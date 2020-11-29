@@ -1,0 +1,15 @@
+.ariph-download-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 30em;
+
+  .ariph-title {
+    width: 22em;
+  }
+}
+
+.ariph-download-per-book {
+  display: flex;
+  justify-content: space-between;
+}

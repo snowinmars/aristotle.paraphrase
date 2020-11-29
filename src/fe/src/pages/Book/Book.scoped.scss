@@ -1,0 +1,63 @@
+.ariph-type-list {
+  display: flex;
+
+  li {
+    width: 30%;
+  }
+}
+
+.ariph-type-block {
+  display: flex;
+  flex-wrap: wrap;
+
+  span {
+    text-align: left;
+  }
+
+  &>span {
+    display: block;
+    width: 100%;
+  }
+}
+
+.ariph-data {
+  .MJXc-display {
+    display: inline;
+  }
+}
+
+.mord.text {
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+.ariph-pdf-viewer {
+  .columns {
+    display: flex;
+    justify-content: left;
+    margin-left: 2em;
+
+    .is-size-7 {
+      visibility: hidden;
+    }
+
+    button:disabled:hover {
+      cursor: not-allowed;
+    }
+
+    button:not([disabled]):hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.ariph-pdf-canvas {
+  max-width: 50%;
+}
+
+.react-tabs__tab,
+.react-tabs__tab--selected {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin: 0 0.5em;
+}
