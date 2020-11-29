@@ -18,10 +18,16 @@
     display: block;
     width: 100%;
   }
+}
 
-  div {
-    width: 50%;
+.Mui-disabled {
+  .ariph-latex-logo {
+    filter: none
   }
+}
+
+.ariph-latex-logo {
+  filter: invert(1) sepia(1) saturate(20) hue-rotate(20deg);
 }
 
 .ariph-data {

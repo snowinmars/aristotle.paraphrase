@@ -8,19 +8,42 @@ set -e
 find . -name *.pdf -delete
 
 texTotal=$(find ~+ -name *.tex | wc -l)
-count=0
 
+# stop all
+
+imageName="snowinmars/latex"
+
+ids=$(docker ps | grep $imageName | awk '{print $1;}')
+total=$(docker ps | grep $imageName | wc -l)
+
+count=1
+echo "Stopping $total containers..."
+
+for id in ${ids}; do
+	printf "%-2s / %-2s %-8s is gone" $count $total $(docker stop $id)
+    ((count++))
+    echo
+done
+
+echo "Starting latex tectonic container..."
+docker run --rm -d \
+        -v ~+:/data \
+        snowinmars/latex \
+        bash -c "while true; do continue ; done"
+imageId=$( docker ps | grep $imageName | awk '{print $1;}' )
+
+count=0
 find ~+ -name *.tex | while read f;
 do
+    relativeFilename=$(realpath --relative-to=$PWD $f)
+    relativeDir=$(dirname $relativeFilename)
+
     ((count=count+1))
     echo && echo && echo && echo && echo
-    echo \[ $count / $texTotal \] $f
-    cd $(dirname $f)
+    echo \[ $count / $texTotal \] $relativeFilename
 
-    docker run --rm \
-        -v $(dirname $f):/data \
-        snowinmars/latex \
-        pdflatex -interaction=batchmode -output-dir=/data $(basename $f)
+    docker exec $imageId \
+        tectonic --outdir $relativeDir $relativeFilename
 done
 
 find . -name *.aux -delete
