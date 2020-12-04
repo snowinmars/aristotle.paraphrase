@@ -6,6 +6,16 @@
     flex-basis: 60%;
   }
 
+  .ariph-wide-list {
+    li {
+      margin: 1em;
+
+      div {
+        margin: 0.5em;
+      }
+    }
+  }
+
   .chapter {
     margin-left: 2em;
     margin-bottom: 3em;

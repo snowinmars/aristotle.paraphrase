@@ -35,3 +35,4 @@ export ariphNgxHttpHostPorts=443
 export ariphNgxHttpContainerPorts=443
 export ariphNgx="$ariphDockerName/ariph-ngx"
 export ariphLetsencryptHref=""
+# export ariphLetsencryptPassword="" # do not set password here, use `LPWD=password ./scripts/build` syntax

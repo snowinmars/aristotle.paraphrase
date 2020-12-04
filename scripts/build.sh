@@ -16,7 +16,7 @@ docker build \
 		--file $src/latex/Dockerfile \
 		$src/latex
 
-echo && echo "be"
+echo && echo "be (using prebuilded latex pdfs)"
 
 docker build \
 		-t $ariphBe \
@@ -35,12 +35,11 @@ docker build \
 
 echo && echo "ngx"
 
-LETSENCRYPT_HREF="https://ya.ru"
-# LETSENCRYPT_PASSWORD= # do not set password here, use `LETSENCRYPT_PASSWORD=password ./scripts/build` syntax
+# LETSENCRYPT_PASSWORD= # do not set password here, use `LPWD=password ./scripts/build` syntax
 
 docker build \
 		-t $ariphNgx \
-		--build-arg LETSENCRYPT_HREF=$LETSENCRYPT_HREF \
-		--build-arg LETSENCRYPT_PASSWORD=$LETSENCRYPT_PASSWORD \
+		--build-arg LETSENCRYPT_HREF=$ariphLetsencryptHref \
+		--build-arg LETSENCRYPT_PASSWORD=$LPWD \
 		--file $src/ngx/Dockerfile \
 		$src/ngx

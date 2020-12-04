@@ -5,6 +5,7 @@
 
 set -e
 cd "${0%/*}" # cd to the current dir
+. ../../scripts/variables.sh
 
 # there could be not enough permissions due to docker recompiling
 rm -rf `find . -name *.pdf`
@@ -13,10 +14,12 @@ texTotal=$(find ~+ -name *.tex | wc -l)
 
 #
 
+imageName=$ariphTex
+
 echo "Starting latex tectonic container..."
 docker run --rm -d \
         -v ~+:/data \
-        snowinmars/latex \
+        $imageName \
         bash -c "while true; do continue ; done"
 imageId=$( docker ps | grep $imageName | awk '{print $1;}' )
 
@@ -45,8 +48,6 @@ texCount=$(find . -name *.tex | wc -l)
 pdfCount=$(find . -name *.pdf | wc -l)
 
 # stop all latex containers due to its' idling consume a lot of resources
-
-imageName="snowinmars/latex"
 
 ids=$(docker ps | grep $imageName | awk '{print $1;}')
 total=$(docker ps | grep $imageName | wc -l)

@@ -28,18 +28,11 @@ be_id=$( docker run -d \
 		-e LATEXDIR=/app/src/latex \
 		$ariphBe )
 
-REACT_APP_HOST=$ariphNgxIp
-if [[ $ariphIsProduction ]]; then
-	echo "Requesting $productionHost"
-	REACT_APP_HOST=$productionHost
-fi
-
 fe_id=$( docker run -d \
 		-p $ariphFeHostPort:$ariphFeContainerPort \
 		--net $ariphNetworkName \
 		--ip $ariphFeIp \
 		-v $ariphLogsVolumeName:/var/log/nginx/logs \
-		-e REACT_APP_HOST=$REACT_APP_HOST \
 		$ariphFe )
 
 ngx_id=$( docker run -d \
