@@ -66,7 +66,7 @@ function Status(): JSX.Element {
       .then((res) => res.json())
       .then((result) => setGitInfo(result),
         (error) => console.log(error));
-  });
+  }, []);
 
   const lastChangeBlock = getLastChangeBlock(gitInfo);
 

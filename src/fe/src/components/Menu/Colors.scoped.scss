@@ -11,4 +11,8 @@
   .active {
     background-color: var(--bgSlave);
   }
+
+  .MuiButtonGroup-groupedOutlinedPrimary:hover {
+    border-color: var(--fgSlave);
+  }
 }

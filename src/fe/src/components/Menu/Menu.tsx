@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {Button, ButtonGroup} from '@material-ui/core';
 import './Menu.scoped.scss';
 import './Colors.scoped.scss';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 function Menu(): JSX.Element {
   const location = useLocation();
@@ -19,6 +20,9 @@ function Menu(): JSX.Element {
         {buildButton('/books', 'Книги')}
         {buildButton('/status', 'Статус')}
         {buildButton('/downloads', 'Скачать')}
+        <Button size="small">
+          <SettingsIcon />
+        </Button>
       </ButtonGroup>
     </div>
   );

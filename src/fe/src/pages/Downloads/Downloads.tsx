@@ -10,6 +10,7 @@ const renderListItem = (title: string, url: string | null = null) => {
 
     <Button
       disabled={url===null}
+      className={'ariph-download'}
       href={url ? `${url}/tex` : ''}
     >
       <i className="material-icons">download</i>
@@ -22,6 +23,7 @@ const renderListItem = (title: string, url: string | null = null) => {
 
     <Button
       disabled={url===null}
+      className={'ariph-download'}
       href={url ? `${url}/pdf` : ''}
     >
       <i className="material-icons">download</i>

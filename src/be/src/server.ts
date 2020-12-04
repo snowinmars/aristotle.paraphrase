@@ -3,18 +3,24 @@ import * as bodyParser from 'body-parser';
 import cors from 'cors';
 import os from 'os';
 import fs from 'fs';
+import * as config from "./config";
+
+fs.access(config.default.latexDir, (err) => {
+  if (err) throw new Error(`latex dir ${config.default.latexDir} not found\n    ${err}`);
+  if (!err) console.log(`Using ${config.default.latexDir} latex directory`)
+})
 
 const app = express();
 const port = process.env.PORT || 5002;
 
-// suka
+// m$ can't write enums
 enum types {
   origin_rus = 'origin_rus',
   origin_eng = 'origin_eng',
   paraphrase = 'paraphrase',
 }
 
-// da suka
+// m$ can't write enums
 enum extensions {
   pdf = 'pdf',
   tex = 'tex',
@@ -40,8 +46,7 @@ app.get('/api/:bookId/:type/:extension', (req, res) => {
   // @ts-ignore i hate u
   const extension = extensions[extensionString] as string;
 
-  let path = `../latex/${type}/b${bookId}/b${bookId}`;
-  console.log(path);
+  let path = `${config.default.latexDir}/${type}/b${bookId}/b${bookId}`;
 
   switch (extension) {
     case extensions.pdf: {

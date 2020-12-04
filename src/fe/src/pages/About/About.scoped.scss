@@ -32,8 +32,24 @@
   }
 
   .contacts {
-    >* {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .material-icons {
+      margin-right: 1em;
+
+      transition: transform 0.8s;
+
+      &:hover {
+        transform: rotateY(180deg);
+        transform-style: preserve-3d;
+      }
+    }
+
+    >div {
       margin-bottom: 1em;
+      width: 100%;
     }
   }
 }

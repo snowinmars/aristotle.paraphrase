@@ -11,22 +11,6 @@ rm -rf `find . -name *.pdf`
 
 texTotal=$(find ~+ -name *.tex | wc -l)
 
-# stop all
-
-imageName="snowinmars/latex"
-
-ids=$(docker ps | grep $imageName | awk '{print $1;}')
-total=$(docker ps | grep $imageName | wc -l)
-
-count=1
-echo "Stopping $total containers..."
-
-for id in ${ids}; do
-	printf "%-2s / %-2s %-8s is gone" $count $total $(docker stop $id)
-    ((count++))
-    echo
-done
-
 #
 
 echo "Starting latex tectonic container..."
@@ -59,5 +43,21 @@ find . -name *.log -delete
 
 texCount=$(find . -name *.tex | wc -l)
 pdfCount=$(find . -name *.pdf | wc -l)
+
+# stop all latex containers due to its' idling consume a lot of resources
+
+imageName="snowinmars/latex"
+
+ids=$(docker ps | grep $imageName | awk '{print $1;}')
+total=$(docker ps | grep $imageName | wc -l)
+
+count=1
+echo "Stopping $total containers..."
+
+for id in ${ids}; do
+	printf "%-2s / %-2s %-8s is gone" $count $total $(docker stop $id)
+    ((count++))
+    echo
+done
 
 echo There are $texCount tex files and $pdfCount pdf files

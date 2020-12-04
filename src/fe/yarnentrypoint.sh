@@ -2,7 +2,7 @@ set -ue
 
 cd scripts
 touch .env.gen && rm -f .env.gen
-echo "REACT_APP_HOST=lug.ru" >> .env.gen
+echo "REACT_APP_HOST=http://localhost:5002" >> .env.gen
 
 chmod +x build-env.sh
 

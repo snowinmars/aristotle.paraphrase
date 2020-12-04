@@ -25,8 +25,9 @@ FROM nginx
 WORKDIR /app
 
 ARG REACT_GIT_HASH=
+ARG REACT_APP_HOST=
 ENV REACT_GIT_HASH=$REACT_GIT_HASH
-ENV REACT_APP_HOST=
+ENV REACT_APP_HOST=$REACT_APP_HOST
 
 RUN mkdir -p /var/log/nginx/logs
 COPY --from=build /app/build /usr/share/nginx/html

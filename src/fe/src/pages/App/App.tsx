@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.scoped.scss';
 import {BrowserRouter, Link, Route, Switch} from 'react-router-dom';
-import Menu from '../Menu/Menu';
 import * as Scroll from 'react-scroll';
 import Status from '../Status/Status';
 import Downloads from '../Downloads/Downloads';
@@ -9,6 +8,7 @@ import Book from '../Book/Book';
 import About from '../About/About';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '../../components/Menu/Menu';
 
 function App(): JSX.Element {
   return (

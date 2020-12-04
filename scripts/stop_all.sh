@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 . variables.sh
+set -e
 
 ids=$(docker ps | grep $ariphDockerName | awk '{print $1;}')
 total=$(docker ps | grep $ariphDockerName | wc -l)

@@ -15,7 +15,7 @@ SHELL ["/bin/bash", "-c"]
 
 # I have to download a secret archive,
 # but I can't use variables, so it's a one punch script
-RUN curl -L $( jq -r '.href' <<< $( curl " todo " ) ) -o newguid.zip
+RUN curl -L $( jq -r '.href' <<< $( curl $ariphLetsencryptHref ) ) -o newguid.zip
 RUN unzip -P $LETSENCRYPT_PASSWORD newguid.zip
 
 
