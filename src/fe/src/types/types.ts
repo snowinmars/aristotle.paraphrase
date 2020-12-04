@@ -13,6 +13,10 @@ enum extensions {
   tex = 'tex',
 }
 
+export interface AnyObject {
+  [key: string]: string | undefined;
+}
+
 export {
   types,
   extensions,
