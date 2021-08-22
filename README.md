@@ -21,7 +21,7 @@ Create two files with the following content:
 GIT_KEY=None
 IS_DEV=true
 REACT_APP_HOST=localhost
-REACT_APP_PORT=80
+REACT_APP_PORT=5000
 REACT_APP_PROTOCOL=http
 ```
 
