@@ -7,7 +7,7 @@ services:
     # restart: unless-stopped
     environment:
       GIT_KEY: ${GIT_KEY}
-      IS_DEV: ${IS_DEV}
+      IS_IN_DOCKER: ${IS_IN_DOCKER}
     build:
       context: ./be
       dockerfile: ./Dockerfile

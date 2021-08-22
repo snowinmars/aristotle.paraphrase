@@ -19,7 +19,7 @@ Create two files with the following content:
 
 ```
 GIT_KEY=None
-IS_DEV=true
+IS_IN_DOCKER=false
 REACT_APP_HOST=localhost
 REACT_APP_PORT=5000
 REACT_APP_PROTOCOL=http
@@ -27,15 +27,21 @@ REACT_APP_PROTOCOL=http
 
 ### Production config:
 
-Your github personal access token should have push access to [data repository](https://github.com/snowinmars/aristotle.paraphrase.data),
-
 ```
 GIT_KEY= # github personal access token
-IS_DEV=false
+IS_IN_DOCKER=true
 REACT_APP_HOST=ariphrase.ru
 REACT_APP_PORT=443
 REACT_APP_PROTOCOL=https
 ```
+
+### Variables explanation
+
+- `GIT_KEY` - your github personal access token, that should have push access to [data repository](https://github.com/snowinmars/aristotle.paraphrase.data)
+- `IS_IN_DOCKER` - you can't test git data editor if you start be server outside of docker. The root of this issue is security: to test this flow, you should inject your `GIT_KEY` in git submodule origin url, and the git submodule sometimes will not understand what you want. Idk how to fix it right now.
+- `REACT_APP_HOST` - a browser will send requests to this backend host
+- `REACT_APP_PORT` - a browser will send requests to this backend port
+- `REACT_APP_PROTOCOL` - a browser will send requests with this backend protocol 
 
 ## Run with docker
 

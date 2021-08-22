@@ -7,7 +7,7 @@ import pino from 'pino';
 
 // todo [snow]: wtf is wrong with imports
 console.log(process.env)
-const isDev = process.env.IS_DEV?.toLowerCase() === 'true';
+const isInDocker = process.env.IS_IN_DOCKER?.toLowerCase() === 'true';
 const gitKey = process.env.GIT_KEY;
 
 const logger = pino({
@@ -17,7 +17,7 @@ const logger = pino({
 const booksRoot = resolve('./src/data/');
 logger.info('Root is %s', booksRoot);
 
-logger.info('Running as %s', isDev ? 'dev' : 'prod');
+logger.info('Running %s', isInDocker ? 'in docker' : 'out of docker');
 
 const getFilename = (header: ParagraphHeader): string => {
     switch (header) {
@@ -53,7 +53,7 @@ export const push = ({bookId, chapterId, paragraphId, header, text} : {
 }
 
 const git = (command: string, errorAsWarning = false): void => {
-    if (isDev) {
+    if (!isInDocker) {
         logger.warn('Skipping git due to local env')
         return;
     }
@@ -256,7 +256,7 @@ const toParagraph = (bookId: number, chapterId: number, paragraphId: number, fil
     };
 };
 
-if (!isDev) {
+if (isInDocker) {
     git(`config --global user.email "snowinmars@yandex.ru"`);
     git(`config --global user.name "snowinmars"`);
     git(`remote set-url origin https://snowinmars:${gitKey}@github.com/snowinmars/aristotle.paraphrase.data`)
