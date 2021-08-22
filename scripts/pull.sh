@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-. variables.sh
 set -e
 
-docker pull $ariphNgx
-docker pull $ariphFe
-docker pull $ariphBe
+docker pull snowinmars/prf-fe
+docker pull snowinmars/prf-be
+docker pull snowinmars/prf-ngx

@@ -1,0 +1,79 @@
+@import '../../../theme';
+
+$op: 0.1;
+
+.prf-control-input {
+  display: none;
+
+  &:checked+.prf-control-label {
+    background-color: rgba(lighten($component-active-bg, 10%), $op);
+  }
+}
+
+.prf-control-label {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.1em 0;
+
+  user-select: none; // double click will switch all paragraphs to current label
+}
+
+.prf-control-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+  .prf-control {
+    padding-right: 0;
+  }
+  .prf-control-list-item {
+    width: 100%;
+  }
+}
+@media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+  .prf-control-list-item {
+    width: 33%;
+  }
+}
+
+.prf-control-list-item {
+  background-color: rgba($component-active-bg, 0.1);
+  color: $component-active-color, 0.1;
+
+  &:hover {
+    background-color: rgba($component-active-bg, $op * 2);
+  }
+
+  cursor: pointer;
+
+  $radius: 5px;
+  &:nth-child(1) {
+    border-top-left-radius: $radius;
+    border-bottom-left-radius: $radius;
+    label {
+      border-top-left-radius: $radius;
+      border-bottom-left-radius: $radius;
+    }
+
+    border-right: 1px solid black;
+  }
+
+  &:nth-last-child(1) {
+    border-top-right-radius: $radius;
+    border-bottom-right-radius: $radius;
+    label {
+      border-top-right-radius: $radius;
+      border-bottom-right-radius: $radius;
+    }
+
+    border-left: 1px solid black;
+  }
+}

@@ -1,10 +1,37 @@
-export enum types {
-  origin_rus = 'origin_rus',
-  origin_eng = 'origin_eng',
-  paraphrase = 'paraphrase',
+﻿export const enum ParagraphHeader {
+    paraphrase = 'paraphrase',
+    paraphraseNotes = 'paraphraseNotes',
+    qBitSky = 'qBitSky',
+    qBitSkyNotes = 'qBitSkyNotes',
+    ross = 'ross',
+    rossNotes = 'rossNotes',
 }
 
-export enum extensions {
-  pdf = 'pdf',
-  tex = 'tex',
+type Common = {
+    id: number;
+    key: string;
+}
+
+export type Book = Common & {
+    headers: ParagraphHeader[];
+    chapters: Chapter[];
+}
+
+export type Chapter = Common & {
+    paragraphs: Paragraph[];
+    qBitSkyEpigraph: string;
+    rossEpigraph: string;
+}
+
+export type Paragraph = Common & {
+    text: MultiText;
+}
+
+export type MultiText = {
+    paraphrase: string;
+    paraphraseNotes: string;
+    qBitSky: string;
+    qBitSkyNotes: string;
+    ross: string;
+    rossNotes: string;
 }

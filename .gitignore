@@ -71,3 +71,7 @@ yarn-error.log*
 src/fe/env-config.js
 *.gen
 **/mochawesome-report/*
+
+**/.env
+
+src/crt/letsencrypt/live/ariphrase.ru/*

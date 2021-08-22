@@ -1,0 +1,57 @@
+﻿@import '../../theme';
+
+.prf-loader {
+  $size: 80px;
+  $width: 4px;
+  $color: $secondary;
+  $cycle: 0.5s;
+
+  background-color: rgba(30,30,30,0.2);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: $size;
+    height: $size;
+  }
+
+  .lds-ripple div {
+    position: absolute;
+    border: $width solid $color;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple $cycle cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+
+  .lds-ripple div:nth-child(2) {
+    animation-delay: (calc(#{$cycle} / 2));
+  }
+
+  @keyframes lds-ripple {
+    0% {
+      top: calc(#{$size} / 2);
+      left: calc(#{$size} / 2);
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+
+    100% {
+      top: 0;
+      left: 0;
+      width: $size;
+      height: $size;
+      opacity: 0;
+    }
+  }
+}

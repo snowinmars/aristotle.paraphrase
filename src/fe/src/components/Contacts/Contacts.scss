@@ -1,0 +1,21 @@
+@import '../../theme';
+
+.prf-contacts {
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin: 1em 0;
+    }
+  }
+
+  svg {
+    margin: 0 1em;
+
+    &:hover {
+      color: $secondary;
+      cursor: pointer;
+    }
+  }
+}

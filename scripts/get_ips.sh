@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-. variables.sh
 set -e
 
-ids=$(docker ps | grep $ariphDockerName | awk '{print $1;}')
+ids=$(docker ps | grep src | awk '{print $1;}')
 echo
 
 for id in ${ids}; do

@@ -1,56 +1,50 @@
-import React from 'react';
-import {useLocation} from 'react-router-dom';
-import {Button, ButtonGroup} from '@material-ui/core';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Popover from '@material-ui/core/Popover';
-import './Menu.scoped.scss';
-import './Colors.scoped.scss';
-import ColorSettings from '../ColorSettings/ColorSettings';
+import React, { FunctionComponent } from 'react';
+import './Menu.scss';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Container from 'react-bootstrap/Container';
+import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
+import {Github} from "react-bootstrap-icons";
 
-function Menu(): JSX.Element {
-  const location = useLocation();
-  const [anchor, setAnchor] = React.useState<HTMLButtonElement | null>(null);
-  const open = Boolean(anchor);
-  const id = open ? 'simple-popover' : undefined;
+const getActiveKey = (pathname: string): string => {
+  // '/' to '/'
+  // '/other/another' to '/other/'
 
-  const buildButton = (href: string, title: string) => {
-    return <Button href={href}
-      className={location.pathname === href ? 'active' : ''}>{title}</Button>;
-  };
+  if (pathname === '/') return pathname;
+
+  return `/${pathname.split('/')[1]}/`;
+};
+
+const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps): JSX.Element => {
+  const { location } = props;
+  const activeKey = getActiveKey(location.pathname);
 
   return (
-    <div className={'menu'}>
-      <ButtonGroup color="primary" aria-label="outlined primary button group">
-        {buildButton('/', 'О проекте')}
-        {buildButton('/books', 'Книги')}
-        {buildButton('/status', 'Статус')}
-        {buildButton('/downloads', 'Скачать')}
-        <Button
-          size="small"
-          onClick={(e: React.MouseEvent<HTMLButtonElement>) => setAnchor(e.currentTarget)}
-        >
-          <SettingsIcon />
-        </Button>
-
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchor}
-          onClose={() => setAnchor(null)}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-        >
-          <ColorSettings />
-        </Popover>
-      </ButtonGroup>
-    </div>
+    <Container>
+    <Navbar className="prf-menu" expand="md">
+      <Navbar.Brand as={NavLink} to={'/'}>Prf - β</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse className={'prf-nav'} id="basic-navbar-nav">
+        <Nav className="mr-auto">
+          <Nav.Link className={"prf-github"} href={'https://github.com/snowinmars/aristotle.paraphrase'}><Github /></Nav.Link>
+          <Nav.Link as={NavLink} to={'/'} isActive={() => activeKey === '/'}>О проекте</Nav.Link>
+          <NavDropdown active={activeKey === '/books/'} title="Книги" id="basic-nav-dropdown">
+            <NavDropdown.Item as={NavLink} to="/books/">Список</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={NavLink} to="/books/1">Метафизика, 1</NavDropdown.Item>
+          </NavDropdown>
+          <Nav.Link as={NavLink} isActive={() => activeKey === '/contacts/'} to="/contacts/">Контакты</Nav.Link>
+        </Nav>
+        <Form inline>
+          <FormControl type="text" placeholder="TBD" disabled className="mr-sm-2" />
+        </Form>
+      </Navbar.Collapse>
+    </Navbar>
+    </Container>
   );
-}
+};
 
-export default Menu;
+export default withRouter(Menu);

@@ -1,2 +1,2 @@
-build/*
-scripts/*
+src/server/latex/*
+src/react-app-env.d.ts

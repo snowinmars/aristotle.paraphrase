@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  be:
+    container_name: prf-be
+    image: snowinmars/prf-be
+    # restart: unless-stopped
+    environment:
+      GIT_KEY: ${GIT_KEY}
+      IS_DEV: ${IS_DEV}
+    build:
+      context: ./be
+      dockerfile: ./Dockerfile
+    ports:
+      - '5000:5000'
+    networks:
+      prf-network:
+        ipv4_address: 172.20.0.21
+
+  fe:
+    container_name: prf-fe
+    image: snowinmars/prf-fe
+    # restart: unless-stopped
+    build:
+      context: ./fe
+      dockerfile: ./Dockerfile
+      args:
+        REACT_GIT_HASH: 'unknown'
+        REACT_APP_HOST: ${REACT_APP_HOST}
+        REACT_APP_PORT: ${REACT_APP_PORT}
+        REACT_APP_PROTOCOL: ${REACT_APP_PROTOCOL}
+    ports:
+      - '3000:3000'
+    networks:
+      prf-network:
+          ipv4_address: 172.20.0.22
+
+  ngx:
+    container_name: prf-ngx
+    image: snowinmars/prf-ngx
+    # restart: unless-stopped
+    build:
+      context: ./ngx
+      dockerfile: ./Dockerfile
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./ngx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./ngx/acme-challenge:/var/www/html/acme-challenge
+      - ./crt/letsencrypt:/etc/letsencrypt
+    networks:
+      prf-network:
+        ipv4_address: 172.20.0.23
+
+networks:
+  prf-network:
+    name: prf-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

@@ -1,62 +1,73 @@
-# Ariph
+## About
 
-## How to run
+This is an Aristotle paraphrase project: https://ariphrase.ru
 
-1. Install and run docker.
+See [data submodule](https://github.com/snowinmars/aristotle.paraphrase.data) for texts itself.
 
-1. Run the database using following. If you use Windows, run scripts from `/scripts/win` folder.
+## Tech stack
 
-```bash
-cd /scripts
+React + redux toolkit, node express
 
-chmod +x *.sh
+## Prerequirements
+Create two files with the following content:
 
-./stop_all.sh
+- `src/.env`
+- `src/be/.env`
+- `src/fe/.env`
 
-# The following line will return error kinda 'LETSENCRYPT_PASSWORD is not defined'. That's fine
-# It means that nginx proxy container could not be builded, but you don't need it to run the system locally
-./build.sh
+### Developer config:
 
-# This will successfully run only 'ariph/db' and 'ariph/ntf' containers.
-# That's fine for now
-./run.sh
-./get_ips.sh # optional
 ```
-### Volumes
+GIT_KEY=None
+IS_DEV=true
+REACT_APP_HOST=localhost
+REACT_APP_PORT=80
+REACT_APP_PROTOCOL=http
+```
 
-All volumes mount in `/home/${USER}/ariph/` of the host
+### Production config:
 
-- `ariphpsql` - psql volume. You will not have access to this folder - that's ok.
-- `ariphlogs` - logs from all containers.
+Your github personal access token should have push access to [data repository](https://github.com/snowinmars/aristotle.paraphrase.data),
 
-### Network
-- `ariph`
-	Set ips and ports in `scripts/variables.sh`.
+```
+GIT_KEY= # github personal access token
+IS_DEV=false
+REACT_APP_HOST=ariphrase.ru
+REACT_APP_PORT=443
+REACT_APP_PROTOCOL=https
+```
 
-### Backend container
+## Run with docker
 
-Logs could be finded in `ariphlogs` docker volume with `backend` prefix.
+1. `cd src`
+1. `docker-compose build`
+1. `docker-compose up`
 
-### Frontend container
+Pull/push with `/scripts`.
 
-Nginx serves frontend. It's impossible to pass `REACT_APP_` env vars into nginx directly, so I made a workaround `/src/fe/build-env.sh`. It generates `.env.gen` file with required variables and inject it as js global object into `Index.html` head tag.
+## Run without docker
 
-This file should exists both remote and locally, so the system uses
-- `dockerentrypoint.sh` to start as remote service
-- `yarnentrypoint.sh` to start locally
+Clone this repo with `/src/be/src/data` submodule
 
-Frontend could be binded to docker backend container ip or to production host ip. Is depends on `IS_PROD` env variable:
-- `./run_ariph.sh` - bind with docker
-- `IS_PROD=1 ./run_ariph.sh` - bind with production
+### be
+1. `cd src/be`
+1. `yarn`
+1. `echo -e "GIT_KEY=None\nIS_DEV=true" > .env`
+1. `yarn start`
 
-Logs could be finded in `ariphlogs` docker volume with `frontend` prefix.
+Using a developer build, you will not be able to push changes elsewhere: all git functions will be mocked.
 
-### Nginx container
+### fe
+1. `cd src/fe`
+1. `yarn`
+1. `yarn start`
 
-This is only container that should be public availabe. Its ip should be binded to domain.
+## Dev
 
-`/src/ngx/proxy.conf.template` file will be builded using `dockerentrypoint.sh`.
+### Create new empty chapter
+1. `cd src/be`
+2. `yarn chapter 1 2 3` , where `1` is book id, `2` is chapter id and `3` is paragraphs count (f.e., from 1 to 3 included). Existing files will be touched, unexisting files will be created as empty.
 
-During docker build flow it downloads a file with certbot ssh keys. It could fails, that's fine. If no local image was found, docker will pull working image from docker hub.
-
-Logs could be finded in `ariphlogs` docker volume with `main_nginx` prefix.
+### Wikificate
+1. `cd src/be`
+2. `yarn wiki` will apply common russian text rules

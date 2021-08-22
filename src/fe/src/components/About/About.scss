@@ -1,0 +1,60 @@
+@import '../../theme';
+
+div.prf-about {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.prf-about {
+  .card-header {
+    cursor: pointer;
+
+    &:hover {
+      color: lighten($secondary, 10%);
+    }
+  }
+
+  .prf-open {
+    color: $secondary;
+  }
+
+  .prf-ul {
+    list-style: none;
+    margin: 0 2em;
+    padding: 0;
+  }
+
+
+  .prf-qna {
+    .prf-qna-item {
+      margin: 1em 0;
+
+      .prf-question {
+        font-size: 120%;
+        margin-bottom: 0.5em;
+      }
+
+      .prf-answer {
+        margin-left: 2em;
+      }
+
+      .prf-question-mark,
+      .prf-answer-mark {
+        margin-right: 1em;
+        vertical-align: text-bottom;
+      }
+
+      .prf-question-mark {
+        color: $primary;
+      }
+
+      .prf-answer-mark {
+        color: $secondary;
+      }
+    }
+  }
+
+  .prf-ol-translations {
+    margin-left: 2em;
+  }
+}

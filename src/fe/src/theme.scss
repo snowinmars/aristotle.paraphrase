@@ -1,0 +1,23 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+
+$body-bg: $gray-700;
+$body-color: $gray-500;
+
+$component-active-bg: $gray-500;
+$component-active-color: $gray-700;
+
+$primary: $cyan-200;
+$secondary: $orange-500;
+$danger: $danger;
+
+$card-bg: mix($gray-700, $yellow-200, 95%);
+$card-color: $gray-400;
+$card-cap-padding-y: 2px;
+$card-cap-padding-x: 2px;
+
+$link-color: $cyan-200;
+$link-hover-color: $cyan-600;
+
+
+@import "~bootstrap/scss/bootstrap";

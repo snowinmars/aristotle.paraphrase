@@ -1,0 +1,29 @@
+@import '../../theme';
+
+.prf-paragraph {
+  margin: 2em 0;
+
+  .prf-butterfly-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .prf-notes-arrow {
+    width: 100%;
+    text-align: center;
+  }
+
+  .prf-paragraph-index {
+    margin-right: 1em;
+  }
+
+  .a {
+    background-color: $component-active-bg;
+    color: $component-active-color;
+  }
+
+  .prf-notes-link {
+    color: $secondary;
+  }
+}

@@ -7,7 +7,7 @@ touch ./env-config.js.gen
 
 touch .env.gen # created in Dockerfine build flow
 
-# Add assignment 
+# Add assignment
 echo "window._env_ = {" >> ./env-config.js.gen
 
 # Read each line in .env file
@@ -24,7 +24,7 @@ do
   value=$(printf '%s\n' "${!varname}")
   # Otherwise use value from .env file
   [[ -z $value ]] && value=${varvalue}
-  
+
   # Append configuration property to JS file
   echo "  $varname: \"$value\"," >> ./env-config.js.gen
 done < .env.gen

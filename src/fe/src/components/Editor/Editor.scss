@@ -1,0 +1,21 @@
+﻿@import '../../theme';
+
+.prf-editor-pencil {
+  color: $primary;
+
+  margin-right: 1em;
+
+  cursor: pointer;
+
+  &:hover {
+    color: $secondary;
+  }
+}
+
+.prf-editor-validation-text {
+  color: $danger;
+}
+
+.prf-loader-wrapper {
+  position: relative;
+}

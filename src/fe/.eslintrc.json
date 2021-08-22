@@ -1,60 +1,35 @@
 {
     "env": {
         "browser": true,
-        "es6": true,
-        "es2020": true
+        "es2021": true
     },
-    "ignorePatterns": [
-        "src/serviceWorker.ts"
-    ],
     "extends": [
-        "plugin:react/recommended",
-        "google",
         "eslint:recommended",
-        "plugin:promise/recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
-    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 2020,
-        "project": "tsconfig.json",
-        "tsconfigRootDir": ".",
+        "ecmaVersion": 12,
         "sourceType": "module"
     },
     "plugins": [
-        "babel",
         "react",
-        "promise",
         "@typescript-eslint"
     ],
     "rules": {
-        "indent": [
-            "warn",
-            2
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "camelcase": "off",
-        "no-debugger": "off",
-        "require-jsdoc": "off",
-        "no-invalid-this": 0,
-        "babel/no-invalid-this": 1,
-        "max-len": "off"
+        "max-len": "off",
+        "no-plusplus": "off",
+        "no-use-before-define": "off",
+        "react/prop-types": "off",
+        "semi": [ "warn", "always" ],
+        "no-console": "warn",
+        "default-case": "error",
+        "default-case-last": "error",
+        "no-var": "error",
+        "prefer-const": "warn"
     }
 }

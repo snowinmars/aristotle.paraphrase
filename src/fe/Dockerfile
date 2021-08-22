@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS packagecache
+﻿FROM node:lts-alpine AS packagecache
 WORKDIR /app
 
 COPY package.json .
@@ -11,8 +11,8 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY . .
 COPY --from=packagecache /app/node_modules /app/node_modules
+COPY . .
 RUN yarn run build --modern --production
 
 RUN cp scripts/build-env.sh build/build-env.sh
@@ -24,18 +24,20 @@ RUN chmod +x build/dockerentrypoint.sh
 FROM nginx
 WORKDIR /app
 
-ARG REACT_GIT_HASH=
-ARG REACT_APP_HOST=
-ENV REACT_GIT_HASH=$REACT_GIT_HASH
-ENV REACT_APP_HOST=$REACT_APP_HOST
+ARG REACT_GIT_HASH
+ARG REACT_APP_HOST
+ARG REACT_APP_PORT
+ARG REACT_APP_PROTOCOL
 
 RUN mkdir -p /var/log/nginx/logs
 COPY --from=build /app/build /usr/share/nginx/html
 COPY *.conf /etc/nginx/conf.d/
 RUN touch .env.gen && rm -f .env.gen
 # will be used in build-env.sh
-RUN echo "REACT_APP_HOST=$REACT_APP_HOST" >> /usr/share/nginx/html/.env.gen
 RUN echo "REACT_GIT_HASH=$REACT_GIT_HASH" >> /usr/share/nginx/html/.env.gen
+RUN echo "REACT_APP_HOST=$REACT_APP_HOST" >> /usr/share/nginx/html/.env.gen
+RUN echo "REACT_APP_PORT=$REACT_APP_PORT" >> /usr/share/nginx/html/.env.gen
+RUN echo "REACT_APP_PROTOCOL=$REACT_APP_PROTOCOL" >> /usr/share/nginx/html/.env.gen
 
 EXPOSE 3000
 CMD [ "/usr/share/nginx/html/dockerentrypoint.sh" ]
