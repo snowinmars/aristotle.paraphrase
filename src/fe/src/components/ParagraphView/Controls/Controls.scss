@@ -45,11 +45,11 @@ $op: 0.1;
 }
 
 .prf-control-list-item {
-  background-color: rgba($component-active-bg, 0.1);
-  color: $component-active-color, 0.1;
+  background-color: rgba(var(--bs-component-active-bg), 0.1);
+  color: var(--bs-component-active-color), 0.1;
 
   &:hover {
-    background-color: rgba($component-active-bg, $op * 2);
+    background-color: rgba(var(--bs-component-active-bg), $op * 2);
   }
 
   cursor: pointer;

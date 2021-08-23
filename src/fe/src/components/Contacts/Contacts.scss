@@ -14,7 +14,7 @@
     margin: 0 1em;
 
     &:hover {
-      color: $secondary;
+      color: var(--bs-secondary);
       cursor: pointer;
     }
   }

@@ -1,19 +1,19 @@
 ﻿@import '../../theme';
 
 .prf-editor-pencil {
-  color: $primary;
+  color: var(--bs-primary);
 
   margin-right: 1em;
 
   cursor: pointer;
 
   &:hover {
-    color: $secondary;
+    color: var(--bs-secondary);
   }
 }
 
 .prf-editor-validation-text {
-  color: $danger;
+  color: var(--bs-danger);
 }
 
 .prf-loader-wrapper {
@@ -21,13 +21,13 @@
 
   .prf-editor,
   .prf-editor:focus {
-    color: $body-color;
-    background-color: lighten($body-bg, 5%);
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
     border: none;
   }
 
   .prf-editor:focus {
-    box-shadow: 0 0 0 1px lighten($body-bg, 10%);
+    box-shadow: 0 0 0 1px var(--bs-body-bg);
   }
 
   .prf-editor-control-group {

@@ -3,7 +3,7 @@
 .prf-loader {
   $size: 80px;
   $width: 4px;
-  $color: $secondary;
+  $color: var(--bs-secondary);
   $cycle: 0.5s;
 
   background-color: rgba(30,30,30,0.2);

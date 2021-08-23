@@ -9,7 +9,6 @@ $component-active-color: $gray-700;
 
 $primary: $cyan-200;
 $secondary: $orange-500;
-$danger: $danger;
 
 $card-bg: mix($gray-700, $yellow-200, 95%);
 $card-color: $gray-400;
@@ -19,5 +18,17 @@ $card-cap-padding-x: 2px;
 $link-color: $cyan-200;
 $link-hover-color: $cyan-600;
 
-
 @import "~bootstrap/scss/bootstrap";
+
+:root {
+  --#{$variable-prefix}primary: #{$primary};
+  --#{$variable-prefix}secondary: #{$secondary};
+
+  --#{$variable-prefix}component-active-bg: #{$component-active-bg};
+  --#{$variable-prefix}component-active-color: #{$component-active-color};
+
+  --#{$variable-prefix}card-bg: #{$card-bg};
+  --#{$variable-prefix}card-color: #{$card-color};
+  --#{$variable-prefix}link-color: #{$link-color};
+  --#{$variable-prefix}link-hover-color: #{$link-hover-color};
+}

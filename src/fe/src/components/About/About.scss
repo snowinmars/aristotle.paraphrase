@@ -6,20 +6,27 @@ div.prf-about {
 }
 
 .prf-about {
+  .card {
+    .card-body {
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
+    }
+  }
+
   .accordion {
     .accordion-item {
-      color: $body-color;
-      background-color: $body-bg;
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
     }
 
     .accordion-button:not(.collapsed) {
-      color: $secondary;
-      background-color: $card-bg;
+      color: var(--bs-secondary);
+      background-color: var(--bs-card-bg);
     }
 
     .accordion-button.collapsed {
-      color: $body-color;
-      background-color: $card-bg;
+      color: var(--bs-body-color);
+      background-color: var(--bs-card-bg);
     }
   }
 
@@ -50,11 +57,11 @@ div.prf-about {
       }
 
       .prf-question-mark {
-        color: $primary;
+        color: var(--bs-primary);
       }
 
       .prf-answer-mark {
-        color: $secondary;
+        color: var(--bs-secondary);
       }
     }
   }

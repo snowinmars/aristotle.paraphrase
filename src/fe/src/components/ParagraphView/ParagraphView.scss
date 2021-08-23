@@ -5,20 +5,20 @@
 
   .accordion {
     .accordion-item {
-      color: $body-color;
-      background-color: $body-bg;
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
     }
 
     .accordion-button {
-      background-color: $card-bg;
+      background-color: var(--bs-card-bg);
     }
 
     .accordion-button:not(.collapsed) {
-      color: $secondary;
+      color: var(--bs-secondary);
     }
 
     .accordion-button.collapsed {
-      color: $body-color;
+      color: var(--bs-body-color);
     }
   }
 
@@ -38,11 +38,11 @@
   }
 
   .a {
-    background-color: $component-active-bg;
-    color: $component-active-color;
+    background-color: var(--bs-component-active-bg);
+    color: var(--bs-component-active-color);
   }
 
   .prf-notes-link {
-    color: $secondary;
+    color: var(--bs-secondary);
   }
 }
