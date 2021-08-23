@@ -37,6 +37,7 @@ files.map(filepath => {
             .replace(/([ ])'([^\u0000-\u007F]|\w)/g, '$1«$2')
             .replace(/([^\u0000-\u007F]|\w)"([.,;:!?) ])/g, '$1»$2')
             .replace(/([^\u0000-\u007F]|\w)'([.,;:!?) ])/g, '$1»$2')
+            .replace(/\n\n\n/g, '\n\n<br />\n\n')
         ;
 
         writeFile(filepath, result, 'utf8', err => {

@@ -66,8 +66,9 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
                 }}>
                     <Form.Group className={'prf-loader-wrapper'}>
                         <Form.Control
+                          className={'prf-editor'}
                             as="textarea"
-                            rows={7}
+                            rows={15}
                             value={dynamicText}
                             disabled={status === Status.loading}
                             onChange={(event) => {
@@ -88,7 +89,7 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
                                 <Loader />
                         }
 
-                        <ButtonGroup aria-label="Editor control group">
+                        <ButtonGroup className={'prf-editor-control-group'} aria-label="Editor control group">
                             <Button
                                 variant="danger"
                                 disabled={status === Status.loading}

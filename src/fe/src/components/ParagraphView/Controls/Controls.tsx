@@ -52,6 +52,7 @@ const renderControl = ({paragraphKey, blockType, title, paragraphHeaderId, selec
 const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKey, selectedTextId, parentChangeCallback }) => {
   const [selectedId, setSelectedId] = useState(selectedTextId);
   useEffect(() => setSelectedId(selectedTextId), [selectedTextId]);
+  const isNotes = [ ParagraphHeader.paraphraseNotes, ParagraphHeader.qBitSkyNotes, ParagraphHeader.rossNotes ].includes(selectedId);
 
   const onChange = (change: ControlChange) => {
     setSelectedId(change.paragraphHeaderId);
@@ -77,7 +78,7 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
         {
           renderControl({
             title: 'Парафраз',
-            paragraphHeaderId: ParagraphHeader.paraphrase,
+            paragraphHeaderId: isNotes ? ParagraphHeader.paraphraseNotes : ParagraphHeader.paraphrase,
             paragraphKey: paragraphKey,
             blockType: blockType,
             selectedId: selectedId,
@@ -89,7 +90,7 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
         {
           renderControl({
             title: 'Кубицкий',
-            paragraphHeaderId: ParagraphHeader.qBitSky,
+            paragraphHeaderId: isNotes ? ParagraphHeader.qBitSkyNotes : ParagraphHeader.qBitSky,
             paragraphKey: paragraphKey,
             blockType: blockType,
             selectedId: selectedId,
@@ -101,7 +102,7 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
         {
           renderControl({
             title: 'Ross',
-            paragraphHeaderId: ParagraphHeader.ross,
+            paragraphHeaderId: isNotes ? ParagraphHeader.rossNotes : ParagraphHeader.ross,
             paragraphKey: paragraphKey,
             blockType: blockType,
             selectedId: selectedId,

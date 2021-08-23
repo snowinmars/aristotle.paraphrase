@@ -58,7 +58,6 @@ Clone this repo with `/src/be/src/data` submodule
 ### be
 1. `cd src/be`
 1. `yarn`
-1. `echo -e "GIT_KEY=None\nIS_DEV=true" > .env`
 1. `yarn start`
 
 Using a developer build, you will not be able to push changes elsewhere: all git functions will be mocked.

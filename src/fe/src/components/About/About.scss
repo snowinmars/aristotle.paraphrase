@@ -6,16 +6,21 @@ div.prf-about {
 }
 
 .prf-about {
-  .card-header {
-    cursor: pointer;
-
-    &:hover {
-      color: lighten($secondary, 10%);
+  .accordion {
+    .accordion-item {
+      color: $body-color;
+      background-color: $body-bg;
     }
-  }
 
-  .prf-open {
-    color: $secondary;
+    .accordion-button:not(.collapsed) {
+      color: $secondary;
+      background-color: $card-bg;
+    }
+
+    .accordion-button.collapsed {
+      color: $body-color;
+      background-color: $card-bg;
+    }
   }
 
   .prf-ul {

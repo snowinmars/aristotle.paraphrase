@@ -38,7 +38,7 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
           </NavDropdown>
           <Nav.Link as={NavLink} isActive={() => activeKey === '/contacts/'} to="/contacts/">Контакты</Nav.Link>
         </Nav>
-        <Form inline>
+        <Form>
           <FormControl type="text" placeholder="TBD" disabled className="mr-sm-2" />
         </Form>
       </Navbar.Collapse>

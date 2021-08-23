@@ -23,9 +23,9 @@ const getTextById = (text: MultiText, textId: ParagraphHeader): string => {
 
 const getNotesById = (text: MultiText, textId: ParagraphHeader): string => {
   switch (textId) {
-    case ParagraphHeader.paraphrase: return text.paraphraseNotes;
-    case ParagraphHeader.qBitSky: return text.qBitSkyNotes;
-    case ParagraphHeader.ross: return text.rossNotes;
+    case ParagraphHeader.paraphraseNotes: return text.paraphraseNotes;
+    case ParagraphHeader.qBitSkyNotes: return text.qBitSkyNotes;
+    case ParagraphHeader.rossNotes: return text.rossNotes;
     default: throw new Error(`Enum ParagraphHeader is out of range: ${textId}`);
   }
 };
@@ -33,7 +33,7 @@ const getNotesById = (text: MultiText, textId: ParagraphHeader): string => {
 const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chapterId, paragraph}) => {
   const [leftTextId, setLeftTextId] = useState(ParagraphHeader.qBitSky);
   const [rightTextId, setRightTextId] = useState(ParagraphHeader.paraphrase);
-  const [notesTextId, setNotesTextId] = useState(ParagraphHeader.paraphrase);
+  const [notesTextId, setNotesTextId] = useState(ParagraphHeader.paraphraseNotes);
 
   const leftText = getTextById(paragraph.text, leftTextId);
   const rightText = getTextById(paragraph.text, rightTextId);
@@ -99,41 +99,31 @@ const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chap
         </Row>
         {
           (paragraph.text.paraphraseNotes || paragraph.text.qBitSkyNotes || paragraph.text.rossNotes) && (<Row>
-                <Accordion>
-                  <Card>
-                    <Card.Header>
-                      <Accordion.Toggle
-                          as={Card.Header}
-                          variant="link"
-                          eventKey="1"
-                      >
-                        <ArrowDown className="prf-notes-arrow"/>
-                      </Accordion.Toggle>
-                    </Card.Header>
-                    <Accordion.Collapse eventKey="1">
-                      <Card.Body>
-                        <Controls
-                            blockType={'notes'}
-                            paragraphKey={paragraph.key}
-                            selectedTextId={notesTextId}
-                            parentChangeCallback={(x) => updateText(x)}
-                        />
-                        <sup className={'prf-paragraph-index'}>
-                          {paragraph.id}
-                        </sup>
-                        <Editor
-                            bookId={bookId}
-                            chapterId={chapterId}
-                            paragraphId={paragraph.id}
-                            header={notesTextId}
-                            text={notesText}
-                        >
-                        </Editor>
-                      </Card.Body>
-                    </Accordion.Collapse>
-                  </Card>
-                </Accordion>
-              </Row>
+              <Accordion>
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>Примечания</Accordion.Header>
+                  <Accordion.Body>
+                    <Controls
+                      blockType={'notes'}
+                      paragraphKey={paragraph.key}
+                      selectedTextId={notesTextId}
+                      parentChangeCallback={(x) => updateText(x)}
+                    />
+                    <sup className={'prf-paragraph-index'}>
+                      {paragraph.id}
+                    </sup>
+                    <Editor
+                      bookId={bookId}
+                      chapterId={chapterId}
+                      paragraphId={paragraph.id}
+                      header={notesTextId}
+                      text={notesText}
+                    >
+                    </Editor>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            </Row>
           )
         }
       </Container>
