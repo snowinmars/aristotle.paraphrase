@@ -13,8 +13,12 @@ import GeneralBookView from "../GeneralBookView/GeneralBookView";
 import Container from "react-bootstrap/Container";
 import BooksListView from "../BooksListView/BooksListView";
 import Footer from "../Footer/Footer";
+import {Settings} from "../Settings/Settings";
+import {loadColorTheme} from "../Settings/helpers";
 
 const App = (): JSX.Element => {
+  loadColorTheme();
+
   return (
       <div className="prf-app">
         <Router>
@@ -37,6 +41,10 @@ const App = (): JSX.Element => {
               <Route path={'/contacts'}>
                 <Contacts>
                 </Contacts>
+              </Route>
+              <Route path={'/settings'}>
+                <Settings>
+                </Settings>
               </Route>
               <Route path={'/'}>
                 <About>

@@ -1,0 +1,10 @@
+.prf-app {
+  .card {
+    .card-body {
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
+    }
+
+    border: 1px solid var(--bs-border);
+  }
+}

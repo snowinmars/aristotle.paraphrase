@@ -1,14 +1,14 @@
 ﻿@import '../../theme';
 
 .prf-editor-pencil {
-  color: var(--bs-primary);
+  color: var(--bs-card-color);
 
   margin-right: 1em;
 
   cursor: pointer;
 
   &:hover {
-    color: var(--bs-secondary);
+    color: var(--bs-selection);
   }
 }
 

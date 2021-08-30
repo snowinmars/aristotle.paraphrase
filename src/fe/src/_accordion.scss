@@ -1,0 +1,26 @@
+.prf-app {
+  .accordion {
+    .accordion-item {
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
+
+      border-color: var(--bs-border);
+    }
+
+    .accordion-button {
+      &:not(.collapsed) {
+        color: var(--bs-selection);
+        background-color: var(--bs-card-bg);
+      }
+
+      &.collapsed {
+        color: var(--bs-body-color);
+        background-color: var(--bs-card-bg);
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+}

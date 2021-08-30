@@ -1,4 +1,6 @@
-@import '../../theme';
+@import 'src/theme';
+@import 'src/accordion';
+@import 'src/card';
 
 div.prf-about {
   padding-right: 0;
@@ -6,30 +8,6 @@ div.prf-about {
 }
 
 .prf-about {
-  .card {
-    .card-body {
-      color: var(--bs-body-color);
-      background-color: var(--bs-body-bg);
-    }
-  }
-
-  .accordion {
-    .accordion-item {
-      color: var(--bs-body-color);
-      background-color: var(--bs-body-bg);
-    }
-
-    .accordion-button:not(.collapsed) {
-      color: var(--bs-secondary);
-      background-color: var(--bs-card-bg);
-    }
-
-    .accordion-button.collapsed {
-      color: var(--bs-body-color);
-      background-color: var(--bs-card-bg);
-    }
-  }
-
   .prf-ul {
     list-style: none;
     margin: 0 2em;
@@ -57,11 +35,11 @@ div.prf-about {
       }
 
       .prf-question-mark {
-        color: var(--bs-primary);
+        color: var(--bs-component-active-color);
       }
 
       .prf-answer-mark {
-        color: var(--bs-secondary);
+        color: var(--bs-selection);
       }
     }
   }

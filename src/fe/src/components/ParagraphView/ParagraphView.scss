@@ -1,26 +1,8 @@
-@import '../../theme';
+@import 'src/theme';
+@import 'src/accordion';
 
 .prf-paragraph {
   margin: 2em 0;
-
-  .accordion {
-    .accordion-item {
-      color: var(--bs-body-color);
-      background-color: var(--bs-body-bg);
-    }
-
-    .accordion-button {
-      background-color: var(--bs-card-bg);
-    }
-
-    .accordion-button:not(.collapsed) {
-      color: var(--bs-secondary);
-    }
-
-    .accordion-button.collapsed {
-      color: var(--bs-body-color);
-    }
-  }
 
   .prf-butterfly-wrapper {
     display: flex;
@@ -43,6 +25,6 @@
   }
 
   .prf-notes-link {
-    color: var(--bs-secondary);
+    color: var(--bs-selection);
   }
 }

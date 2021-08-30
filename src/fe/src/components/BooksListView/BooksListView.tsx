@@ -16,16 +16,19 @@ const BooksListView: FunctionComponent = (): JSX.Element => {
     }
 
     if (books) {
-        return <ol>
-            {
-                books.map(book => {
-                    return <li key={book.key} className={'prf-book-list-item'}>
-                        <NavLink to={`/books/${book.id}/1`}>Книга {book.id}</NavLink>
-                        <NavLink to={`/books/${book.id}`}>Краткое изложение</NavLink>
-                    </li>;
-                })
-            }
-        </ol>;
+        return <div>
+            <h3>Метафизика</h3>
+            <ol>
+                {
+                    books.map(book => {
+                        return <li key={book.key} className={'prf-book-list-item'}>
+                            <NavLink to={`/books/${book.id}/1`}>Книга {book.id}</NavLink>
+                            <NavLink to={`/books/${book.id}`}>Краткое изложение</NavLink>
+                        </li>;
+                    })
+                }
+            </ol>
+        </div>;
     }
 
     return <div>Api error</div>;

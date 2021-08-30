@@ -3,12 +3,17 @@
 
 $body-bg: $gray-700;
 $body-color: $gray-500;
+$body-bg-hover: lighten($body-bg, 10%);
+$body-color-hover: lighten($body-color, 10%);
 
-$component-active-bg: $gray-500;
-$component-active-color: $gray-700;
+$border: rgba($black, 0.125);
 
-$primary: $cyan-200;
-$secondary: $orange-500;
+$component-active-bg: mix($gray-700, $yellow-200, 95%);
+$component-active-color: $gray-400;
+$component-active-bg-hover: lighten($component-active-bg, 10%);
+$component-active-color-hover: darken($component-active-color, 10%);
+
+$selection: $orange-500;
 
 $card-bg: mix($gray-700, $yellow-200, 95%);
 $card-color: $gray-400;
@@ -21,11 +26,18 @@ $link-hover-color: $cyan-600;
 @import "~bootstrap/scss/bootstrap";
 
 :root {
-  --#{$variable-prefix}primary: #{$primary};
-  --#{$variable-prefix}secondary: #{$secondary};
+  --#{$variable-prefix}border: #{$border};
+  --#{$variable-prefix}selection: #{$selection};
+
+  --#{$variable-prefix}body-bg: #{$body-bg};
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg-hover: #{$body-bg-hover};
+  --#{$variable-prefix}body-color-hover: #{$body-color-hover};
 
   --#{$variable-prefix}component-active-bg: #{$component-active-bg};
   --#{$variable-prefix}component-active-color: #{$component-active-color};
+  --#{$variable-prefix}component-active-bg-hover: #{$component-active-bg-hover};
+  --#{$variable-prefix}component-active-color-hover: #{$component-active-color-hover};
 
   --#{$variable-prefix}card-bg: #{$card-bg};
   --#{$variable-prefix}card-color: #{$card-color};

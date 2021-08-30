@@ -1,6 +1,55 @@
 @import '../../theme';
 
 .prf-menu {
+  a.navbar-brand,
+  a.navbar-brand:focus,
+  a.navbar-brand:active {
+    color: var(--bs-body-body);
+
+    &:hover {
+      color: var(--bs-component-active-color-hover);
+    }
+  }
+
+  .prf-nav > .navbar-nav {
+    align-items: flex-end;
+
+    .prf-nav-books-dropdown {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .dropdown-menu {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-body);
+
+      .dropdown-item {
+        color: var(--bs-body-body);
+
+        &.active,
+        &:active,
+        &:hover,
+        &:focus {
+          color: var(--bs-component-active-color-hover);
+          background-color: var(--bs-body-bg);
+        }
+      }
+    }
+    .nav-link {
+      color: var(--bs-body-color);
+      font-size: 125%;
+
+      &.active,
+      &:active,
+      &:hover,
+      &:focus {
+        color: var(--bs-component-active-color-hover);
+        background-color: var(--bs-body-bg);
+      }
+    }
+  }
+
   .prf-menu-brand {
     display: flex;
     align-items: center;
@@ -14,7 +63,7 @@
     justify-content: space-between;
 
     &.navbar-collapse .navbar-nav .nav-link.active {
-      color: var(--bs-secondary);
+      color: var(--bs-selection);
     }
   }
 }

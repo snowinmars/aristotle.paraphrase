@@ -8,6 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
 import {Github} from "react-bootstrap-icons";
+import { QuestionCircle, At, Book, Gear } from "react-bootstrap-icons";
 
 const getActiveKey = (pathname: string): string => {
   // '/' to '/'
@@ -29,14 +30,23 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse className={'prf-nav'} id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link className={"prf-github"} href={'https://github.com/snowinmars/aristotle.paraphrase'}><Github /></Nav.Link>
-          <Nav.Link as={NavLink} to={'/'} isActive={() => activeKey === '/'}>О проекте</Nav.Link>
-          <NavDropdown active={activeKey === '/books/'} title="Книги" id="basic-nav-dropdown">
+          <Nav.Link
+            className={"prf-github"}
+            active={false}
+            href={'https://github.com/snowinmars/aristotle.paraphrase'}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Github />
+          </Nav.Link>
+          <Nav.Link as={NavLink} to={'/'} isActive={() => activeKey === '/'}><QuestionCircle /></Nav.Link>
+          <NavDropdown className={'prf-nav-books-dropdown'} active={activeKey === '/books/'} title={<Book />} id="prf-nav-books-dropdown">
             <NavDropdown.Item as={NavLink} to="/books/">Список</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={NavLink} to="/books/1">Метафизика, 1</NavDropdown.Item>
           </NavDropdown>
-          <Nav.Link as={NavLink} isActive={() => activeKey === '/contacts/'} to="/contacts/">Контакты</Nav.Link>
+          <Nav.Link as={NavLink} isActive={() => activeKey === '/contacts/'} to="/contacts/"> <At /> </Nav.Link>
+          <Nav.Link as={NavLink} isActive={() => activeKey === '/settings/'} to={"/settings/"}><Gear /></Nav.Link>
         </Nav>
         <Form>
           <FormControl type="text" placeholder="TBD" disabled className="mr-sm-2" />
