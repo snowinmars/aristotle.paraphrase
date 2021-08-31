@@ -7,8 +7,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
-import {Github} from "react-bootstrap-icons";
-import { QuestionCircle, At, Book, Gear } from "react-bootstrap-icons";
+import { Github, QuestionCircle, At, Book, Gear } from "react-bootstrap-icons";
 
 const getActiveKey = (pathname: string): string => {
   // '/' to '/'

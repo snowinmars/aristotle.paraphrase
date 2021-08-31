@@ -70,8 +70,8 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
 
     return () => {
       bus.unsubscribe('fire');
-    }
-  }, [])
+    };
+  }, []);
 
   return (
       <ul className="prf-control-list">

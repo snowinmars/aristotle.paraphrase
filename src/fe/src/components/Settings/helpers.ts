@@ -51,7 +51,7 @@ const themes: Theme[] = [{
     {id: toId('link-color'), value: '#9eeaf9'},
     {id: toId('link-hover-color'), value: '#0aa2c0'},
   ]
-}]
+}];
 
 export const colors: Color[] = [
   { id: toId('body-bg'), name: 'Главный - фон' },
@@ -72,7 +72,7 @@ export const colors: Color[] = [
 
 export const getTheme = (id: string): ThemeColor[] => {
   return themes.filter(x => x.id === id)[0].colors;
-}
+};
 
 export const getColorValue = (id: string): string => window.getComputedStyle(document.body).getPropertyValue(id);
 export const setColorValue = (id: string, value: string): void => document.body.style.setProperty(id, value);
@@ -80,8 +80,8 @@ export const setColorValue = (id: string, value: string): void => document.body.
 export const saveColorTheme = (): void => {
   colors.forEach(color => {
     localStorage.setItem(color.id, getColorValue(color.id));
-  })
-}
+  });
+};
 
 export const loadColorTheme = (): void => {
   colors.forEach(color => {
@@ -90,5 +90,5 @@ export const loadColorTheme = (): void => {
     if (cachedColorValue) {
       setColorValue(color.id, cachedColorValue);
     }
-  })
-}
+  });
+};

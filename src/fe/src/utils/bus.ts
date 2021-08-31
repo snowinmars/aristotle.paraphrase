@@ -11,7 +11,7 @@
 
     subscribe(id: string, callback: (...params: unknown[]) => void) {
         if (!this.bus[id]){
-            this.bus[id] = []
+            this.bus[id] = [];
         }
 
         this.bus[id].push(callback);

@@ -15,7 +15,7 @@ export const Settings: FunctionComponent = () => {
   const set = (hex: string) => {
     setSelectedValue(hex);
     setColorValue(selectedColor.id, hex);
-  }
+  };
 
   return (
     <div className={'prf-settings'}>
@@ -75,5 +75,5 @@ export const Settings: FunctionComponent = () => {
         </ToggleButton>
       </ToggleButtonGroup>
     </div>
-  )
-}
+  );
+};

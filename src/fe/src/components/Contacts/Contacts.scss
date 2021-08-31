@@ -2,20 +2,31 @@
 
 .prf-contacts {
   ul {
-    list-style: none;
     padding: 0;
 
     li {
-      margin: 1em 0;
+      margin: 0.5em 0;
     }
   }
 
   svg {
-    margin: 0 1em;
+    margin: 0 0.5em;
 
     &:hover {
       color: var(--bs-selection);
       cursor: pointer;
     }
+  }
+
+  .prf-username {
+    display: inline;
+
+    font-size: 120%;
+  }
+
+  .prf-contacts-list {
+    display: inline-flex;
+
+    margin-left: 0.5em;
   }
 }
