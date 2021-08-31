@@ -6,7 +6,6 @@ import {execSync} from 'child_process';
 import pino from 'pino';
 
 // todo [snow]: wtf is wrong with imports
-console.log(process.env)
 const isInDocker = process.env.IS_IN_DOCKER?.toLowerCase() === 'true';
 const gitKey = process.env.GIT_KEY;
 
