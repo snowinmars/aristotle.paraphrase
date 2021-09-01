@@ -1,36 +1,39 @@
 ﻿@import '../../theme';
 
-.prf-editor-pencil {
-  color: var(--bs-card-color);
+.prf-editor {
+  .prf-editor-pencil {
+    color: var(--bs-card-color);
 
-  margin-right: 1em;
+    margin-right: 1em;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  &:hover {
-    color: var(--bs-selection);
-  }
-}
-
-.prf-editor-validation-text {
-  color: var(--bs-danger);
-}
-
-.prf-loader-wrapper {
-  position: relative;
-
-  .prf-editor,
-  .prf-editor:focus {
-    color: var(--bs-body-color);
-    background-color: var(--bs-body-bg);
-    border: none;
+    &:hover {
+      color: var(--bs-selection);
+    }
   }
 
-  .prf-editor:focus {
-    box-shadow: 0 0 0 1px var(--bs-body-bg);
+  .prf-editor-validation-text {
+    color: var(--bs-danger);
   }
 
-  .prf-editor-control-group {
-    display: flex;
+  .prf-loader-wrapper {
+    position: relative;
+
+    .prf-editor,
+    .prf-editor:focus {
+      color: var(--bs-body-color-hover);
+      background-color: var(--bs-body-bg-hover);
+      border: none;
+    }
+
+    .prf-editor:focus {
+      box-shadow: 0 0 0 1px var(--bs-body-bg);
+    }
+
+    .prf-editor-control-group {
+      display: flex;
+    }
   }
+
 }

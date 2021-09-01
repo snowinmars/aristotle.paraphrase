@@ -56,7 +56,7 @@ export const Settings: FunctionComponent = () => {
           set(initedColor);
           saveColorTheme();
         }}
-        onAccept={(color) => {
+        onAccept={() => {
           set(selectedValue);
           setInitedColor(selectedValue);
           saveColorTheme();

@@ -13,6 +13,8 @@
 
   .prf-nav > .navbar-nav {
     align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-around;
 
     .prf-nav-books-dropdown {
       display: flex;

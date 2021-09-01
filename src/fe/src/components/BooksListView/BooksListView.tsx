@@ -16,7 +16,7 @@ const BooksListView: FunctionComponent = (): JSX.Element => {
     }
 
     if (books) {
-        return <div>
+        return <div className={'prf-book-list'}>
             <h3>Метафизика</h3>
             <ol>
                 {

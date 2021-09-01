@@ -2,16 +2,6 @@
 
 $op: 0.1;
 
-.prf-control-label {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  vertical-align: middle;
-  padding: 0.1em 0;
-
-  user-select: none; // double click will switch all paragraphs to current label
-}
-
 .prf-control-list {
   padding: 0;
   margin: 0;
@@ -23,61 +13,74 @@ $op: 0.1;
 
   border: 1px solid var(--bs-border);
   border-radius: 5px;
-}
 
-@media screen and (max-width: map-get($grid-breakpoints, 'md')) {
-  .prf-control {
-    padding-right: 0;
-  }
-  .prf-control-list-item {
+  .prf-control-label {
     width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.1em 0;
+
+    user-select: none; // double click will switch all paragraphs to current label
   }
-}
-@media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+
+  @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+    .prf-control {
+      padding-right: 0;
+    }
+    .prf-control-list-item {
+      width: 100%;
+    }
+  }
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    .prf-control-list-item {
+      width: 33%;
+    }
+  }
+
   .prf-control-list-item {
-    width: 33%;
-  }
-}
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
 
-.prf-control-list-item {
-  background-color: var(--bs-body-bg);
-  color: var(--bs-body-color);
+    &:hover {
+      background-color: var(--bs-body-bg-hover);
+      color: var(--bs-body-color-hover);
+    }
 
-  &:hover {
-    background-color: var(--bs-body-bg-hover);
-    color: var(--bs-body-color-hover);
-  }
+    cursor: pointer;
 
-  cursor: pointer;
+    $radius: 5px;
 
-  $radius: 5px;
-  &:nth-child(1) {
-    border-top-left-radius: $radius;
-    border-bottom-left-radius: $radius;
-    label {
+    &:nth-child(1) {
       border-top-left-radius: $radius;
       border-bottom-left-radius: $radius;
+
+      label {
+        border-top-left-radius: $radius;
+        border-bottom-left-radius: $radius;
+      }
+
+      border-right: 1px solid var(--bs-border);
     }
 
-    border-right: 1px solid var(--bs-border);
-  }
-
-  &:nth-last-child(1) {
-    border-top-right-radius: $radius;
-    border-bottom-right-radius: $radius;
-    label {
+    &:nth-last-child(1) {
       border-top-right-radius: $radius;
       border-bottom-right-radius: $radius;
+
+      label {
+        border-top-right-radius: $radius;
+        border-bottom-right-radius: $radius;
+      }
+
+      border-left: 1px solid var(--bs-border);
     }
 
-    border-left: 1px solid var(--bs-border);
-  }
+    .prf-control-input {
+      display: none;
 
-  .prf-control-input {
-    display: none;
-
-    &:checked+.prf-control-label {
-      background-color: var(--bs-component-active-bg);
+      &:checked + .prf-control-label {
+        background-color: var(--bs-component-active-bg);
+      }
     }
   }
 }

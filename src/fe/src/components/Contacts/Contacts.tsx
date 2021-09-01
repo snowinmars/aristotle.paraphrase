@@ -41,6 +41,7 @@ const Contacts: FunctionComponent = (): JSX.Element => {
                 User({
                     username: 'Evoo',
                     telegram: 'Evoo_Awoo',
+                    github: 'EvooChan',
                 })
             }
         </ul>

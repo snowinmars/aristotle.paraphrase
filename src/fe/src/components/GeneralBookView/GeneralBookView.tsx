@@ -23,7 +23,7 @@ const GeneralBookView: FunctionComponent<RouteComponentProps<MatchParameters>> =
 
     if (book) {
         return (
-            <ul>
+            <ul className={'prf-general-book'}>
                 {
                     book.chapters.map(x => {
                         return <li key={x.key} className={'prf-book-chapter'}>

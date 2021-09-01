@@ -39,7 +39,7 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
         case Status.loading:
         case Status.editing:
             return (
-                <Form onSubmit={(e) => {
+                <Form className={'prf-editor'} onSubmit={(e) => {
                     e.preventDefault();
 
                     setValidationText('');
@@ -109,20 +109,18 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
                 </Form>
             );
         case Status.ready:
-            break;
-        default:
-            throw new Error(`Enum Status is out of range: ${status}`);
-    }
-
-    return (
-        <span>
+            return (
+                <span className={'prf-editor'}>
             <PencilSquare
                 className={'prf-editor-pencil'}
                 onClick={() => setStatus(Status.editing)}
             />
             <span dangerouslySetInnerHTML={{__html: staticText}}/>
         </span>
-    );
+            );
+        default:
+            throw new Error(`Enum Status is out of range: ${status}`);
+    }
 };
 
 export default Editor;
