@@ -17,10 +17,14 @@ type ReactApp = {
     REACT_GIT_HASH: string;
 }
 
-const protocol = process?.env?.REACT_APP_PROTOCOL || window._env_?.REACT_APP_PROTOCOL || 'http';
-const host = process?.env?.REACT_APP_HOST || window._env_?.REACT_APP_HOST || '127.0.0.1';
-const port = (process?.env?.REACT_APP_PORT && parseInt(process.env.REACT_APP_PORT)) || window._env_?.REACT_APP_PORT || 5000;
-const gitHash = process?.env?.REACT_GIT_HASH || window._env_?.REACT_GIT_HASH || 'Загружаю...';
+if (!window._env_) {
+    throw new Error('Window env vars are not defined');
+}
+
+const protocol = window._env_.REACT_APP_PROTOCOL || 'http';
+const host = window._env_.REACT_APP_HOST || '127.0.0.1';
+const port = window._env_.REACT_APP_PORT || 5000;
+const gitHash = window._env_.REACT_GIT_HASH || '-';
 
 export const config: Config = {
     protocol,

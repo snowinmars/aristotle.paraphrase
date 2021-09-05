@@ -4,6 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
 
+// todo [snow]: to external env
+process.env.BABEL_ENV = 'development';
+process.env.NODE_ENV = 'development';
+
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./paths')];
 
