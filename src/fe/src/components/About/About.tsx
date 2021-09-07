@@ -5,12 +5,6 @@ import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import { Lightbulb, QuestionCircle } from 'react-bootstrap-icons';
 
-console.log('Container', Container);
-console.log('Card', Card);
-console.log('Accordion', Accordion);
-console.log('Lightbulb', Lightbulb);
-console.log('QuestionCircle', QuestionCircle);
-
 const buildQna = (question: string, answer: string) => {
   return (
     <li className={'prf-qna-item'}>

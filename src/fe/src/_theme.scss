@@ -23,8 +23,6 @@ $card-cap-padding-x: 2px;
 $link-color: $cyan-200;
 $link-hover-color: $cyan-600;
 
-@import "~bootstrap/scss/bootstrap";
-
 :root {
   --#{$variable-prefix}border: #{$border};
   --#{$variable-prefix}selection: #{$selection};
