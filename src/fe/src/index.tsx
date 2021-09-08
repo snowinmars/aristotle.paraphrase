@@ -6,11 +6,23 @@ import App from './components/App/App';
 import store from './redux/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const app = <React.StrictMode>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.StrictMode>;
+
+const rootElement = document.getElementById("root");
+
+if (!rootElement) throw new Error('No root react element found');
+
+// react-snap
+if (rootElement.hasChildNodes()) {
+    ReactDOM.hydrate(
+        app,
+        rootElement);
+} else {
+    ReactDOM.render(
+        app,
+        rootElement);
+}

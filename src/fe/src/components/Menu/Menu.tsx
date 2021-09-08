@@ -28,7 +28,7 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
       <Navbar.Brand as={NavLink} to={'/'}>Prf - β</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse className={'prf-nav'} id="basic-navbar-nav">
-        <Nav className="mr-auto">
+        <Nav className="mr-auto prf-nav-wrapper">
           <Nav.Link
             className={"prf-github"}
             active={false}

@@ -12,12 +12,13 @@ const PrebuildPlugin = require('prebuild-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const child_process = require('child_process');
 const modules = require('./config/modules');
-const getClientEnvironment = require('./config/env');
 const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
 const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlayInterop');
+const getClientEnvironment = require('./config/env');
 require.resolve('react/jsx-runtime');
 
 const { IgnorePlugin, DefinePlugin } = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -111,6 +112,7 @@ const configure = (webpackEnv: WebpackEnv) => {
   const isEnvProduction = webpackEnv.production === true;
 
   if (!isEnvProduction && !isEnvDevelopment) throw new Error(`Unknown env to build: ${JSON.stringify(webpackEnv)}`);
+  console.log('Building in ', isEnvDevelopment ? 'development' : 'production');
 
   const isEnvProductionProfile = isEnvProduction && process.argv.includes('--profile');
 
@@ -155,10 +157,19 @@ const configure = (webpackEnv: WebpackEnv) => {
         ]),
       ],
     },
+    devServer: {
+      port: 3000,
+      open: 'chrome',
+      historyApiFallback: true
+    },
     module: {
       strictExportPresence: true,
       rules: [
-        {parser: {requireEnsure: false}},
+        {
+          parser: {
+            requireEnsure: false
+          }
+        },
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
           include: paths.appSrc,
@@ -204,7 +215,7 @@ const configure = (webpackEnv: WebpackEnv) => {
             {
               loader: "style-loader",
               options: {
-                insert: '#insert-css-after',
+                insert: '#insert-css-here',
               },
             },
             "css-loader",
@@ -236,6 +247,7 @@ const configure = (webpackEnv: WebpackEnv) => {
           require('dotenv').config();
           const env = {
             GIT_KEY: git('describe --always'),
+            MODE: isEnvDevelopment ? 'development' : 'production',
             IS_IN_DOCKER: process.env.IS_IN_DOCKER,
             REACT_APP_HOST: process.env.REACT_APP_HOST,
             REACT_APP_PORT: process.env.REACT_APP_PORT,
@@ -250,7 +262,6 @@ const configure = (webpackEnv: WebpackEnv) => {
           fs.writeFileSync(envGen, `window._env_ = ${JSON.stringify(env, null, 2)}`);
         }
       }),
-
       isEnvProduction && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
       new InterpolateHtmlPlugin(HtmlWebPackPlugin, env.raw), // Makes some environment variables available in index.html.
       new ModuleNotFoundPlugin(paths.appPath),
@@ -332,7 +343,7 @@ const configure = (webpackEnv: WebpackEnv) => {
       }),
       new MiniCssExtractPlugin({
         filename: "[name].css",
-        insert: '#mini-css-insert-after',
+        insert: '#insert-css-here',
       }),
       new PurgecssPlugin({
         paths: glob.sync(`${paths.appSrc}/**/*`, {nodir: true}),
@@ -347,7 +358,10 @@ const configure = (webpackEnv: WebpackEnv) => {
 
         }
       })],
-    }
+    },
+    stats: {
+      children: true,
+    },
   };
 
   // console.log(JSON.stringify(config));

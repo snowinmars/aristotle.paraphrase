@@ -76,3 +76,12 @@ Using a developer build, you will not be able to push changes elsewhere: all git
 ### Wikificate
 1. `cd src/be`
 2. `yarn wiki` will apply common russian text rules
+
+### Todo
+#### fe
+- prerender `/` and `/contacts`
+- uglify (s)css with modules hash
+- lazy load
+
+#### be
+- optimize caching

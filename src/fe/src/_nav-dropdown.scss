@@ -1,0 +1,47 @@
+﻿/* purgecss start ignore */
+.prf-app {
+  a.navbar-brand,
+  a.navbar-brand:focus,
+  a.navbar-brand:active {
+    color: var(--bs-body-body);
+
+    &:hover {
+      color: var(--bs-component-active-color-hover);
+    }
+  }
+
+  .dropdown-menu {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-body);
+
+    .dropdown-item {
+      color: var(--bs-body-body);
+
+      &.active,
+      &:active,
+      &:hover,
+      &:focus {
+        color: var(--bs-component-active-color-hover);
+        background-color: var(--bs-body-bg);
+      }
+    }
+  }
+
+  .nav-link {
+    color: var(--bs-body-color);
+    font-size: 125%;
+
+    &.active,
+    &:active,
+    &:hover,
+    &:focus {
+      color: var(--bs-component-active-color-hover);
+      background-color: var(--bs-body-bg);
+    }
+  }
+
+  &.navbar-collapse .navbar-nav .nav-link.active {
+    color: var(--bs-selection);
+  }
+}
+/* purgecss end ignore */
