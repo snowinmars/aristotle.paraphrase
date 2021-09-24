@@ -14,9 +14,9 @@ const child_process = require('child_process');
 const modules = require('./config/modules');
 const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
 const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlayInterop');
-const getClientEnvironment = require('./config/env');
 require.resolve('react/jsx-runtime');
 
+const CopyPlugin = require("copy-webpack-plugin");
 const { IgnorePlugin, DefinePlugin } = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
@@ -99,7 +99,6 @@ const paths: Paths = {
 
 const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
 const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
-const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 const git = (command: string): string => child_process.execSync(`git ${command}`, {encoding: 'utf8'}).trim()
 
 type WebpackEnv = {
@@ -111,15 +110,21 @@ const configure = (webpackEnv: WebpackEnv) => {
   const isEnvDevelopment = webpackEnv.development === true;
   const isEnvProduction = webpackEnv.production === true;
 
+  process.env.BABEL_ENV = 'development';
+  process.env.NODE_ENV = 'development';
+
+  const getClientEnvironment = require('./config/env');
+  const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
+
   if (!isEnvProduction && !isEnvDevelopment) throw new Error(`Unknown env to build: ${JSON.stringify(webpackEnv)}`);
-  console.log('Building in ', isEnvDevelopment ? 'development' : 'production');
+  console.log('Building in', isEnvDevelopment ? 'development' : 'production');
 
   const isEnvProductionProfile = isEnvProduction && process.argv.includes('--profile');
 
   const config = {
     mode: isEnvProduction ? 'production' : 'development',
     bail: isEnvProduction,
-    devtool: isEnvProduction ? false : 'cheap-module-source-map',
+    devtool: isEnvProduction ? false : 'source-map',
     entry: paths.appIndexJs,
     output: {
       libraryTarget: 'umd',
@@ -141,7 +146,11 @@ const configure = (webpackEnv: WebpackEnv) => {
       globalObject: 'this',
     },
     resolve: {
-      modules: ['node_modules', paths.appNodeModules],
+      modules: [
+        'node_modules',
+        paths.appNodeModules,
+        isEnvDevelopment && paths.appSrc,
+      ].filter(Boolean),
       // https://github.com/facebook/create-react-app/issues/290
       // `web` extension prefixes have been added for better support for React Native Web
       extensions: paths.moduleFileExtensions.map(ext => `.${ext}`),
@@ -159,7 +168,6 @@ const configure = (webpackEnv: WebpackEnv) => {
     },
     devServer: {
       port: 3000,
-      open: 'chrome',
       historyApiFallback: true
     },
     module: {
@@ -262,6 +270,17 @@ const configure = (webpackEnv: WebpackEnv) => {
           fs.writeFileSync(envGen, `window._env_ = ${JSON.stringify(env, null, 2)}`);
         }
       }),
+      new HtmlWebPackPlugin({
+        title: 'Helloworld',
+        filename: 'public/index.html',
+        inject: true,
+        template: 'public/index.html',
+      }),
+      new CopyPlugin({
+        patterns: [
+          { from: paths.appSrc, to: "src" },
+        ],
+      }),
       isEnvProduction && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
       new InterpolateHtmlPlugin(HtmlWebPackPlugin, env.raw), // Makes some environment variables available in index.html.
       new ModuleNotFoundPlugin(paths.appPath),
@@ -350,7 +369,7 @@ const configure = (webpackEnv: WebpackEnv) => {
       }),
     ].filter(Boolean),
     optimization: {
-      minimize: true,
+      minimize: isEnvProduction,
       minimizer: [new TerserPlugin({
         parallel: os.cpus().length - 1,
         terserOptions: {
@@ -360,7 +379,7 @@ const configure = (webpackEnv: WebpackEnv) => {
       })],
     },
     stats: {
-      children: true,
+      children: false,
     },
   };
 
