@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import './Contacts.scss';
+import styles from './Contacts.module.scss';
 import Container from 'react-bootstrap/Container';
 import { Github, Telegram, Mastodon, Envelope } from "react-bootstrap-icons";
 
@@ -14,8 +14,8 @@ type User = {
 const User = ({username, email, telegram, github, mastodon}: User): JSX.Element => {
   return (
       <li>
-        <h4 className={'prf-username'}>{username}</h4>
-        <ul className={'prf-contacts-list'}>
+        <h4 className={styles.prfUsername}>{username}</h4>
+        <ul className={styles.prfContactsList}>
           { email && <li><a href={`mailto:${email}`}><Envelope /></a></li> }
           { telegram && <li><a href={`https://t.me/${telegram}`} target={'_blank'} rel={'noreferrer'}><Telegram /></a></li> }
           { github && <li><a href={`https://github.com/${github}`} target={'_blank'} rel={'noreferrer'}><Github /></a></li> }
@@ -26,7 +26,7 @@ const User = ({username, email, telegram, github, mastodon}: User): JSX.Element 
 };
 
 const Contacts: FunctionComponent = (): JSX.Element => {
-    return <Container className={'prf-contacts'}>
+    return <Container className={styles.prfContacts}>
         <ul>
             {
                 User({

@@ -1,5 +1,6 @@
 /* purgecss start ignore */
-.prf-app {
+
+:global {
   .accordion {
     .accordion-item {
       color: var(--bs-body-color);

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import './Menu.scss';
+import styles from './Menu.module.scss';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
@@ -24,13 +24,12 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
 
   return (
     <Container>
-    <Navbar className="prf-menu" expand="md">
+    <Navbar className={styles.prfMenu} expand="md">
       <Navbar.Brand as={NavLink} to={'/'}>Prf - β</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse className={'prf-nav'} id="basic-navbar-nav">
-        <Nav className="mr-auto prf-nav-wrapper">
+      <Navbar.Collapse className={styles.prfNav} id="basic-navbar-nav">
+        <Nav className={['mr-auto', styles.prfNavWrapper].join(' ')}>
           <Nav.Link
-            className={"prf-github"}
             active={false}
             href={'https://github.com/snowinmars/aristotle.paraphrase'}
             target="_blank"
@@ -39,7 +38,7 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
             <Github />
           </Nav.Link>
           <Nav.Link as={NavLink} to={'/'} isActive={() => activeKey === '/'}><QuestionCircle /></Nav.Link>
-          <NavDropdown className={'prf-nav-books-dropdown'} active={activeKey === '/books/'} title={<Book />} id="prf-nav-books-dropdown">
+          <NavDropdown className={styles.prfNavBooksDropdown} active={activeKey === '/books/'} title={<Book />} id={styles.prfNavBooksDropdown}>
             <NavDropdown.Item as={NavLink} to="/books/">Список</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={NavLink} to="/books/1">Метафизика, 1</NavDropdown.Item>
@@ -48,7 +47,7 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
           <Nav.Link as={NavLink} isActive={() => activeKey === '/settings/'} to={"/settings/"}><Gear /></Nav.Link>
         </Nav>
         <Form>
-          <FormControl type="text" placeholder="TBD" disabled className="mr-sm-2" />
+          <FormControl type="text" placeholder="TBD" disabled className={'mr-sm-2'} />
         </Form>
       </Navbar.Collapse>
     </Navbar>

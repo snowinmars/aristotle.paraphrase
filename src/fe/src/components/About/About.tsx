@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import './About.scss';
+import styles from './About.module.scss';
 import Container from "react-bootstrap/Container";
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
@@ -7,13 +7,13 @@ import { Lightbulb, QuestionCircle } from 'react-bootstrap-icons';
 
 const buildQna = (question: string, answer: string) => {
   return (
-    <li className={'prf-qna-item'}>
-      <div className={'prf-question'}>
-        <span className={'prf-question-mark'}><QuestionCircle /></span>
+    <li className={styles.prfQnaItem}>
+      <div className={styles.prfQuestion}>
+        <span className={styles.prfQuestionMark}><QuestionCircle /></span>
         <span>{question}</span>
       </div>
-      <div className={'prf-answer'}>
-        <span className={'prf-answer-mark'}><Lightbulb /></span>
+      <div className={styles.prfAnswer}>
+        <span className={styles.prfAnswerMark}><Lightbulb /></span>
         <span>{answer}</span>
       </div>
     </li>
@@ -21,7 +21,7 @@ const buildQna = (question: string, answer: string) => {
 };
 
 const About: FunctionComponent = () => {
-  return <Container className={'prf-about'}>
+  return <Container className={styles.prfAbout}>
     <Card>
       <Card.Body>
         <Card.Text>
@@ -56,7 +56,7 @@ const About: FunctionComponent = () => {
         <Accordion.Body>
           Когда я показал проект знакомым, я услышал несколько возражений.
 
-          <ul className={'prf-ul prf-qna'}>
+          <ul className={[styles.prfUl, styles.prfQna].join(' ')}>
             {
               buildQna('Аристотель - это устаревшая философия.',
                 'Не особо. С одной стороны, многие его идеи наивны, некоторые физические предположения - просто ложны. Однако, основное ядро диалектики Аристотеля до сих пор никто не смог внятно оспорить. Именно на нём построено как научное, так и христианское мировоззрение. Но самое интересное - что на диалектике Аристотеля построен наш здравый смысл. Закон исключённого третьего, поиски аксиом в науках, материализм с нематериальными сущностями, да и сама логика его рассуждений крайне близка современной. Аристотелем пронизан наш взгляд на мир, и он не может устареть.')
@@ -85,7 +85,7 @@ const About: FunctionComponent = () => {
         <Accordion.Body>
           <p>Существует четыре перевода «Метафизики» на русский язык.</p>
 
-          <ol className={'prf-ol-translations'}>
+          <ol className={styles.prfOlTranslations}>
             <li>Незавершённый перевод первых пяти книг П. Первова и В. Розанова 1895 года.</li>
             <li>Перевод тринадцатой и четырнадцатой книг А.Ф. Лосева 1929 года.</li>
             <li>Основной - перевод с древнегреческого А.В. Кубицкого 1934 года. Он издавался во множестве вариаций, самый полный, что я видел - как раз <a href="https://rutracker.org/forum/viewtopic.php?t=3917537">первое издание 1934 года</a>.</li>
@@ -146,7 +146,7 @@ const About: FunctionComponent = () => {
       <Accordion.Item eventKey="6">
         <Accordion.Header>ЧаВо</Accordion.Header>
         <Accordion.Body>
-          <ul className={'prf-ul prf-qna'}>
+          <ul className={[styles.prfUl, styles.prfQna].join(' ')}>
             {
               buildQna('Я нашёл опечатку, ошибку / Ты неправильно понял оригинал / Есть идея',
                 'Пишите в контакты.')

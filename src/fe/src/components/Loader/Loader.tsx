@@ -1,9 +1,9 @@
 ﻿import React, { FunctionComponent } from 'react';
-import './Loader.scss';
+import styles from './Loader.module.scss';
 
 const Loader: FunctionComponent = (): JSX.Element => {
-    return (<div className={'prf-loader'}>
-        <div className="lds-ripple">
+    return (<div className={styles.prfLoader}>
+        <div className={styles.ripple}>
             <div> </div>
             <div> </div>
         </div>

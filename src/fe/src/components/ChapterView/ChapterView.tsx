@@ -1,4 +1,4 @@
-import './ChapterView.scss';
+import styles from './ChapterView.module.scss';
 import React, {FunctionComponent} from "react";
 import ParagraphView from "../ParagraphView/ParagraphView";
 import {NavLink, RouteComponentProps, withRouter} from "react-router-dom";
@@ -18,11 +18,11 @@ type MatchParameters = {
 const buildEpigraph = (title: string, value: string) => {
   return (
     <div>
-      <div className={'prf-epigraph-title'}>
-        <span className={'prf-epigraph-title-mark'}><BookIcon /></span>
+      <div className={styles.prfEpigraphTitle}>
+        <span className={styles.prfEpigraphTitleMark}><BookIcon /></span>
         <span>{title}</span>
       </div>
-      <div dangerouslySetInnerHTML={{__html: value}} className={'prf-epigraph-value'}>
+      <div dangerouslySetInnerHTML={{__html: value}} className={styles.prfEpigraphValue}>
       </div>
     </div>
   );
@@ -44,12 +44,12 @@ const ChapterView: FunctionComponent<RouteComponentProps<MatchParameters>> = (pr
   }
 
   if (chapter && book) {
-    return <div className={'prf-chapter-view'}>
-      <Container fluid className={'prf-chapter-controls'}>
+    return <div className={styles.prfChapterView}>
+      <Container fluid>
         <Row>
           {
             chapter.id > 1 ?
-                <Col xs={1} className={'prf-chapter-links'}>
+                <Col xs={1} className={styles.prfChapterLinks}>
                   <NavLink to={`/books/${bookId}/${chapter.id - 1}`}><ArrowBarLeft size={24} /></NavLink>
                 </Col> :
                 <Col xs={1}> </Col>
@@ -62,7 +62,7 @@ const ChapterView: FunctionComponent<RouteComponentProps<MatchParameters>> = (pr
           <Col className="d-none d-lg-block" lg={5}>{chapter.rossEpigraph}</Col>
           {
             chapter.id < book.chapters.length ?
-                <Col xs={1} className={'prf-chapter-links'}>
+                <Col xs={1} className={styles.prfChapterLinks}>
                   <NavLink to={`/books/${bookId}/${chapter.id + 1}`}><ArrowBarRight size={24} /></NavLink>
                 </Col> :
                 <Col xs={1}> </Col>
@@ -71,7 +71,7 @@ const ChapterView: FunctionComponent<RouteComponentProps<MatchParameters>> = (pr
 
         <Row>
           <Col>
-            <h2 className={'prf-chapter-title'}>Глава {chapter.id}</h2>
+            <h2 className={styles.prfChapterTitle}>Глава {chapter.id}</h2>
           </Col>
         </Row>
       </Container>

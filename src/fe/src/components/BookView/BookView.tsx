@@ -1,6 +1,10 @@
-import './BookView.scss';
+import styles from './BookView.module.scss';
 import React, { FunctionComponent } from 'react';
-import { BookViewProperties } from './types';
+import { Book } from '../../types/types';
+
+type BookViewProperties = {
+  book: Book
+}
 
 const BookView: FunctionComponent<BookViewProperties> = ({ book }) => {
   return (<ol>

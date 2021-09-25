@@ -1,5 +1,5 @@
 ﻿import React, {FunctionComponent} from 'react';
-import './GeneralBookView.scss';
+import styles from './GeneralBookView.module.scss';
 import {NavLink, RouteComponentProps, withRouter} from "react-router-dom";
 import {useGetBookQuery} from "../accessor";
 import Loader from "../Loader/Loader";
@@ -23,11 +23,11 @@ const GeneralBookView: FunctionComponent<RouteComponentProps<MatchParameters>> =
 
     if (book) {
         return (
-            <ul className={'prf-general-book'}>
+            <ul className={styles.prfGeneralBook}>
                 {
                     book.chapters.map(x => {
-                        return <li key={x.key} className={'prf-book-chapter'}>
-                            <div className={'prf-book-chapter-header'}>
+                        return <li key={x.key} className={styles.prfBookChapter}>
+                            <div className={styles.prfBookChapterHeader}>
                                 <NavLink to={`/books/${bookId}/${x.id}`}>Глава {x.id}</NavLink>
                             </div>
                             <div dangerouslySetInnerHTML={{__html: `<div>${x.qBitSkyEpigraph}</div>`}}>

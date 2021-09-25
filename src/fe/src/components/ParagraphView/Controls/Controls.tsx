@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {ControlChange, ControlProperties} from '../types';
-import './Controls.scss';
+import styles from './Controls.module.scss';
 import {ParagraphHeader} from "../../../types/types";
 import {bus} from '../../../utils/bus';
 
@@ -23,13 +23,13 @@ const renderControl = ({paragraphKey, blockType, title, paragraphHeaderId, selec
 
   return (
     <li
-      className={['prf-control-list-item'].join(' ')}
+      className={[styles.prfControlListItem].join(' ')}
       key={key}
     >
       <input
         id={key}
         name={key}
-        className="prf-control-input"
+        className={styles.prfControlInput}
         checked={paragraphHeaderId === selectedId}
         type="radio"
         onChange={(e) => {
@@ -39,7 +39,7 @@ const renderControl = ({paragraphKey, blockType, title, paragraphHeaderId, selec
         value={JSON.stringify(value)}
       />
       <label
-        className="prf-control-label three-dots-text"
+        className={[styles.prfControlLabel, styles.threeDotsText].join(' ')}
         htmlFor={key}
         onDoubleClick={() => onChangeAll(value)}
       >
@@ -74,7 +74,7 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
   }, []);
 
   return (
-      <ul className="prf-control-list">
+      <ul className={styles.prfControlList}>
         {
           renderControl({
             title: 'Парафраз',

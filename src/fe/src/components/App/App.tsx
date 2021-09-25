@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.scss';
+import styles from './App.module.scss';
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,7 +20,7 @@ const App = (): JSX.Element => {
   loadColorTheme();
 
   return (
-      <div className="prf-app">
+      <div className={styles.prfApp}>
         <Router>
           <Menu/>
 

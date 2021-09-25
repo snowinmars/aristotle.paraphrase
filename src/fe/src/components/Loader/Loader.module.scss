@@ -16,26 +16,26 @@
   align-items: center;
   justify-content: center;
 
-  .lds-ripple {
+  .ripple {
     display: inline-block;
     position: relative;
     width: $size;
     height: $size;
   }
 
-  .lds-ripple div {
+  .ripple div {
     position: absolute;
     border: $width solid $color;
     opacity: 1;
     border-radius: 50%;
-    animation: lds-ripple $cycle cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    animation: ripple $cycle cubic-bezier(0, 0.2, 0.8, 1) infinite;
   }
 
-  .lds-ripple div:nth-child(2) {
+  .ripple div:nth-child(2) {
     animation-delay: (calc(#{$cycle} / 2));
   }
 
-  @keyframes lds-ripple {
+  @keyframes ripple {
     0% {
       top: calc(#{$size} / 2);
       left: calc(#{$size} / 2);

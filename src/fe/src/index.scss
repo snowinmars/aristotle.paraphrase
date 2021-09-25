@@ -25,28 +25,7 @@ body {
   background-color: var(--bs-body-bg);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.three-dots-text {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 #root {
   height: 100%;
   width: 100%;
-}
-
-.prf-app {
-  a {
-    color: var(--bs-link-color);
-
-    &:hover {
-      color: var(--bs-link-hover-color);
-    }
-  }
 }

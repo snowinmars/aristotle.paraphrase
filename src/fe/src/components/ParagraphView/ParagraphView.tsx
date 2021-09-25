@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import './ParagraphView.scss';
+import styles from './ParagraphView.module.scss';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -54,7 +54,7 @@ const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chap
   };
 
   return (
-      <Container fluid className={'prf-paragraph'}>
+      <Container fluid className={styles.prfParagraph}>
         <Row>
           <Col xs={12} lg={6}>
             <Controls
@@ -63,7 +63,7 @@ const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chap
                 selectedTextId={leftTextId}
                 parentChangeCallback={updateText}
             />
-            <sup className={'prf-paragraph-index'}>
+            <sup className={styles.prfParagraphIndex}>
               {paragraph.id}
             </sup>
             <Editor
@@ -82,7 +82,7 @@ const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chap
                 selectedTextId={rightTextId}
                 parentChangeCallback={(x) => updateText(x)}
             />
-            <sup className={'prf-paragraph-index'}>
+            <sup className={styles.prfParagraphIndex}>
               {paragraph.id}
             </sup>
             <Editor
@@ -107,7 +107,7 @@ const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chap
                       selectedTextId={notesTextId}
                       parentChangeCallback={(x) => updateText(x)}
                     />
-                    <sup className={'prf-paragraph-index'}>
+                    <sup className={styles.prfParagraphIndex}>
                       {paragraph.id}
                     </sup>
                     <Editor

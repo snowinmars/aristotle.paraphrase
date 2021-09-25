@@ -1,5 +1,5 @@
 ﻿/* purgecss start ignore */
-.prf-app {
+:global {
   a.navbar-brand,
   a.navbar-brand:focus,
   a.navbar-brand:active {
@@ -40,7 +40,7 @@
     }
   }
 
-  &.navbar-collapse .navbar-nav .nav-link.active {
+  .navbar-collapse .navbar-nav .nav-link.active {
     color: var(--bs-selection);
   }
 }

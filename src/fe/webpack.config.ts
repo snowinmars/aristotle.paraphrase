@@ -162,7 +162,7 @@ const configure = (webpackEnv: WebpackEnv) => {
         'react-native': 'react-native-web',
       },
       plugins: [
-        new ModuleScopePlugin(paths.appSrc, [
+        new ModuleScopePlugin(paths.appBuild, [
           'node_modules',
           paths.appNodeModules,
           paths.appPackageJson,
@@ -222,23 +222,31 @@ const configure = (webpackEnv: WebpackEnv) => {
           },
         },
         {
-          test: /\.(css)/,
+          test: /\.(scss|css)$/,
           use: [
-            {
+            isEnvDevelopment ? {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                esModule: true,
+              },
+            } : {
               loader: "style-loader",
               options: {
                 insert: '#insert-css-here',
+                esModule: true,
               },
             },
-            "css-loader",
-          ]
-        },
-        {
-          test: /\.(scss)$/,
-          use: [
-            // "style-loader",
-            MiniCssExtractPlugin.loader,
-            "css-loader",
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                modules: {
+                  namedExport: false,
+                  localIdentName: isEnvDevelopment ? "[local]--[hash:base64:5]" : "[hash:base64:8]",
+                  exportLocalsConvention: "camelCaseOnly",
+                },
+              }
+            },
             "sass-loader",
           ],
         },
@@ -368,9 +376,9 @@ const configure = (webpackEnv: WebpackEnv) => {
         filename: "[name].css",
         insert: '#insert-css-here',
       }),
-      new PurgecssPlugin({
-        paths: glob.sync(`${paths.appSrc}/**/*`, {nodir: true}),
-      }),
+      // new PurgecssPlugin({
+      //   paths: glob.sync(`${paths.appSrc}/**/*`, {nodir: true}),
+      // }),
     ].filter(Boolean),
     optimization: {
       minimize: isEnvProduction,
@@ -384,6 +392,7 @@ const configure = (webpackEnv: WebpackEnv) => {
     },
     stats: {
       children: false,
+      errorDetails: true,
     },
   };
 

@@ -1,5 +1,5 @@
 ﻿import React, {FunctionComponent} from 'react';
-import './BooksListView.scss';
+import styles from './BooksListView.module.scss';
 import {NavLink, withRouter} from "react-router-dom";
 import {useGetBooksQuery} from "../accessor";
 import Loader from "../Loader/Loader";
@@ -16,12 +16,12 @@ const BooksListView: FunctionComponent = (): JSX.Element => {
     }
 
     if (books) {
-        return <div className={'prf-book-list'}>
+        return <div className={styles.prfBookList}>
             <h3>Метафизика</h3>
             <ol>
                 {
                     books.map(book => {
-                        return <li key={book.key} className={'prf-book-list-item'}>
+                        return <li key={book.key} className={styles.prfBookListItem}>
                             <NavLink to={`/books/${book.id}/1`}>Книга {book.id}</NavLink>
                             <NavLink to={`/books/${book.id}`}>Краткое изложение</NavLink>
                         </li>;

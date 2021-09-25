@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import './Settings.scss';
+import styles from './Settings.module.scss';
 import { PhotoshopPicker} from "react-color";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
@@ -18,13 +18,13 @@ export const Settings: FunctionComponent = () => {
   };
 
   return (
-    <div className={'prf-settings'}>
-      <ButtonGroup className={'prf-settings-group'}>
+    <div className={styles.prfSettings}>
+      <ButtonGroup className={styles.prfSettingsGroup}>
         {colors.map((color) => (
           <ToggleButton
             key={color.id}
             id={`radio-${color.id}`}
-            className={'prf-settings-item'}
+            className={styles.prfSettingsItem}
             type="radio"
             variant="secondary"
             name="radio"
@@ -63,7 +63,7 @@ export const Settings: FunctionComponent = () => {
         }}
       />
 
-      <ToggleButtonGroup type="radio" name="prf-settings-picker" onChange={(themeId) => {
+      <ToggleButtonGroup type="radio" name={styles.prfSettingsPicker} onChange={(themeId) => {
         getTheme(themeId).forEach(color => setColorValue(color.id, color.value));
         saveColorTheme();
       }}>

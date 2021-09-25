@@ -1,5 +1,5 @@
 ﻿import React, {FunctionComponent, useEffect, useState} from 'react';
-import './Editor.scss';
+import styles from './Editor.module.scss';
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Form from "react-bootstrap/Form";
@@ -21,7 +21,7 @@ const validate = (text: string): boolean => {
 const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameters): JSX.Element => {
     const {text} = parameters;
     const feText = text.replaceAll(/<sup>(\d+)<\/sup>/g, (_, key) => {
-        return `<sup class='prf-notes-link'>${key}</sup>`;
+        return `<sup className={styles.prfNotesLink}>${key}</sup>`;
     });
 
     const [staticText, setStaticText] = useState(feText);
@@ -39,7 +39,7 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
         case Status.loading:
         case Status.editing:
             return (
-                <Form className={'prf-editor'} onSubmit={(e) => {
+                <Form className={styles.prfEditor} onSubmit={(e) => {
                     e.preventDefault();
 
                     setValidationText('');
@@ -64,9 +64,9 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
                             setStatus(Status.ready);
                         });
                 }}>
-                    <Form.Group className={'prf-loader-wrapper'}>
+                    <Form.Group className={styles.prfLoaderWrapper}>
                         <Form.Control
-                          className={'prf-editor'}
+                          className={styles.prfEditor}
                             as="textarea"
                             rows={15}
                             value={dynamicText}
@@ -79,7 +79,7 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
 
                         {
                             validationText &&
-                            <div className={'prf-editor-validation-text'}>
+                            <div className={styles.prfEditorValidationText}>
                                 {validationText}
                             </div>
                         }
@@ -89,7 +89,7 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
                                 <Loader />
                         }
 
-                        <ButtonGroup className={'prf-editor-control-group'} aria-label="Editor control group">
+                        <ButtonGroup className={styles.prfEditorControlGroup} aria-label="Editor control group">
                             <Button
                                 variant="danger"
                                 disabled={status === Status.loading}
@@ -110,9 +110,9 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
             );
         case Status.ready:
             return (
-                <span className={'prf-editor'}>
+                <span className={styles.prfEditor}>
             <PencilSquare
-                className={'prf-editor-pencil'}
+                className={styles.prfEditorPencil}
                 onClick={() => setStatus(Status.editing)}
             />
             <span dangerouslySetInnerHTML={{__html: staticText}}/>
