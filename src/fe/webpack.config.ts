@@ -97,6 +97,8 @@ const paths: Paths = {
   moduleFileExtensions,
 }
 
+console.log(paths);
+
 const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
 const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
 const git = (command: string): string => child_process.execSync(`git ${command}`, {encoding: 'utf8'}).trim()
@@ -161,6 +163,8 @@ const configure = (webpackEnv: WebpackEnv) => {
       },
       plugins: [
         new ModuleScopePlugin(paths.appSrc, [
+          'node_modules',
+          paths.appNodeModules,
           paths.appPackageJson,
           reactRefreshOverlayEntry,
         ]),
