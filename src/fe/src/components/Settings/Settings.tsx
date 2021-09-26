@@ -5,6 +5,12 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import {Color, colors, getTheme, getColorValue, setColorValue, saveColorTheme} from "./helpers";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import {Clipboard} from "react-bootstrap-icons";
 
 const Settings: FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
@@ -44,6 +50,34 @@ const Settings: FunctionComponent = () => {
           </ToggleButton>
         ))}
       </ButtonGroup>
+
+      <Row>
+        <Col>
+          <InputGroup className={["xl-3", "md-6", styles.colorInput].join(' ')}>
+            <InputGroup.Text style={{
+              backgroundColor: selectedValue,
+              color: selectedValue,
+            }}>:)</InputGroup.Text>
+            <FormControl
+              value={selectedValue}
+              onChange={(event) => {
+                const color = event.target.value;
+
+                set(color);
+                saveColorTheme();
+              }}
+            />
+            <Button
+              variant="secondary"
+              onClick={() => {
+                return navigator.clipboard.writeText(selectedValue);
+              }}
+            >
+              <Clipboard />
+            </Button>
+          </InputGroup>
+        </Col>
+      </Row>
 
       <HexColorPicker
         color={selectedValue}
