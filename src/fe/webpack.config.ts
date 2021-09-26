@@ -1,16 +1,20 @@
 import {InternalOptions, Manifest} from "webpack-manifest-plugin";
 import {FileDescriptor} from   "webpack-manifest-plugin/dist/helpers";
 import {Compiler} from "webpack";
+import {paths} from "./webpack/paths";
+import {getClientEnvironment} from "./webpack/env";
+import {git} from "./webpack/git";
+import {getScssLoadersRules} from "./webpack/scss-loaders";
 
 const os = require('os');
 const path = require('path');
 const fs = require('fs');
 const resolve = require('resolve');
-const child_process = require('child_process');
 const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
 const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlayInterop');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
@@ -18,8 +22,6 @@ const CopyPlugin = require("copy-webpack-plugin");
 const { DefinePlugin, SourceMapDevToolPlugin } = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
@@ -29,115 +31,51 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-const appDirectory: string = fs.realpathSync(process.cwd());
-export const resolveApp = (relativePath: string): string => path.resolve(appDirectory, relativePath);
-// Resolve file paths in the same order as webpack
-export const resolveModule = (resolveFn: (x: string) => string, filePath: string, moduleFileExtensions: string[]): string => {
-  const extension = moduleFileExtensions.find(extension =>
-      fs.existsSync(resolveFn(`${filePath}.${extension}`))
-  );
-
-  if (extension) {
-    return resolveFn(`${filePath}.${extension}`);
-  }
-
-  return resolveFn(`${filePath}.js`);
-};
-
-type Paths = {
-  readonly dotenv: string;
-  readonly appPath: string;
-  readonly publicUrlOrPath: string;
-  readonly appBuild: string;
-  readonly appPublic: string;
-  readonly appHtml: string;
-  readonly appFavicon: string;
-  readonly appIndexJs: string;
-  readonly appPackageJson: string;
-  readonly appSrc: string;
-  readonly appTsConfig: string;
-  readonly yarnLockFile: string;
-  readonly appNodeModules: string;
-  readonly swSrc: string;
-  readonly moduleFileExtensions: readonly string[];
-}
-
-const moduleFileExtensions = [
-      'web.mjs',
-      'mjs',
-      'web.ts',
-      'ts',
-      'web.tsx',
-      'tsx',
-      'web.jsx',
-      'jsx',
-      'web.js',
-      'js',
-      'json',
-    ];
-
-const paths: Paths = {
-  dotenv: resolveApp('.env'),
-  appPath: resolveApp('.'),
-  publicUrlOrPath: '/',
-  appBuild: resolveApp('dist'),
-  appPublic: resolveApp('public'),
-  appHtml: resolveApp('public/index.html'),
-  appFavicon: resolveApp('public/favicon.ico'),
-  appIndexJs: resolveModule(resolveApp, 'src/index', moduleFileExtensions),
-  appPackageJson: resolveApp('package.json'),
-  appSrc: resolveApp('src'),
-  yarnLockFile: resolveApp('yarn.lock'),
-  appTsConfig: resolveApp('tsconfig.json'),
-  appNodeModules: resolveApp('node_modules'),
-  swSrc: resolveModule(resolveApp, 'src/service-worker', moduleFileExtensions),
-  moduleFileExtensions,
-}
-
-const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
-const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
-const git = (command: string): string => child_process.execSync(`git ${command}`, {encoding: 'utf8'}).trim()
-
 type WebpackEnv = {
   readonly development: boolean | undefined;
   readonly production: boolean | undefined;
 }
 
+enum BuildEnv {
+  none = 'none',
+  development = 'development',
+  production = 'production',
+}
+
 const configure = (webpackEnv: WebpackEnv) => {
-  const isEnvDevelopment = webpackEnv.development === true;
-  const isEnvProduction = webpackEnv.production === true;
+  let buildEnv: BuildEnv = BuildEnv.none;
 
-  process.env.BABEL_ENV = isEnvDevelopment ? 'development' : 'production';
-  process.env.NODE_ENV = isEnvDevelopment ? 'development' : 'production';
+  if (webpackEnv.development === true) buildEnv = BuildEnv.development;
+  if (webpackEnv.production === true) buildEnv = BuildEnv.production;
+  if (buildEnv === BuildEnv.none) throw new Error(`Unknown env to build: ${JSON.stringify(webpackEnv)}`);
 
-  const getClientEnvironment = require('./config/env');
-  const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
+  process.env.BABEL_ENV = buildEnv;
+  process.env.NODE_ENV = buildEnv;
 
-  if (!isEnvProduction && !isEnvDevelopment) throw new Error(`Unknown env to build: ${JSON.stringify(webpackEnv)}`);
-  console.log('Building in', process.env.NODE_ENV === 'development' ? 'development' : 'production'); // rechecking NODE_ENV
+  const env = getClientEnvironment();
 
-  const isEnvProductionProfile = isEnvProduction && process.argv.includes('--profile');
+  console.log(`Building in ${buildEnv}`);
 
-  const config = {
-    mode: isEnvProduction ? 'production' : 'development',
-    bail: isEnvProduction,
-    devtool: 'source-map',
+  return {
+    mode: buildEnv,
+    bail: buildEnv === BuildEnv.production,
+    devtool: buildEnv === BuildEnv.development ? 'source-map' : undefined,
     entry: paths.appIndexJs,
     output: {
       libraryTarget: 'umd',
       path: paths.appBuild,
-      pathinfo: isEnvDevelopment,
+      pathinfo: buildEnv === BuildEnv.development,
       publicPath: paths.publicUrlOrPath,
       chunkLoadingGlobal: `webpackJsonpPrf`,
-      filename: () => isEnvProduction
-          ? 'static/js/[name].[contenthash:8].js'
-          : 'static/js/[name].js',
-      chunkFilename: () => isEnvProduction
-          ? 'static/js/[name].[contenthash:8].chunk.js'
-          : 'static/js/[name].chunk.js',
-      devtoolModuleFilenameTemplate: () => isEnvProduction
-          ? (info: { absoluteResourcePath: string }) => path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/')
-          : (info: { absoluteResourcePath: string }) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
+      filename: () => buildEnv === BuildEnv.development
+          ? 'static/js/[name].js'
+          : 'static/js/[name].[contenthash:8].js',
+      chunkFilename: () => buildEnv === BuildEnv.development
+          ? 'static/js/[name].chunk.js'
+          : 'static/js/[name].[contenthash:8].chunk.js',
+      devtoolModuleFilenameTemplate: () => buildEnv === BuildEnv.development
+          ? (info: { absoluteResourcePath: string }) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+          : (info: { absoluteResourcePath: string }) => path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/'),
       // this defaults to 'window', but by setting it to 'this' then
       // module chunks which are built will work in web workers as well.
       globalObject: 'this',
@@ -146,10 +84,8 @@ const configure = (webpackEnv: WebpackEnv) => {
       modules: [
         'node_modules',
         paths.appNodeModules,
-        isEnvDevelopment && paths.appSrc,
+        buildEnv === BuildEnv.development && paths.appSrc,
       ].filter(Boolean),
-      // https://github.com/facebook/create-react-app/issues/290
-      // `web` extension prefixes have been added for better support for React Native Web
       extensions: paths.moduleFileExtensions.map(ext => `.${ext}`),
       plugins: [
         // appBuild is a hack
@@ -178,68 +114,10 @@ const configure = (webpackEnv: WebpackEnv) => {
           include: paths.appSrc,
           exclude: /node_modules/,
           loader: require.resolve('babel-loader'),
-          options: {
-            customize: require.resolve('babel-preset-react-app/webpack-overrides'),
-            presets: [
-              [
-                require.resolve('babel-preset-react-app'),
-                {
-                  runtime: 'automatic',
-                },
-              ],
-            ],
-            plugins: [
-              [
-                require.resolve("babel-plugin-transform-react-jsx"),
-                {
-                  "runtime": "automatic",
-                }
-              ],
-              [
-                require.resolve('babel-plugin-named-asset-import'),
-                {
-                  loaderMap: {
-                    svg: {
-                      ReactComponent: '@svgr/webpack?-svgo,+titleProp,+ref![path]',
-                    },
-                  },
-                },
-              ],
-              isEnvDevelopment && require.resolve('react-refresh/babel'),
-            ].filter(Boolean),
-            cacheDirectory: true, // caching in ./node_modules/.cache/babel-loader/
-            cacheCompression: false, // See #6846 for context on why cacheCompression is disabled
-            compact: isEnvProduction,
-          },
         },
         {
           test: /\.(scss|css)$/,
-          use: [
-            isEnvDevelopment ? {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                esModule: true,
-              },
-            } : {
-              loader: "style-loader",
-              options: {
-                insert: '#insert-css-here',
-                esModule: true,
-              },
-            },
-            {
-              loader: 'css-loader',
-              options: {
-                importLoaders: 1,
-                modules: {
-                  namedExport: false,
-                  localIdentName: isEnvDevelopment ? "[local]--[hash:base64:5]" : "[hash:base64:8]",
-                  exportLocalsConvention: "camelCaseOnly",
-                },
-              }
-            },
-            "sass-loader",
-          ],
+          use: getScssLoadersRules(buildEnv === BuildEnv.development),
         },
         {
           test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
@@ -256,10 +134,10 @@ const configure = (webpackEnv: WebpackEnv) => {
       {
         apply(compiler: Compiler) {
           compiler.hooks.beforeRun.tap('Generate env', () => {
-            require('dotenv').config();
+            // require('dotenv') was called in getClientEnvironment()
             const env = {
-              GIT_KEY: isEnvDevelopment ? git('describe --always') : process.env.REACT_GIT_HASH,
-              MODE: isEnvDevelopment ? 'development' : 'production',
+              GIT_KEY: buildEnv === BuildEnv.development ? git('describe --always') : process.env.REACT_GIT_HASH,
+              MODE: buildEnv,
               IS_IN_DOCKER: process.env.IS_IN_DOCKER,
               REACT_APP_HOST: process.env.REACT_APP_HOST,
               REACT_APP_PORT: process.env.REACT_APP_PORT,
@@ -293,19 +171,19 @@ const configure = (webpackEnv: WebpackEnv) => {
           { from: paths.appPublic, to: "public" },
         ],
       }),
-      isEnvProduction && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
+      buildEnv === BuildEnv.production && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
       new InterpolateHtmlPlugin(HtmlWebPackPlugin, env.raw), // Makes some environment variables available in index.html.
       new ModuleNotFoundPlugin(paths.appPath),
       new DefinePlugin(env.stringified),
-      isEnvDevelopment && new ReactRefreshWebpackPlugin({
+      buildEnv === BuildEnv.development && new ReactRefreshWebpackPlugin({
         overlay: {
           entry: webpackDevClientEntry,
           module: reactRefreshOverlayEntry,
           sockIntegration: false,
         },
       }),
-      isEnvDevelopment && new CaseSensitivePathsPlugin(),
-      isEnvDevelopment && new WatchMissingNodeModulesPlugin(paths.appNodeModules),
+      buildEnv === BuildEnv.development && new CaseSensitivePathsPlugin(),
+      buildEnv === BuildEnv.development && new WatchMissingNodeModulesPlugin(paths.appNodeModules),
       new WebpackManifestPlugin({
         fileName: 'asset-manifest.json',
         publicPath: paths.publicUrlOrPath,
@@ -327,7 +205,7 @@ const configure = (webpackEnv: WebpackEnv) => {
       } as Partial<InternalOptions>),
       // Generate a service worker script that will precache, and keep up to date,
       // the HTML & assets that are part of the webpack build.
-      isEnvProduction &&
+      buildEnv === BuildEnv.production &&
       fs.existsSync(paths.swSrc) &&
       new WorkboxWebpackPlugin.InjectManifest({
         swSrc: paths.swSrc,
@@ -339,7 +217,7 @@ const configure = (webpackEnv: WebpackEnv) => {
         typescript: resolve.sync('typescript', {
           basedir: paths.appNodeModules,
         }),
-        async: isEnvDevelopment,
+        async: buildEnv === BuildEnv.development,
         checkSyntacticErrors: true,
         resolveModuleNameModule: process.versions.pnp
             ? `${__dirname}/pnpTs.js`
@@ -361,11 +239,7 @@ const configure = (webpackEnv: WebpackEnv) => {
           '!**/src/setupTests.*',
         ],
         silent: false,
-        formatter: isEnvProduction ? typescriptFormatter : undefined,
-      }),
-      isEnvDevelopment && new BundleAnalyzerPlugin({
-        analyzerHost: '127.0.0.1',
-        analyzerPort: '8888',
+        formatter: buildEnv === BuildEnv.production ? typescriptFormatter : undefined,
       }),
       new MiniCssExtractPlugin({
         filename: "[name].css",
@@ -378,7 +252,7 @@ const configure = (webpackEnv: WebpackEnv) => {
     optimization: {
       usedExports: true,
       nodeEnv: process.env.NODE_ENV,
-      minimize: isEnvProduction,
+      minimize: buildEnv === BuildEnv.production,
       minimizer: [new TerserPlugin({
         parallel: os.cpus().length - 1,
         terserOptions: {
@@ -392,10 +266,6 @@ const configure = (webpackEnv: WebpackEnv) => {
       errorDetails: true,
     },
   };
-
-  // console.log(JSON.stringify(config));
-
-  return config;
 }
 
 module.exports = configure;
