@@ -6,7 +6,7 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import {Color, colors, getTheme, getColorValue, setColorValue, saveColorTheme} from "./helpers";
 
-export const Settings: FunctionComponent = () => {
+const Settings: FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedValue, setSelectedValue] = useState(getColorValue(selectedColor.id));
   const [initedColor, setInitedColor] = useState(selectedValue);
@@ -67,3 +67,5 @@ export const Settings: FunctionComponent = () => {
     </div>
   );
 };
+
+export default Settings;
