@@ -1,5 +1,6 @@
 import {InternalOptions, Manifest} from "webpack-manifest-plugin";
 import {FileDescriptor} from   "webpack-manifest-plugin/dist/helpers";
+import {Compiler} from "webpack";
 
 const os = require('os');
 const path = require('path');
@@ -56,6 +57,7 @@ type Paths = {
   readonly appBuild: string;
   readonly appPublic: string;
   readonly appHtml: string;
+  readonly appEnvGen: string;
   readonly appIndexJs: string;
   readonly appPackageJson: string;
   readonly appSrc: string;
@@ -86,6 +88,7 @@ const paths: Paths = {
   publicUrlOrPath: '/',
   appBuild: resolveApp('dist'),
   appPublic: resolveApp('public'),
+  appEnvGen: resolveApp('public/env-config.js.gen'),
   appHtml: resolveApp('public/index.html'),
   appIndexJs: resolveModule(resolveApp, 'src/index', moduleFileExtensions),
   appPackageJson: resolveApp('package.json'),
@@ -112,8 +115,8 @@ const configure = (webpackEnv: WebpackEnv) => {
   const isEnvDevelopment = webpackEnv.development === true;
   const isEnvProduction = webpackEnv.production === true;
 
-  process.env.BABEL_ENV = 'development';
-  process.env.NODE_ENV = 'development';
+  process.env.BABEL_ENV = isEnvDevelopment ? 'development' : 'production';
+  process.env.NODE_ENV = isEnvDevelopment ? 'development' : 'production';
 
   const getClientEnvironment = require('./config/env');
   const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
@@ -262,26 +265,28 @@ const configure = (webpackEnv: WebpackEnv) => {
     },
     plugins: [
       new CleanWebpackPlugin(),
-      new PrebuildPlugin({
-        build: () => {
-          require('dotenv').config();
-          const env = {
-            GIT_KEY: git('describe --always'),
-            MODE: isEnvDevelopment ? 'development' : 'production',
-            IS_IN_DOCKER: process.env.IS_IN_DOCKER,
-            REACT_APP_HOST: process.env.REACT_APP_HOST,
-            REACT_APP_PORT: process.env.REACT_APP_PORT,
-            REACT_APP_PROTOCOL: process.env.REACT_APP_PROTOCOL,
-          };
+      {
+        apply(compiler: Compiler) {
+          compiler.hooks.beforeRun.tap('Generate env', () => {
+            require('dotenv').config();
+            const env = {
+              GIT_KEY: isEnvDevelopment ? git('describe --always') : process.env.REACT_GIT_HASH,
+              MODE: isEnvDevelopment ? 'development' : 'production',
+              IS_IN_DOCKER: process.env.IS_IN_DOCKER,
+              REACT_APP_HOST: process.env.REACT_APP_HOST,
+              REACT_APP_PORT: process.env.REACT_APP_PORT,
+              REACT_APP_PROTOCOL: process.env.REACT_APP_PROTOCOL,
+            };
 
-          const envGen = './public/env-config.js.gen';
+            const envGen = './public/env-config.js.gen';
 
-          if (fs.existsSync(envGen)) {
-            fs.unlinkSync(envGen);
-          }
-          fs.writeFileSync(envGen, `window._env_ = ${JSON.stringify(env, null, 2)}`);
+            if (fs.existsSync(envGen)) {
+              fs.unlinkSync(envGen);
+            }
+            fs.writeFileSync(envGen, `window._env_ = ${JSON.stringify(env, null, 2)}`);
+          })
         }
-      }),
+      },
       new HtmlWebPackPlugin({
         title: 'Helloworld',
         filename: 'public/index.html',
@@ -291,6 +296,13 @@ const configure = (webpackEnv: WebpackEnv) => {
       new CopyPlugin({
         patterns: [
           { from: paths.appSrc, to: "src" },
+          {
+            from: paths.appPublic,
+            to: "public",
+            globOptions: {
+              ignore: ['**/index.html'], // created by HtmlWebPackPlugin
+            }
+          },
         ],
       }),
       isEnvProduction && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
@@ -368,7 +380,7 @@ const configure = (webpackEnv: WebpackEnv) => {
         silent: false,
         formatter: isEnvProduction ? typescriptFormatter : undefined,
       }),
-      new BundleAnalyzerPlugin({
+      isEnvDevelopment && new BundleAnalyzerPlugin({
         analyzerHost: '127.0.0.1',
         analyzerPort: '8888',
       }),
@@ -386,7 +398,6 @@ const configure = (webpackEnv: WebpackEnv) => {
         parallel: os.cpus().length - 1,
         terserOptions: {
           ecma: 5,
-
         }
       })],
     },

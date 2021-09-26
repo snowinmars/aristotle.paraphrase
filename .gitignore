@@ -74,4 +74,5 @@ src/fe/env-config.js
 
 **/.env
 
+**/dist/
 src/crt/letsencrypt/live/ariphrase.ru/*
