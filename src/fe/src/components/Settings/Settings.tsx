@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import styles from './Settings.module.scss';
-import { PhotoshopPicker} from "react-color";
+import { HexColorPicker } from "react-colorful";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
@@ -45,20 +45,10 @@ export const Settings: FunctionComponent = () => {
         ))}
       </ButtonGroup>
 
-      <PhotoshopPicker
+      <HexColorPicker
         color={selectedValue}
-        header={selectedColor.name}
         onChange={(color) => {
-          set(color.hex);
-          saveColorTheme();
-        }}
-        onCancel={() => {
-          set(initedColor);
-          saveColorTheme();
-        }}
-        onAccept={() => {
-          set(selectedValue);
-          setInitedColor(selectedValue);
+          set(color);
           saveColorTheme();
         }}
       />

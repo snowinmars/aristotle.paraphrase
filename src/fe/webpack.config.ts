@@ -18,7 +18,7 @@ const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlay
 require.resolve('react/jsx-runtime');
 
 const CopyPlugin = require("copy-webpack-plugin");
-const { IgnorePlugin, DefinePlugin } = require('webpack');
+const { IgnorePlugin, DefinePlugin, SourceMapDevToolPlugin } = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -57,7 +57,7 @@ type Paths = {
   readonly appBuild: string;
   readonly appPublic: string;
   readonly appHtml: string;
-  readonly appEnvGen: string;
+  readonly appFavicon: string;
   readonly appIndexJs: string;
   readonly appPackageJson: string;
   readonly appSrc: string;
@@ -88,8 +88,8 @@ const paths: Paths = {
   publicUrlOrPath: '/',
   appBuild: resolveApp('dist'),
   appPublic: resolveApp('public'),
-  appEnvGen: resolveApp('public/env-config.js.gen'),
   appHtml: resolveApp('public/index.html'),
+  appFavicon: resolveApp('public/favicon.ico'),
   appIndexJs: resolveModule(resolveApp, 'src/index', moduleFileExtensions),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
@@ -99,8 +99,6 @@ const paths: Paths = {
   swSrc: resolveModule(resolveApp, 'src/service-worker', moduleFileExtensions),
   moduleFileExtensions,
 }
-
-console.log(paths);
 
 const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
 const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
@@ -122,14 +120,14 @@ const configure = (webpackEnv: WebpackEnv) => {
   const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
   if (!isEnvProduction && !isEnvDevelopment) throw new Error(`Unknown env to build: ${JSON.stringify(webpackEnv)}`);
-  console.log('Building in', isEnvDevelopment ? 'development' : 'production');
+  console.log('Building in', process.env.NODE_ENV === 'development' ? 'development' : 'production'); // rechecking NODE_ENV
 
   const isEnvProductionProfile = isEnvProduction && process.argv.includes('--profile');
 
   const config = {
     mode: isEnvProduction ? 'production' : 'development',
     bail: isEnvProduction,
-    devtool: isEnvProduction ? false : 'source-map',
+    devtool: 'source-map',
     entry: paths.appIndexJs,
     output: {
       libraryTarget: 'umd',
@@ -288,10 +286,17 @@ const configure = (webpackEnv: WebpackEnv) => {
         }
       },
       new HtmlWebPackPlugin({
-        title: 'Helloworld',
-        filename: 'public/index.html',
-        inject: true,
+        title: 'Prf',
+        filename: 'index.html',
         template: 'public/index.html',
+        inject: true,
+        favicon: paths.appFavicon,
+        meta: {
+          'viewport': 'width=device-width, initial-scale=1, shrink-to-fit=no',
+          'theme-color': '#495057',
+          'description': 'Парафраз Метафизики Аристотеля',
+          'charset': 'utf-8',
+        }
       }),
       new CopyPlugin({
         patterns: [
@@ -388,15 +393,21 @@ const configure = (webpackEnv: WebpackEnv) => {
         filename: "[name].css",
         insert: '#insert-css-here',
       }),
+      new SourceMapDevToolPlugin({
+        filename: "[file].map"
+      }),
       // new PurgecssPlugin({
       //   paths: glob.sync(`${paths.appSrc}/**/*`, {nodir: true}),
       // }),
     ].filter(Boolean),
     optimization: {
+      usedExports: true,
+      nodeEnv: process.env.NODE_ENV,
       minimize: isEnvProduction,
       minimizer: [new TerserPlugin({
         parallel: os.cpus().length - 1,
         terserOptions: {
+          sourceMap: true,
           ecma: 5,
         }
       })],
