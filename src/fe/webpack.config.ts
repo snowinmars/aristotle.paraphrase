@@ -5,25 +5,20 @@ import {Compiler} from "webpack";
 const os = require('os');
 const path = require('path');
 const fs = require('fs');
-const glob = require('glob');
 const resolve = require('resolve');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const PrebuildPlugin = require('prebuild-webpack-plugin');
-const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const child_process = require('child_process');
-const modules = require('./config/modules');
 const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
 const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlayInterop');
-require.resolve('react/jsx-runtime');
+const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const CopyPlugin = require("copy-webpack-plugin");
-const { IgnorePlugin, DefinePlugin, SourceMapDevToolPlugin } = require('webpack');
-const CompressionPlugin = require('compression-webpack-plugin');
+const { DefinePlugin, SourceMapDevToolPlugin } = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const PurgecssPlugin = require('purgecss-webpack-plugin')
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
@@ -32,7 +27,6 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const appDirectory: string = fs.realpathSync(process.cwd());
@@ -157,12 +151,8 @@ const configure = (webpackEnv: WebpackEnv) => {
       // https://github.com/facebook/create-react-app/issues/290
       // `web` extension prefixes have been added for better support for React Native Web
       extensions: paths.moduleFileExtensions.map(ext => `.${ext}`),
-      alias: {
-        // Support React Native Web
-        // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-        'react-native': 'react-native-web',
-      },
       plugins: [
+        // appBuild is a hack
         new ModuleScopePlugin(paths.appBuild, [
           'node_modules',
           paths.appNodeModules,
@@ -300,24 +290,12 @@ const configure = (webpackEnv: WebpackEnv) => {
       }),
       new CopyPlugin({
         patterns: [
-          { from: paths.appSrc, to: "src" },
-          {
-            from: paths.appPublic,
-            to: "public",
-            globOptions: {
-              ignore: ['**/index.html'], // created by HtmlWebPackPlugin
-            }
-          },
+          { from: paths.appPublic, to: "public" },
         ],
       }),
       isEnvProduction && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
       new InterpolateHtmlPlugin(HtmlWebPackPlugin, env.raw), // Makes some environment variables available in index.html.
       new ModuleNotFoundPlugin(paths.appPath),
-      // Makes some environment variables available to the JS code, for example:
-      // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
-      // It is absolutely essential that NODE_ENV is set to production
-      // during a production build.
-      // Otherwise React will be compiled in the very slow development mode.
       new DefinePlugin(env.stringified),
       isEnvDevelopment && new ReactRefreshWebpackPlugin({
         overlay: {
@@ -396,9 +374,6 @@ const configure = (webpackEnv: WebpackEnv) => {
       new SourceMapDevToolPlugin({
         filename: "[file].map"
       }),
-      // new PurgecssPlugin({
-      //   paths: glob.sync(`${paths.appSrc}/**/*`, {nodir: true}),
-      // }),
     ].filter(Boolean),
     optimization: {
       usedExports: true,
