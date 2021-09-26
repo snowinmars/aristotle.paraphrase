@@ -1,8 +1,10 @@
 .prf-menu {
   .prf-nav > .prf-nav-wrapper {
-    align-items: flex-end;
-    flex-direction: row;
-    justify-content: space-around;
+    width: 100%;
+
+    a:last-of-type {
+      margin-left: auto
+    }
 
     .prf-nav-books-dropdown {
       display: flex;

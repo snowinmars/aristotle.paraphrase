@@ -29,14 +29,6 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse className={styles.prfNav} id="basic-navbar-nav">
         <Nav className={['mr-auto', styles.prfNavWrapper].join(' ')}>
-          <Nav.Link
-            active={false}
-            href={'https://github.com/snowinmars/aristotle.paraphrase'}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Github />
-          </Nav.Link>
           <Nav.Link as={NavLink} to={'/'} isActive={() => activeKey === '/'}><QuestionCircle /></Nav.Link>
           <NavDropdown className={styles.prfNavBooksDropdown} active={activeKey === '/books/'} title={<Book />} id={styles.prfNavBooksDropdown}>
             <NavDropdown.Item as={NavLink} to="/books/">Список</NavDropdown.Item>
@@ -45,6 +37,14 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
           </NavDropdown>
           <Nav.Link as={NavLink} isActive={() => activeKey === '/contacts/'} to="/contacts/"> <At /> </Nav.Link>
           <Nav.Link as={NavLink} isActive={() => activeKey === '/settings/'} to={"/settings/"}><Gear /></Nav.Link>
+          <Nav.Link
+            active={false}
+            href={'https://github.com/snowinmars/aristotle.paraphrase'}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Github />
+          </Nav.Link>
         </Nav>
         <Form>
           <FormControl type="text" placeholder="TBD" disabled className={'mr-sm-2'} />

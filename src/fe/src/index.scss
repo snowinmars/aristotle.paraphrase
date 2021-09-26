@@ -25,7 +25,9 @@ body {
   background-color: var(--bs-body-bg);
 }
 
-#root {
-  height: 100%;
-  width: 100%;
+:global {
+  #root {
+    height: 100%;
+    width: 100%;
+  }
 }
