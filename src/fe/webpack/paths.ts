@@ -24,6 +24,7 @@ export type Paths = {
   readonly appBuild: string;
   readonly appPublic: string;
   readonly appHtml: string;
+  readonly appEnvGen: string;
   readonly appFavicon: string;
   readonly appIndexJs: string;
   readonly appPackageJson: string;
@@ -56,6 +57,7 @@ export const paths: Paths = {
   appBuild: resolveApp('dist'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
+  appEnvGen: resolveApp('public/env-config.js.gen'),
   appFavicon: resolveApp('public/favicon.ico'),
   appIndexJs: resolveModule(resolveApp, 'src/index', moduleFileExtensions),
   appPackageJson: resolveApp('package.json'),

@@ -15,8 +15,6 @@ import {Clipboard} from "react-bootstrap-icons";
 const Settings: FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedValue, setSelectedValue] = useState(getColorValue(selectedColor.id));
-  const [initedColor, setInitedColor] = useState(selectedValue);
-  useEffect(() => setInitedColor(selectedValue), [selectedColor]);
 
   const set = (hex: string) => {
     setSelectedValue(hex);
@@ -42,7 +40,6 @@ const Settings: FunctionComponent = () => {
 
               setSelectedColor(color);
               setSelectedValue(value);
-              setInitedColor(value);
               saveColorTheme();
             }}
           >

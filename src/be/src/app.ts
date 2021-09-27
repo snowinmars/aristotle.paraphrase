@@ -3,6 +3,7 @@ import {buildBooks, push, updateRamParagraph, validParagraph} from "./functions.
 import cors from "cors";
 import bodyParser from "body-parser";
 import pino from 'pino';
+import {Book, Chapter} from "./types";
 
 const forbidAuth = false;
 
@@ -25,7 +26,14 @@ app.get('/api/health', (request: Request, response: Response) => {
 });
 
 app.get('/api/books', (request: Request, response: Response) => {
-    return response.status(200).json(books);
+    return response.status(200).json(books.map((book: Book): Book => {
+        return {
+            id: book.id,
+            key: book.key,
+            headers: book.headers,
+            chapters: []
+        }
+    }));
 });
 
 app.get('/api/books/:bookId', (request: Request, response: Response) => {
@@ -33,7 +41,20 @@ app.get('/api/books/:bookId', (request: Request, response: Response) => {
     const book = books.filter(x => x.id === bookId)[0];
     if (!book) return response.status(404).json({});
 
-    return response.status(200).json(book);
+    return response.status(200).json({
+        id: book.id,
+        key: book.key,
+        headers: book.headers,
+        chapters: book.chapters.map((chapter: Chapter): Chapter => {
+            return {
+                id: chapter.id,
+                key: chapter.key,
+                qBitSkyEpigraph: chapter.qBitSkyEpigraph,
+                rossEpigraph: chapter.rossEpigraph,
+                paragraphs: [],
+            }
+        }),
+    });
 });
 
 app.get('/api/books/:bookId/:chapterId', (request: Request, response: Response) => {

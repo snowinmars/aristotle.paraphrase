@@ -54,18 +54,17 @@ const ChapterView: FunctionComponent<RouteComponentProps<MatchParameters>> = (pr
                 </Col> :
                 <Col xs={1}> </Col>
           }
-          <Col xs={10} lg={5}>
+          <Col xs={10} lg={8}>
             {
               buildEpigraph('Парафраз Кубицкого А.В.', chapter.qBitSkyEpigraph)
             }
           </Col>
-          <Col className="d-none d-lg-block" lg={5}>{chapter.rossEpigraph}</Col>
           {
             chapter.id < book.chapters.length ?
-                <Col xs={1} className={styles.prfChapterLinks}>
+                <Col xs={1} lg={{span: 1, offset: 2}} className={styles.prfChapterLinks}>
                   <NavLink to={`/books/${bookId}/${chapter.id + 1}`}><ArrowBarRight size={24} /></NavLink>
                 </Col> :
-                <Col xs={1}> </Col>
+                <Col xs={1} lg={{span: 1, offset: 2}}> </Col>
           }
         </Row>
 

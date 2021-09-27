@@ -1,12 +1,5 @@
-// how to import from bootstrap variables ONCE?
-$grid-breakpoints: (
-  xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px,
-  xxl: 1400px
-) !default;
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
 
 .prfSettings {
   display: flex;
@@ -29,19 +22,19 @@ $grid-breakpoints: (
     flex-wrap: wrap;
   }
 
-  .prfSettingsItem {
+  label.prfSettingsItem {
     flex: 50%;
   }
 
   :global {
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      .reactColorful {
+      .react-colorful {
         width: 400px;
         height: 300px;
       }
     }
     @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
-      .reactColorful {
+      .react-colorful {
         width: 200px;
         height: 200px;
       }

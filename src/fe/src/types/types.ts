@@ -8,41 +8,41 @@ export enum ParagraphHeader {
 }
 
 export type EditorParameters = {
-  bookId: number,
-  chapterId: number,
-  paragraphId: number,
-  header: ParagraphHeader,
-  text: string
+  readonly bookId: number;
+  readonly chapterId: number;
+  readonly paragraphId: number;
+  readonly header: ParagraphHeader;
+  readonly text: string;
 };
 
 export type MultiText = {
-  paraphrase: string,
-  paraphraseNotes: string,
+  readonly paraphrase: string;
+  readonly paraphraseNotes: string;
 
-  qBitSky: string,
-  qBitSkyNotes: string,
+  readonly qBitSky: string;
+  readonly qBitSkyNotes: string;
 
-  ross: string,
-  rossNotes: string,
+  readonly ross: string;
+  readonly rossNotes: string;
 }
 
 export type Paragraph = {
-  id: number,
-  key: string,
-  text: MultiText,
+  readonly id: number;
+  readonly key: string;
+  readonly text: MultiText;
 }
 
 export type Chapter = {
-  id: number,
-  key: string,
-  qBitSkyEpigraph: string,
-  rossEpigraph: string,
-  paragraphs: Paragraph[]
+  readonly id: number;
+  readonly key: string;
+  readonly qBitSkyEpigraph: string;
+  readonly rossEpigraph: string;
+  readonly paragraphs: Paragraph[];
 }
 
 export type Book = {
-  id: number,
-  key: string,
-  headers: ParagraphHeader[],
-  chapters: Chapter[]
+  readonly id: number;
+  readonly key: string;
+  readonly headers: ParagraphHeader[];
+  readonly chapters: Chapter[];
 }

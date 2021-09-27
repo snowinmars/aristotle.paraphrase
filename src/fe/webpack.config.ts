@@ -53,7 +53,9 @@ const configure = (webpackEnv: WebpackEnv) => {
   process.env.NODE_ENV = buildEnv;
 
   const env = getClientEnvironment();
-
+  if (buildEnv === BuildEnv.development) {
+    process.env.REACT_GIT_HASH = git('describe --always');
+  }
   console.log(`Building in ${buildEnv}`);
 
   return {
@@ -79,6 +81,13 @@ const configure = (webpackEnv: WebpackEnv) => {
       // this defaults to 'window', but by setting it to 'this' then
       // module chunks which are built will work in web workers as well.
       globalObject: 'this',
+    },
+    watch: buildEnv === BuildEnv.development,
+    watchOptions: {
+      ignored: [
+        paths.appNodeModules,
+        paths.appEnvGen,
+      ],
     },
     resolve: {
       modules: [
@@ -120,6 +129,14 @@ const configure = (webpackEnv: WebpackEnv) => {
           use: getScssLoadersRules(buildEnv === BuildEnv.development),
         },
         {
+          test: /\.bscss$/,
+          use: [
+            buildEnv === BuildEnv.development ? MiniCssExtractPlugin.loader : "style-loader",
+            'css-loader',
+            "sass-loader",
+          ],
+        },
+        {
           test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
           type: 'asset/resource',
         },
@@ -133,11 +150,13 @@ const configure = (webpackEnv: WebpackEnv) => {
       new CleanWebpackPlugin(),
       {
         apply(compiler: Compiler) {
-          compiler.hooks.beforeRun.tap('Generate env', () => {
+          compiler.hooks.compile.tap('Generate env', () => {
+            console.log('\nGenerate env\n');
+
             // require('dotenv') was called in getClientEnvironment()
             const env = {
-              GIT_KEY: buildEnv === BuildEnv.development ? git('describe --always') : process.env.REACT_GIT_HASH,
               MODE: buildEnv,
+              GIT_KEY: process.env.REACT_GIT_HASH,
               IS_IN_DOCKER: process.env.IS_IN_DOCKER,
               REACT_APP_HOST: process.env.REACT_APP_HOST,
               REACT_APP_PORT: process.env.REACT_APP_PORT,
@@ -149,7 +168,7 @@ const configure = (webpackEnv: WebpackEnv) => {
             if (fs.existsSync(envGen)) {
               fs.unlinkSync(envGen);
             }
-            fs.writeFileSync(envGen, `window._env_ = ${JSON.stringify(env, null, 2)}`);
+            fs.writeFileSync(envGen, `window._env_ = ${JSON.stringify(env, null, 2)}\n`);
           })
         }
       },
@@ -164,6 +183,7 @@ const configure = (webpackEnv: WebpackEnv) => {
           'theme-color': '#495057',
           'description': 'Парафраз Метафизики Аристотеля',
           'charset': 'utf-8',
+          'gitHash': process.env.REACT_GIT_HASH,
         }
       }),
       new CopyPlugin({

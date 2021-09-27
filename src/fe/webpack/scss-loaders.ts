@@ -19,7 +19,7 @@ export const getScssLoadersRules = (dev: boolean) => [
       importLoaders: 1,
       modules: {
         namedExport: false,
-        localIdentName: dev ? "[local]--[hash:base64:5]" : "[hash:base64:8]",
+        localIdentName: dev ? "[local]--[hash:base64:8]" : "[hash:base64:8]",
         exportLocalsConvention: "camelCaseOnly",
       },
     }
