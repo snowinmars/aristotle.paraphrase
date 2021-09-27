@@ -1,25 +1,25 @@
-.prf-chapter-view {
-  .prf-chapter-links {
+.prfChapterView {
+  .prfChapterLinks {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .prf-chapter-title {
+  .prfChapterTitle {
     text-align: center;
   }
 
-  .prf-epigraph-title {
+  .prfEpigraphTitle {
     font-size: 120%;
     margin-bottom: 0.5em;
   }
 
-  .prf-epigraph-value {
+  .prfEpigraphValue {
     margin-left: 2em;
   }
 
-  .prf-epigraph-title-mark,
-  .prf-epigraph-value-mark {
+  .prfEpigraphTitleMark,
+  .prfEpigraphValueMark {
     margin-right: 1em;
     vertical-align: text-bottom;
   }

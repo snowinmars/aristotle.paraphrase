@@ -1,45 +1,45 @@
-div.prf-about {
+div.prfAbout {
   padding-right: 0;
   padding-left: 0;
 }
 
-.prf-about {
-  .prf-ul {
+.prfAbout {
+  .prfUl {
     list-style: none;
     margin: 0 2em;
     padding: 0;
   }
 
-  .prf-qna {
-    .prf-qna-item {
+  .prfQna {
+    .prfQnaItem {
       margin: 1em 0;
 
-      .prf-question {
+      .prfQuestion {
         font-size: 120%;
         margin-bottom: 0.5em;
       }
 
-      .prf-answer {
+      .prfAnswer {
         margin-left: 2em;
       }
 
-      .prf-question-mark,
-      .prf-answer-mark {
+      .prfQuestionMark,
+      .prfAnswerMark {
         margin-right: 1em;
         vertical-align: text-bottom;
       }
 
-      .prf-question-mark {
+      .prfQuestionMark {
         color: var(--bs-component-active-color);
       }
 
-      .prf-answer-mark {
+      .prfAnswerMark {
         color: var(--bs-selection);
       }
     }
   }
 
-  .prf-ol-translations {
+  .prfOlTranslations {
     margin-left: 2em;
   }
 }

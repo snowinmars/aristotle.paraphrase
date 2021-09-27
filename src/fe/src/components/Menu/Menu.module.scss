@@ -8,8 +8,8 @@ $grid-breakpoints: (
   xxl: 1400px
 ) !default;
 
-.prf-menu {
-  .prf-nav > .prf-nav-wrapper {
+.prfMenu {
+  .prfNav > .prfNavWrapper {
     align-items: flex-end;
     flex-direction: row;
     justify-content: space-around;
@@ -21,14 +21,14 @@ $grid-breakpoints: (
       }
     }
 
-    .prf-nav-books-dropdown {
+    .prfNavBooksDropdown {
       display: flex;
       align-items: center;
       flex-direction: column;
     }
   }
 
-  .prf-nav {
+  .prfNav {
     justify-content: space-between;
   }
 }

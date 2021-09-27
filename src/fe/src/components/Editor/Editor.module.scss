@@ -1,9 +1,9 @@
-﻿.prf-editor {
-  .prf-notes-link {
+﻿.prfEditor {
+  .prfNotesLink {
     color: var(--bs-selection);
   }
 
-  .prf-editor-pencil {
+  .prfEditorPencil {
     color: var(--bs-card-color);
 
     margin-right: 1em;
@@ -15,25 +15,25 @@
     }
   }
 
-  .prf-editor-validation-text {
+  .prfEditorValidationText {
     color: var(--bs-danger);
   }
 
-  .prf-loader-wrapper {
+  .prfLoaderWrapper {
     position: relative;
 
-    .prf-editor,
-    .prf-editor:focus {
+    .prfEditor,
+    .prfEditor:focus {
       color: var(--bs-body-color-hover);
       background-color: var(--bs-body-bg-hover);
       border: none;
     }
 
-    .prf-editor:focus {
+    .prfEditor:focus {
       box-shadow: 0 0 0 1px var(--bs-body-bg);
     }
 
-    .prf-editor-control-group {
+    .prfEditorControlGroup {
       display: flex;
     }
   }
