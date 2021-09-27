@@ -131,7 +131,12 @@ const configure = (webpackEnv: WebpackEnv) => {
         {
           test: /\.bscss$/,
           use: [
-            buildEnv === BuildEnv.development ? MiniCssExtractPlugin.loader : "style-loader",
+            buildEnv === BuildEnv.development ? MiniCssExtractPlugin.loader : {
+              loader: "style-loader",
+              options: {
+                insert: '#insert-bcss-here',
+              }
+            },
             'css-loader',
             "sass-loader",
           ],
