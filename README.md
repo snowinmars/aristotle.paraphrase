@@ -71,11 +71,19 @@ Using a developer build, you will not be able to push changes elsewhere: all git
 
 ### Create new empty chapter
 1. `cd src/be`
-2. `yarn chapter 1 2 3` , where `1` is book id, `2` is chapter id and `3` is paragraphs count (f.e., from 1 to 3 included). Existing files will be touched, unexisting files will be created as empty.
+1. `yarn chapter 1 2 3` , where `1` is book id, `2` is chapter id and `3` is paragraphs count (f.e., from 1 to 3 included). Existing files will be touched, unexisting files will be created as empty.
 
 ### Wikificate
 1. `cd src/be`
-2. `yarn wiki` will apply common russian text rules
+1. `yarn wiki` will apply common russian text rules
+
+### Update ssh certificates using certbot
+1. `sudo certbot certonly --manual`
+  1. Update `acme-challenge` directory at host machine (it will be mapped inside ngx docker container)
+1. Check that new certs appears (see certbot output, default folder is `/etc/letsencrypt/live/%domain%`)
+1. Check that certificates is valid using `sudo openssl x509 -enddate -noout -in fullchain.pem`
+1. Copy new certificates to host `crt` directory (it is mapped inside ngx docker container)
+1. Restart docker containers
 
 ### Todo
 #### fe
