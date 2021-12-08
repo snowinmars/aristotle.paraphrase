@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {Clipboard} from "react-bootstrap-icons";
+import Container from "react-bootstrap/Container";
 
 const Settings: FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
@@ -22,31 +23,35 @@ const Settings: FunctionComponent = () => {
   };
 
   return (
-    <div className={styles.prfSettings}>
-      <ButtonGroup className={styles.prfSettingsGroup}>
-        {colors.map((color) => (
-          <ToggleButton
-            key={color.id}
-            id={`radio-${color.id}`}
-            className={styles.prfSettingsItem}
-            type="radio"
-            variant="secondary"
-            name="radio"
-            value={JSON.stringify(color)}
-            checked={selectedColor.id === color.id}
-            onChange={(e) => {
-              const color: Color = JSON.parse(e.currentTarget.value);
-              const value = getColorValue(color.id);
+    <Container fluid className={styles.prfSettings}>
+      <Row>
+        <Col>
+          <ButtonGroup className={styles.prfSettingsGroup}>
+            {colors.map((color) => (
+              <ToggleButton
+                key={color.id}
+                id={`radio-${color.id}`}
+                className={styles.prfSettingsItem}
+                type="radio"
+                variant="secondary"
+                name="radio"
+                value={JSON.stringify(color)}
+                checked={selectedColor.id === color.id}
+                onChange={(e) => {
+                  const color: Color = JSON.parse(e.currentTarget.value);
+                  const value = getColorValue(color.id);
 
-              setSelectedColor(color);
-              setSelectedValue(value);
-              saveColorTheme();
-            }}
-          >
-            {color.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
+                  setSelectedColor(color);
+                  setSelectedValue(value);
+                  saveColorTheme();
+                }}
+              >
+                {color.name}
+              </ToggleButton>
+            ))}
+          </ButtonGroup>
+        </Col>
+      </Row>
 
       <Row>
         <Col>
@@ -58,7 +63,9 @@ const Settings: FunctionComponent = () => {
             <FormControl
               value={selectedValue}
               onChange={(event) => {
-                const color = event.target.value;
+                let numbers = event.target.value.trim().match(/[0-9a-fA-F]/g)?.join("")
+
+                const color = `#${numbers}`
 
                 set(color);
                 saveColorTheme();
@@ -76,26 +83,40 @@ const Settings: FunctionComponent = () => {
         </Col>
       </Row>
 
-      <HexColorPicker
-        color={selectedValue}
-        onChange={(color) => {
-          set(color);
-          saveColorTheme();
-        }}
-      />
+      <Row className={styles.fluidRow}>
+        <Col xs={6}>
+          <div className={styles.example}>
+            <div className={styles.exampleMain}>Главный</div>
+            <div className={styles.exampleMainHover}>Главный ховер</div>
+            <div className={styles.exampleActive}>Активный</div>
+            <div className={styles.exampleActiveHover}>Активный ховер</div>
+            <div className={styles.exampleCard}>Карточка</div>
+            <div className={styles.exampleLink}>Ссылка</div>
+          </div>
+        </Col>
+        <Col xs={6}>
+          <HexColorPicker
+            color={selectedValue}
+            onChange={(color) => {
+              set(color);
+              saveColorTheme();
+            }}
+          />
 
-      <ToggleButtonGroup type="radio" name={styles.prfSettingsPicker} onChange={(themeId) => {
-        getTheme(themeId).forEach(color => setColorValue(color.id, color.value));
-        saveColorTheme();
-      }}>
-        <ToggleButton id="tbg-check-1" value={'light'}>
-          Светлая
-        </ToggleButton>
-        <ToggleButton id="tbg-check-2" value={'dark'}>
-          Тёмная
-        </ToggleButton>
-      </ToggleButtonGroup>
-    </div>
+          <ToggleButtonGroup type="radio" name={styles.prfSettingsPicker} onChange={(themeId) => {
+            getTheme(themeId).forEach(color => setColorValue(color.id, color.value));
+            saveColorTheme();
+          }}>
+            <ToggleButton id="tbg-check-1" value={'light'}>
+              Светлая
+            </ToggleButton>
+            <ToggleButton id="tbg-check-2" value={'dark'}>
+              Тёмная
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

@@ -11,6 +11,68 @@
     margin: 1em 0;
   }
 
+  .fluidRow {
+    width: 100%;
+  }
+
+  .example {
+    display: flex;
+    flex-wrap: wrap;
+
+    .exampleMain,
+    .exampleMainHover,
+    .exampleActive,
+    .exampleActiveHover,
+    .exampleCard,
+    .exampleLink {
+      width: 50%;
+      padding: 1em;
+    }
+
+    .exampleMain {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+
+      &:hover {
+        background-color: var(--bs-body-bg-hover);
+        color: var(--bs-body-color-hover);
+      }
+    }
+
+    .exampleMainHover {
+      background-color: var(--bs-body-bg-hover);
+      color: var(--bs-body-color-hover);
+    }
+
+    .exampleActive {
+      background-color: var(--bs-component-active-bg);
+      color: var(--bs-component-active-color);
+
+      &:hover {
+        background-color: var(--bs-component-active-bg-hover);
+        color: var(--bs-component-active-color-hover);
+      }
+    }
+
+    .exampleActiveHover {
+      background-color: var(--bs-component-active-bg-hover);
+      color: var(--bs-component-active-color-hover);
+    }
+
+    .exampleCard {
+      background-color: var(--bs-card-bg);
+      color: var(--bs-card-color);
+    }
+
+    .exampleLink {
+      color: var(--bs-link-color);
+
+      &:hover {
+        color: var(--bs-link-hover-color);
+      }
+    }
+  }
+
   .prfSettingsPicker {
     display: flex;
 
