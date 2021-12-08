@@ -15,6 +15,7 @@ const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlay
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
@@ -191,6 +192,9 @@ const configure = (webpackEnv: WebpackEnv) => {
           'gitHash': process.env.REACT_GIT_HASH,
         }
       }),
+      new HtmlInlineScriptPlugin([
+        paths.appEnvGen,
+      ]),
       new CopyPlugin({
         patterns: [
           { from: paths.appPublic, to: "public" },
