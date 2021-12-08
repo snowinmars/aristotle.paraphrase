@@ -1,6 +1,6 @@
 ## About
 
-This is an Aristotle paraphrase project: https://ariphrase.ru
+This is an Aristotle paraphrase project: https://arph.ru
 
 See [data submodule](https://github.com/snowinmars/aristotle.paraphrase.data) for texts itself.
 
