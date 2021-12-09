@@ -285,8 +285,8 @@ const configure = (webpackEnv: WebpackEnv) => {
       minimizer: [new TerserPlugin({
         parallel: os.cpus().length - 1,
         terserOptions: {
-          sourceMap: true,
-          ecma: 5,
+          sourceMap: buildEnv === BuildEnv.development,
+          ecma: 6,
         }
       })],
     },
