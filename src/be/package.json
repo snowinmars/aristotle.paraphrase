@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "start": "node -r dotenv/config --loader ts-node/esm src/app.ts",
+    "chapter": "node --loader ts-node/esm src/generate_chapter.ts",
+    "wiki": "node --loader ts-node/esm src/wikificate.ts",
+    "lint": "eslint --ext .ts src/ --color"
+  },
   "devDependencies": {
     "@babel/core": "7.12.3",
     "@types/cors": "^2.8.12",
@@ -22,12 +28,6 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.12",
     "pino": "^6.13.0"
-  },
-  "scripts": {
-    "start": "node -r dotenv/config --loader ts-node/esm src/app.ts",
-    "chapter": "node --loader ts-node/esm src/generate_chapter.ts",
-    "wiki": "node --loader ts-node/esm src/wikificate.ts",
-    "lint": "eslint --ext .ts src/ --color"
   },
   "eslintConfig": {
     "extends": []
