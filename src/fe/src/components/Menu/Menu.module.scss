@@ -2,6 +2,10 @@
 @import "node_modules/bootstrap/scss/variables";
 
 .prfMenu {
+  .search {
+      width: 100%;
+  }
+
   .prfNav > .prfNavWrapper {
     align-items: flex-end;
     flex-direction: row;

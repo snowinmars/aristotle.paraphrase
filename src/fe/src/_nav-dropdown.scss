@@ -1,15 +1,5 @@
 ﻿/* purgecss start ignore */
 :global {
-  a.navbar-brand,
-  a.navbar-brand:focus,
-  a.navbar-brand:active {
-    color: var(--bs-body-body);
-
-    &:hover {
-      color: var(--bs-active-color-hover);
-    }
-  }
-
   .dropdown-menu {
     background-color: var(--bs-body-bg);
     color: var(--bs-body-body);
@@ -27,21 +17,33 @@
     }
   }
 
-  .nav-link {
-    color: var(--bs-body-color);
-    font-size: 125%;
+  .navbar {
+    a.navbar-brand,
+    a.navbar-brand:focus,
+    a.navbar-brand:active {
+      color: var(--bs-body-body);
 
-    &.active,
-    &:active,
-    &:hover,
-    &:focus {
-      color: var(--bs-active-color-hover);
-      background-color: var(--bs-body-bg);
+      &:hover {
+        color: var(--bs-link-hover-color);
+      }
     }
-  }
 
-  .navbar-collapse .navbar-nav .nav-link.active {
-    color: var(--bs-selection);
+    .navbar-nav {
+      a.nav-link {
+        color: var(--bs-body-color);
+        font-size: 125%;
+
+        &.active,
+        &:active,
+        &:focus {
+          color: var(--bs-selection);
+        }
+
+        &:hover {
+          color: var(--bs-link-hover-color);
+        }
+      }
+    }
   }
 }
 /* purgecss end ignore */

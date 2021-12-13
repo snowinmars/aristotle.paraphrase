@@ -12,16 +12,24 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {BoxArrowUpRight, BoxArrowDownLeft, Clipboard, Check} from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
+import {toast} from "react-toast";
 
 const Settings: FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedValue, setSelectedValue] = useState(getColorValue(selectedColor.id));
+  const [themeCopied, setThemeCopied] = useState(false)
   const [textCopied, setTextCopied] = useState(false)
 
   const set = (hex: string) => {
     setSelectedValue(hex);
     setColorValue(selectedColor.id, hex);
   };
+
+  const setTheme = (themeId: string) => {
+    getTheme(themeId).forEach(color => setColorValue(color.id, color.value));
+    set(getTheme(themeId).filter(x => x.id === '--bs-body-bg')[0].value); // body bg selects by default
+    saveColorTheme();
+  }
 
   return (
     <Container fluid className={styles.prfSettings}>
@@ -72,58 +80,6 @@ const Settings: FunctionComponent = () => {
                 saveColorTheme();
               }}
             />
-            <Button
-              variant="secondary"
-              onClick={() => {
-                return navigator.clipboard.writeText(selectedValue);
-              }}
-            >
-              <Clipboard />
-            </Button>
-          </InputGroup>
-        </Col>
-      </Row>
-
-      <Row className={styles.fluidRow}>
-        <Col xs={6}>
-          <div className={styles.example}>
-            <div className={styles.exampleMain}>Главный</div>
-            <div className={styles.exampleMainHover}>Главный ховер</div>
-            <div className={styles.exampleActive}>Активный</div>
-            <div className={styles.exampleActiveHover}>Активный ховер</div>
-            <div className={styles.exampleCard}>Карточка</div>
-            <div className={styles.exampleLink}>Ссылка</div>
-          </div>
-        </Col>
-        <Col xs={6}>
-          <HexColorPicker
-            color={selectedValue}
-            onChange={(color) => {
-              set(color);
-              saveColorTheme();
-            }}
-          />
-
-          <ToggleButtonGroup
-            type="radio"
-            name={styles.prfSettingsPicker}
-            onChange={(themeId) => {
-              getTheme(themeId).forEach(color => setColorValue(color.id, color.value));
-              set(getTheme(themeId).filter(x => x.id === '--bs-body-bg')[0].value); // body bg selects by default
-              saveColorTheme();
-            }}>
-            <ToggleButton id="tbg-check-1" value={'light'}>
-              Светлая
-            </ToggleButton>
-            <ToggleButton id="tbg-check-2" value={'dark'}>
-              Тёмная
-            </ToggleButton>
-            <ToggleButton id="tbg-check-3" value={'blue'}>
-              Синяя
-            </ToggleButton>
-          </ToggleButtonGroup>
-
-          <div>
             { textCopied && <Button
                 className={styles.textCopied}
                 variant={'secondary'}
@@ -133,14 +89,75 @@ const Settings: FunctionComponent = () => {
             </Button> }
             {
               !textCopied && <Button
-                  className={textCopied ? styles.textCopied : ''}
+                  variant="secondary"
+                  onClick={() => {
+                    toast.info('Скопировано в буфер обмена')
+                    setTextCopied(true)
+                    setTimeout(() => {
+                      setTextCopied(false)
+                    }, 4000)
+                    return navigator.clipboard.writeText(selectedValue);
+                  }}
+              >
+                  <Clipboard />
+              </Button>
+            }
+
+          </InputGroup>
+        </Col>
+      </Row>
+
+      <Row className={styles.fluidRow}>
+        <Col xs={12} md={6}>
+          <div className={styles.example}>
+            <div className={styles.exampleMain}>Главный</div>
+            <div className={styles.exampleMainHover}>Главный ховер</div>
+            <div className={styles.exampleActive}>Активный</div>
+            <div className={styles.exampleActiveHover}>Активный ховер</div>
+            <div className={styles.exampleCard}>Карточка</div>
+            <div className={styles.exampleLink}>Ссылка</div>
+          </div>
+        </Col>
+        <Col xs={12} md={6}>
+          <HexColorPicker
+            color={selectedValue}
+            onChange={(color) => {
+              set(color);
+              saveColorTheme();
+            }}
+          />
+
+          <ButtonGroup>
+            <Button id="tbg-check-1" onClick={() => setTheme('light')}>
+              Светлая
+            </Button>
+            <Button id="tbg-check-2" onClick={() => setTheme('dark')}>
+              Тёмная
+            </Button>
+            <Button id="tbg-check-3" onClick={() => setTheme('blue')}>
+              Синяя
+            </Button>
+          </ButtonGroup>
+
+          <div>
+            { themeCopied && <Button
+                className={styles.textCopied}
+                variant={'secondary'}
+                disabled={true}
+            >
+                <Check />
+            </Button> }
+            {
+              !themeCopied && <Button
+                  className={themeCopied ? styles.textCopied : ''}
                   variant={'secondary'}
                   onClick={async () => {
                     const theme = exportTheme();
                     await navigator.clipboard.writeText(theme)
-                    setTextCopied(true)
+                    setThemeCopied(true)
+                    toast.info('Скопировано в буфер обмена')
                     setTimeout(() => {
-                      setTextCopied(false)
+                      setThemeCopied(false)
                     }, 3000)
                   }}
               >

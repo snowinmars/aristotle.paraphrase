@@ -36,7 +36,7 @@ const ChapterView: FunctionComponent<RouteComponentProps<MatchParameters>> = (pr
   const {data: chapter, error: chapterError, isLoading: isChapterLoading} = useGetChapterQuery({bookId, chapterId});
 
   if (bookError || chapterError) {
-    return <div>Error</div>;
+    return <div>Ошибка сервера - пожалуйста, <NavLink to={'/contacts'}>сообщите</NavLink> о ней</div>;
   }
 
   if (isBookLoading || isChapterLoading) {

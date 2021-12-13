@@ -32,7 +32,7 @@ const getFilename = (header: ParagraphHeader): string => {
 
 export const push = ({bookId, chapterId, paragraphId, header, text} : {
     bookId: number, chapterId: number, paragraphId: number, header: ParagraphHeader, text: string,
-}): void => {
+}): string => {
     const toId = (n: number): string => n.toString().padStart(2, '0');
 
     const filename = getFilename(header);
@@ -49,23 +49,24 @@ export const push = ({bookId, chapterId, paragraphId, header, text} : {
     git(`add ${filepath}`)
     git(`commit -m "Update ${filepath}"`);
     git(`push`);
+    return git('rev-parse HEAD')
 }
 
-const git = (command: string, errorAsWarning = false): void => {
+const git = (command: string, errorAsWarning = false): string => {
     if (!isInDocker) {
         logger.warn('Skipping git due to local env')
-        return;
+        return '';
     }
 
     const cmd = `git --work-tree=${booksRoot} --git-dir=${join(booksRoot, '.git')} ${command}`;
     logger.info('Executing %s', cmd);
 
     try {
-        execSync(cmd);
+        return execSync(cmd).toString();
     } catch (e) {
         if (errorAsWarning) {
             logger.warn(e as Error);
-            return;
+            return '';
         }
 
         throw e;

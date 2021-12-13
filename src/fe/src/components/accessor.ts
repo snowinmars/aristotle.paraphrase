@@ -1,4 +1,4 @@
-import {Book, Chapter, EditorParameters, Paragraph} from '../types/types';
+import {Book, Chapter, EditorParameters, Paragraph, ParagraphUpdate} from '../types/types';
 import {config} from "../utils/config";
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -15,7 +15,7 @@ export const booksApi = createApi({
     getChapter: builder.query<Chapter, {bookId: number, chapterId: number}>({
       query: ({bookId, chapterId}) => `api/books/${bookId}/${chapterId}`,
     }),
-    pushParagraph: builder.mutation<Paragraph, EditorParameters>({
+    pushParagraph: builder.mutation<ParagraphUpdate, EditorParameters>({
       query: ({bookId, chapterId, paragraphId, header, text}) => {
         return {
           url: `api/books/${bookId}/${chapterId}/${paragraphId}`,

@@ -3,7 +3,12 @@ import {buildBooks, push, updateRamParagraph, validParagraph} from "./functions.
 import cors from "cors";
 import bodyParser from "body-parser";
 import pino from 'pino';
-import {Book, Chapter} from "./types";
+import {Book, Chapter, ParagraphHeader} from "./types";
+
+type ParagraphUpdate = {
+    readonly updatedText: string;
+    readonly commitHash: string;
+}
 
 const forbidAuth = false;
 
@@ -84,7 +89,7 @@ app.post('/api/books/:bookId/:chapterId/:paragraphId', jsonParser, (request: Req
     const bookId = parseInt(request.params.bookId);
     const chapterId = parseInt(request.params.chapterId);
     const paragraphId = parseInt(request.params.paragraphId);
-    const {header, text} = request.body;
+    const {header, text} = request.body as {header: ParagraphHeader,text: string};
 
     const book = books.filter(x => x.id === bookId)[0];
     if (!book) return response.status(404).json({});
@@ -101,9 +106,12 @@ app.post('/api/books/:bookId/:chapterId/:paragraphId', jsonParser, (request: Req
     }
 
     updateRamParagraph(paragraph.text, header, text);
-    push({bookId, chapterId, paragraphId, header, text})
+    const commitHash = push({bookId, chapterId, paragraphId, header, text})
 
-    return response.status(200).json(text);
+    return response.status(200).json({
+        updatedText: text,
+        commitHash: commitHash
+    } as ParagraphUpdate);
 });
 
 const port = app.get('port');

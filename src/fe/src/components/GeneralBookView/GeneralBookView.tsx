@@ -14,7 +14,7 @@ const GeneralBookView: FunctionComponent<RouteComponentProps<MatchParameters>> =
     const {data: book, error, isLoading} = useGetBookQuery(bookId);
 
     if (error) {
-        return <div>Error</div>;
+        return <div>Ошибка сервера - пожалуйста, <NavLink to={'/contacts'}>сообщите</NavLink> о ней</div>;
     }
 
     if (isLoading) {

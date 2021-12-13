@@ -32,6 +32,11 @@ export type Paragraph = {
   readonly text: MultiText;
 }
 
+export type ParagraphUpdate = {
+  readonly updatedText: string;
+  readonly commitHash: string;
+}
+
 export type Chapter = {
   readonly id: number;
   readonly key: string;

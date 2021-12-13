@@ -8,7 +8,7 @@ const BooksListView: FunctionComponent = (): JSX.Element => {
     const {data: books, error, isLoading} = useGetBooksQuery();
 
     if (error) {
-        return <div>Error</div>;
+        return <div>Ошибка сервера - пожалуйста, <NavLink to={'/contacts'}>сообщите</NavLink> о ней</div>;
     }
 
     if (isLoading) {

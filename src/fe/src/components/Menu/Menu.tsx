@@ -47,7 +47,11 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
             </Nav.Link>
           </Nav>
           <Form>
-            <FormControl type="text" placeholder="TBD" disabled className={'mr-sm-2'} />
+            <FormControl
+              type="text"
+              placeholder="TBD"
+              disabled
+              className={['mr-sm-2', styles.search].join(" ")} />
           </Form>
         </Navbar.Collapse>
       </Navbar>
