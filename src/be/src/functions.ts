@@ -5,6 +5,13 @@ import {resolve} from 'path';
 import {execSync} from 'child_process';
 import pino from 'pino';
 
+type PathDescription = {
+    readonly isParagraph: boolean;
+    readonly isEpigraph: boolean;
+    readonly isSummary: boolean;
+    readonly isSystemFile: boolean;
+}
+
 // todo [snow]: wtf is wrong with imports
 const isInDocker = process.env.IS_IN_DOCKER?.toLowerCase() === 'true';
 const gitKey = process.env.GIT_KEY;
@@ -124,15 +131,50 @@ export async function walk(directory: string): Promise<string[]> {
     return fileList;
 }
 
+const describePath = (path: string): PathDescription => {
+    const isHtml = path.endsWith('.html');
+    const isParagraph = isHtml && !path.includes('epigraph') && !path.includes('summary');
+    const isEpigraph = isHtml && path.includes('epigraph');
+    const isSummary = isHtml && path.includes('summary');
+    const isSystemFile = !isParagraph && !isEpigraph && !isSummary;
+
+    return {
+        isParagraph,
+        isEpigraph,
+        isSummary,
+        isSystemFile,
+    }
+}
+
+const presortPaths = (lhs: string, rhs: string): number => {
+    const lhsDescription = describePath(lhs);
+    const rhsDescription = describePath(rhs);
+
+    const pickLhs = -1;
+    const pickRhs = 1;
+    const pickAny = 0;
+
+    if (lhsDescription.isSummary && !rhsDescription.isSummary) return pickLhs;
+    if (!lhsDescription.isSummary && rhsDescription.isSummary) return pickRhs;
+
+    if (lhsDescription.isEpigraph && !rhsDescription.isEpigraph) return pickLhs;
+    if (!lhsDescription.isEpigraph && rhsDescription.isEpigraph) return pickRhs;
+
+    return pickAny;
+}
+
 export const getBooks = (root: string, paths: string[]): Book[] => {
     const books: Book[] = [];
+    const bookIdSummaryMap = new Map<number, string>();
 
-    paths.sort(x => x.length)
+    paths.sort(presortPaths)
         .reduce((paragraphs: Paragraph[], path: string): Paragraph[] => {
-            const isHtml = path.endsWith('.html');
-            const isParagraph = isHtml && !path.includes('epigraph');
-            const isEpigraph = isHtml && path.includes('epigraph');
-            const isSystemFile = !isParagraph && !isEpigraph;
+            const {
+                isParagraph,
+                isEpigraph,
+                isSummary,
+                isSystemFile,
+            } = describePath(path)
 
             if (isSystemFile) return paragraphs;
 
@@ -142,10 +184,30 @@ export const getBooks = (root: string, paths: string[]): Book[] => {
             const {bookId, chapterId, paragraphId, filename} = getIds(path);
             const content = readFileSync(fullPath, 'utf8');
 
+            if (isSummary) {
+                bookIdSummaryMap.set(bookId, content);
+            }
+
+            if (isEpigraph) {
+                const summary = bookIdSummaryMap.get(bookId);
+                if (!summary) throw new Error(`Summary for book ${bookId} not found`)
+
+                const chapter = createRelatedChapter(books, bookId, chapterId!, summary);
+
+                switch (filename) {
+                    case 'qBitSky.epigraph.html': chapter.qBitSkyEpigraph = content ; break;
+                    case 'ross.epigraph.html': chapter.rossEpigraph = content ; break;
+                    default: throw new Error(`Unknown epigraph file name ${filename}`);
+                }
+            }
+
             if (isParagraph) {
-                const newParagraph = toParagraph(bookId, chapterId, paragraphId!, filename, content);
+                const newParagraph = toParagraph(bookId, chapterId!, paragraphId!, filename, content);
                 const existingParagraph = paragraphs.filter(x => x.key === newParagraph.key).shift();
-                const chapter = createRelatedChapter(books, bookId, chapterId);
+
+                const summary = bookIdSummaryMap.get(bookId);
+                if (!summary) throw new Error(`Summary for book ${bookId} not found`)
+                const chapter = createRelatedChapter(books, bookId, chapterId!, summary);
 
                 if (existingParagraph) {
                     switch (filename) {
@@ -163,29 +225,20 @@ export const getBooks = (root: string, paths: string[]): Book[] => {
                 }
             }
 
-            if (isEpigraph) {
-                const chapter = createRelatedChapter(books, bookId, chapterId);
-
-                switch (filename) {
-                    case 'qBitSky.epigraph.html': chapter.qBitSkyEpigraph = content ; break;
-                    case 'ross.epigraph.html': chapter.rossEpigraph = content ; break;
-                    default: throw new Error(`Unknown epigraph file name ${filename}`);
-                }
-            }
-
             return paragraphs;
         }, []);
 
     return books;
 };
 
-const createRelatedChapter = (books: Book[], bookId: number, chapterId: number): Chapter => {
+const createRelatedChapter = (books: Book[], bookId: number, chapterId: number, summary: string): Chapter => {
     let book = books.filter(x => x.id === bookId).shift();
 
     if (!book) {
         book = {
             id: bookId,
             key: `b${bookId}`,
+            summary: summary,
             chapters: [],
             headers: [ParagraphHeader.qBitSky, ParagraphHeader.paraphrase, ParagraphHeader.ross],
         };
@@ -208,22 +261,26 @@ const createRelatedChapter = (books: Book[], bookId: number, chapterId: number):
     return chapter;
 };
 
-const getIds = (path: string): {bookId: number, chapterId: number, paragraphId: number | undefined, filename: string} => {
+const getIds = (path: string): {bookId: number, chapterId: number | undefined, paragraphId: number | undefined, filename: string} => {
     const isWindowsPath = path.includes('\\');
     const isLinuxPath = path.includes('/');
 
     if (!isWindowsPath && !isLinuxPath) throw new Error(`What are you sending here? Just look at ${path}!`);
 
+    // x01 -> 1
+    const keyToId = (key: string): number => parseInt(key.slice(1));
+
     const parts = isWindowsPath ? path.split('\\') : isLinuxPath ? path.split('/') : '';
     const isParagraphPath = parts.length === 4;
     const isEpigraphPath = parts.length === 3;
+    const isSummaryPath = parts.length === 2;
 
     if (isParagraphPath) {
         const [bookKey, chapterKey, paragraphKey, filename] = parts;
         return {
-            bookId: parseInt(bookKey.slice(1)), // b01 -> 1
-            chapterId: parseInt(chapterKey.slice(1)), // c01 -> 1,
-            paragraphId: parseInt(paragraphKey.slice(1)), // p01 -> 1
+            bookId: keyToId(bookKey),
+            chapterId: keyToId(chapterKey),
+            paragraphId: keyToId(paragraphKey),
             filename,
         };
     }
@@ -231,11 +288,22 @@ const getIds = (path: string): {bookId: number, chapterId: number, paragraphId: 
     if (isEpigraphPath) {
         const [bookKey, chapterKey, filename] = parts;
         return {
-            bookId: parseInt(bookKey.slice(1)), // b1 -> 1
-            chapterId: parseInt(chapterKey.slice(1)), // c1 -> 1,
+            bookId: keyToId(bookKey),
+            chapterId: keyToId(chapterKey),
             paragraphId: undefined,
             filename,
         };
+    }
+
+    if (isSummaryPath) {
+        const [bookKey, filename] = parts;
+
+        return {
+            bookId: keyToId(bookKey),
+            chapterId: undefined,
+            paragraphId: undefined,
+            filename,
+        }
     }
 
     throw new Error(`${path} is not a paragraph path, nor an epigraph path`);

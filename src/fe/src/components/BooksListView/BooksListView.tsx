@@ -22,8 +22,14 @@ const BooksListView: FunctionComponent = (): JSX.Element => {
                 {
                     books.map(book => {
                         return <li key={book.key} className={styles.prfBookListItem}>
-                            <NavLink to={`/books/${book.id}/1`}>Книга {book.id}</NavLink>
-                            <NavLink to={`/books/${book.id}`}>Краткое изложение</NavLink>
+                            <div>
+                                <NavLink to={`/books/${book.id}/1`}>Читать</NavLink>
+                                <NavLink to={`/books/${book.id}`}>Краткое изложение</NavLink>
+                            </div>
+
+                            <p>
+                                {book.summary}
+                            </p>
                         </li>;
                     })
                 }

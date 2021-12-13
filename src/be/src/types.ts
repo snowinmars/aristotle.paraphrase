@@ -13,6 +13,7 @@ type Common = {
 }
 
 export type Book = Common & {
+    summary: string;
     headers: ParagraphHeader[];
     chapters: Chapter[];
 }

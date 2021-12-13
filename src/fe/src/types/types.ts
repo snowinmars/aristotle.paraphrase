@@ -48,6 +48,7 @@ export type Chapter = {
 export type Book = {
   readonly id: number;
   readonly key: string;
+  readonly summary: string;
   readonly headers: ParagraphHeader[];
   readonly chapters: Chapter[];
 }

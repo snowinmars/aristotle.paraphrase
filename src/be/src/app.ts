@@ -35,6 +35,7 @@ app.get('/api/books', (request: Request, response: Response) => {
         return {
             id: book.id,
             key: book.key,
+            summary: book.summary,
             headers: book.headers,
             chapters: []
         }
