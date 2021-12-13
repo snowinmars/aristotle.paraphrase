@@ -4,18 +4,19 @@ import { HexColorPicker } from "react-colorful";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import {Color, colors, getTheme, getColorValue, setColorValue, saveColorTheme} from "./helpers";
+import {Color, colors, getTheme, getColorValue, setColorValue, saveColorTheme, exportTheme} from "./helpers";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import {Clipboard} from "react-bootstrap-icons";
+import {BoxArrowUpRight, BoxArrowDownLeft, Clipboard, Check} from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 
 const Settings: FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedValue, setSelectedValue] = useState(getColorValue(selectedColor.id));
+  const [textCopied, setTextCopied] = useState(false)
 
   const set = (hex: string) => {
     setSelectedValue(hex);
@@ -103,17 +104,50 @@ const Settings: FunctionComponent = () => {
             }}
           />
 
-          <ToggleButtonGroup type="radio" name={styles.prfSettingsPicker} onChange={(themeId) => {
-            getTheme(themeId).forEach(color => setColorValue(color.id, color.value));
-            saveColorTheme();
-          }}>
+          <ToggleButtonGroup
+            type="radio"
+            name={styles.prfSettingsPicker}
+            onChange={(themeId) => {
+              getTheme(themeId).forEach(color => setColorValue(color.id, color.value));
+              set(getTheme(themeId).filter(x => x.id === '--bs-body-bg')[0].value); // body bg selects by default
+              saveColorTheme();
+            }}>
             <ToggleButton id="tbg-check-1" value={'light'}>
               Светлая
             </ToggleButton>
             <ToggleButton id="tbg-check-2" value={'dark'}>
               Тёмная
             </ToggleButton>
+            <ToggleButton id="tbg-check-3" value={'blue'}>
+              Синяя
+            </ToggleButton>
           </ToggleButtonGroup>
+
+          <div>
+            { textCopied && <Button
+                className={styles.textCopied}
+                variant={'secondary'}
+                disabled={true}
+            >
+                <Check />
+            </Button> }
+            {
+              !textCopied && <Button
+                  className={textCopied ? styles.textCopied : ''}
+                  variant={'secondary'}
+                  onClick={async () => {
+                    const theme = exportTheme();
+                    await navigator.clipboard.writeText(theme)
+                    setTextCopied(true)
+                    setTimeout(() => {
+                      setTextCopied(false)
+                    }, 3000)
+                  }}
+              >
+                  <BoxArrowUpRight />
+              </Button>
+            }
+          </div>
         </Col>
       </Row>
     </Container>

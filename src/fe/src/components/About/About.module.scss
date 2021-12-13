@@ -10,6 +10,16 @@ div.prfAbout {
     padding: 0;
   }
 
+  .cardHeader {
+
+  }
+
+  .cardHeaderMark {
+    margin-right: 1em;
+    vertical-align: text-bottom;
+    color: var(--bs-selection);
+  }
+
   .prfQna {
     .prfQnaItem {
       margin: 1em 0;
@@ -30,7 +40,7 @@ div.prfAbout {
       }
 
       .prfQuestionMark {
-        color: var(--bs-component-active-color);
+        color: var(--bs-card-color);
       }
 
       .prfAnswerMark {

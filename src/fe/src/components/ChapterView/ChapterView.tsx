@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {ArrowBarLeft, ArrowBarRight, Book as BookIcon} from "react-bootstrap-icons";
 import Loader from "../Loader/Loader";
-
+import ScrollToTop from 'react-scroll-to-top';
 
 type MatchParameters = {
   bookId: string,
@@ -88,6 +88,8 @@ const ChapterView: FunctionComponent<RouteComponentProps<MatchParameters>> = (pr
           );
         })
       }
+
+      <ScrollToTop smooth />
     </div>;
   }
 

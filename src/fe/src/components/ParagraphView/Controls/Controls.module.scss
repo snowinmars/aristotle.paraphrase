@@ -27,6 +27,7 @@ $op: 0.1;
     text-align: center;
     vertical-align: middle;
     padding: 0.1em 0;
+    cursor: pointer;
 
     user-select: none; // double click will switch all paragraphs to current label
   }
@@ -86,7 +87,10 @@ $op: 0.1;
       display: none;
 
       &:checked + .prf-control-label {
-        background-color: var(--bs-component-active-bg);
+        background-color: var(--bs-active-bg);
+        color: var(--bs-active-color);
+
+        cursor: not-allowed;
       }
     }
   }

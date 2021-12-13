@@ -3,7 +3,7 @@ import styles from './About.module.scss';
 import Container from "react-bootstrap/Container";
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
-import { Lightbulb, QuestionCircle } from 'react-bootstrap-icons';
+import { Lightbulb, QuestionCircle, ChatSquare } from 'react-bootstrap-icons';
 
 const buildQna = (question: string, answer: string) => {
   return (
@@ -20,6 +20,13 @@ const buildQna = (question: string, answer: string) => {
   );
 };
 
+const buildCardHeaderContent = (text: string) => {
+  return (<span className={styles.cardHeader}>
+      <span className={styles.cardHeaderMark}><ChatSquare /></span> {text}
+    </span>
+  )
+}
+
 const About: FunctionComponent = () => {
   return <Container className={styles.prfAbout}>
     <Card>
@@ -32,7 +39,7 @@ const About: FunctionComponent = () => {
 
     <Accordion defaultActiveKey="0">
       <Accordion.Item eventKey="0">
-        <Accordion.Header>Что</Accordion.Header>
+        <Accordion.Header>{buildCardHeaderContent('Что')}</Accordion.Header>
         <Accordion.Body>
           <p>«Метафизика» Аристотеля - это набор лекций о мудрости.</p>
 
@@ -45,14 +52,14 @@ const About: FunctionComponent = () => {
       </Accordion.Item>
 
       <Accordion.Item eventKey="1">
-        <Accordion.Header>Кто</Accordion.Header>
+        <Accordion.Header>{buildCardHeaderContent('Кто')}</Accordion.Header>
         <Accordion.Body>
           Я не имею должного образования, чтобы утверждать, что я написал что-то осмысленное. Парафраз я делаю в меру своего разумения и лишь как отправную точку для изучения.
         </Accordion.Body>
       </Accordion.Item>
 
       <Accordion.Item eventKey="2">
-        <Accordion.Header>Зачем читать Аристотеля</Accordion.Header>
+        <Accordion.Header>{buildCardHeaderContent('Зачем читать Аристотеля')}</Accordion.Header>
         <Accordion.Body>
           Когда я показал проект знакомым, я услышал несколько возражений.
 
@@ -81,7 +88,7 @@ const About: FunctionComponent = () => {
       </Accordion.Item>
 
       <Accordion.Item eventKey="3">
-        <Accordion.Header>Зачем делать парафраз</Accordion.Header>
+        <Accordion.Header>{buildCardHeaderContent('Зачем делать парафраз')}</Accordion.Header>
         <Accordion.Body>
           <p>Существует четыре перевода «Метафизики» на русский язык.</p>
 
@@ -123,18 +130,18 @@ const About: FunctionComponent = () => {
       </Accordion.Item>
 
       <Accordion.Item eventKey="4">
-        <Accordion.Header>Как</Accordion.Header>
+        <Accordion.Header>{buildCardHeaderContent('Как')}</Accordion.Header>
         <Accordion.Body>
           <p>Я разбил текст «Метафизики» на три части: перевод Кубицкого 1934 года, парафраз и английский Ross.</p>
 
-          <p>В парафразе встречаются анахронизмы: Аристотель говорит современными нам терминами. Это позволяет одновременно и сократить, и упростить текст. Например, Аристотель употребляет термин «сам-по-себе стол». Это же понятие мы знаем как «абстрактный стол», что, по-моему, ближе к привычному нам. Как другой пример я предлагаю прочесть первую книгу, девятую главу, четвёртый абзац оригинала. Без привлечения современного языка это просто ад какой-то.</p>
+          <p>В парафразе встречаются анахронизмы: Аристотель говорит современными нам терминами. Это позволяет одновременно и сократить, и упростить текст. Например, Аристотель употребляет термин «сам-по-себе стол». Это же понятие мы знаем как «абстрактный стол», что, по-моему, ближе к привычному нам. Как другой пример я предлагаю прочесть <a href={'books/1/9#4'}>первую книгу, девятую главу, четвёртый абзац оригинала</a>. Без привлечения современного языка это просто ад какой-то.</p>
 
           <p>Вообще, у «Метафизики» надо бы первой читать пятую книгу. Она целиком посвящена базисным определениям. Я не знал этого, когда начинал парафраз, поэтому живём вот так вот.</p>
         </Accordion.Body>
       </Accordion.Item>
 
       <Accordion.Item eventKey="5">
-        <Accordion.Header>Советы самому себе</Accordion.Header>
+        <Accordion.Header>{buildCardHeaderContent('Советы самому себе')}</Accordion.Header>
         <Accordion.Body>
           <ul>
             <li>Необходимо закапываться в иностранные источники.</li>
@@ -144,11 +151,16 @@ const About: FunctionComponent = () => {
       </Accordion.Item>
 
       <Accordion.Item eventKey="6">
-        <Accordion.Header>ЧаВо</Accordion.Header>
+        <Accordion.Header>{buildCardHeaderContent('ЧаВо')}</Accordion.Header>
         <Accordion.Body>
           <ul className={[styles.prfUl, styles.prfQna].join(' ')}>
             {
-              buildQna('Я нашёл опечатку, ошибку / Ты неправильно понял оригинал / Есть идея',
+              buildQna('Я нашёл опечатку/ошибку',
+                'Текст можно править наживую - изменения уйдут в pull request на гитхабе (author -> master).')
+            }
+
+            {
+              buildQna('Ты неправильно понял оригинал / Есть идея',
                 'Пишите в контакты.')
             }
 

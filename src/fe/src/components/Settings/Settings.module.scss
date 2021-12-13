@@ -7,6 +7,14 @@
   align-items: center;
   justify-content: center;
 
+  .textCopied {
+    color: var(--bs-primary);
+  }
+
+  .colorInput {
+    display: flex;
+  }
+
   > * {
     margin: 1em 0;
   }
@@ -45,18 +53,18 @@
     }
 
     .exampleActive {
-      background-color: var(--bs-component-active-bg);
-      color: var(--bs-component-active-color);
+      background-color: var(--bs-active-bg);
+      color: var(--bs-active-color);
 
       &:hover {
-        background-color: var(--bs-component-active-bg-hover);
-        color: var(--bs-component-active-color-hover);
+        background-color: var(--bs-active-bg-hover);
+        color: var(--bs-active-color-hover);
       }
     }
 
     .exampleActiveHover {
-      background-color: var(--bs-component-active-bg-hover);
-      color: var(--bs-component-active-color-hover);
+      background-color: var(--bs-active-bg-hover);
+      color: var(--bs-active-color-hover);
     }
 
     .exampleCard {

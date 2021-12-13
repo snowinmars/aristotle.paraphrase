@@ -6,7 +6,7 @@
     color: var(--bs-body-body);
 
     &:hover {
-      color: var(--bs-component-active-color-hover);
+      color: var(--bs-active-color-hover);
     }
   }
 
@@ -21,7 +21,7 @@
       &:active,
       &:hover,
       &:focus {
-        color: var(--bs-component-active-color-hover);
+        color: var(--bs-active-color-hover);
         background-color: var(--bs-body-bg);
       }
     }
@@ -35,7 +35,7 @@
     &:active,
     &:hover,
     &:focus {
-      color: var(--bs-component-active-color-hover);
+      color: var(--bs-active-color-hover);
       background-color: var(--bs-body-bg);
     }
   }

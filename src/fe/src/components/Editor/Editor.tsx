@@ -68,7 +68,7 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
                         <Form.Control
                           className={styles.prfEditor}
                             as="textarea"
-                            rows={15}
+                            rows={10}
                             value={dynamicText}
                             disabled={status === Status.loading}
                             onChange={(event) => {

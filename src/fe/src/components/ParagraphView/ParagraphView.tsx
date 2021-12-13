@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import styles from './ParagraphView.module.scss';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,6 +18,17 @@ const getTextById = (text: MultiText, textId: ParagraphHeader): string => {
   }
 };
 
+const scrollToCurrentAnchor= (): void => {
+  let location = window.location.href;
+  const hasAnchor = location.includes("#");
+  if (hasAnchor) {
+    const id = `${location.substring(location.indexOf("#") + 1)}`;
+    const anchor = document.getElementById(id);
+    if (anchor) {
+      anchor.scrollIntoView({behavior: "smooth"});
+    }
+  }
+}
 
 const getNotesById = (text: MultiText, textId: ParagraphHeader): string => {
   switch (textId) {
@@ -37,6 +48,8 @@ const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chap
   const rightText = getTextById(paragraph.text, rightTextId);
   const notesText = getNotesById(paragraph.text, notesTextId);
 
+  useEffect(() => scrollToCurrentAnchor(), []);
+
   const updateText = (change: ControlChange) => {
     switch (change.blockType) {
       case 'left':
@@ -55,6 +68,7 @@ const ParagraphView: FunctionComponent<ParagraphViewProperties> = ({bookId, chap
 
   return (
       <Container fluid className={styles.prfParagraph}>
+        <a id={`${paragraph.id}`} href={`#${paragraph.id}`}> </a>
         <Row>
           <Col xs={12} lg={6}>
             <Controls

@@ -64,7 +64,7 @@ const git = (command: string, errorAsWarning = false): void => {
         execSync(cmd);
     } catch (e) {
         if (errorAsWarning) {
-            logger.warn(e);
+            logger.warn(e as Error);
             return;
         }
 

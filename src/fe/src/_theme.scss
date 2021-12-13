@@ -8,10 +8,10 @@ $body-color-hover: lighten($body-color, 10%);
 
 $border: rgba($black, 0.125);
 
-$component-active-bg: mix($gray-700, $yellow-200, 95%);
-$component-active-color: $gray-400;
-$component-active-bg-hover: lighten($component-active-bg, 10%);
-$component-active-color-hover: darken($component-active-color, 10%);
+$active-bg: mix($gray-700, $yellow-200, 95%);
+$active-color: $gray-400;
+$active-bg-hover: lighten($active-bg, 10%);
+$active-color-hover: darken($active-color, 10%);
 
 $selection: $orange-500;
 
@@ -32,10 +32,10 @@ $link-hover-color: $cyan-600;
   --#{$variable-prefix}body-bg-hover: #{$body-bg-hover};
   --#{$variable-prefix}body-color-hover: #{$body-color-hover};
 
-  --#{$variable-prefix}component-active-bg: #{$component-active-bg};
-  --#{$variable-prefix}component-active-color: #{$component-active-color};
-  --#{$variable-prefix}component-active-bg-hover: #{$component-active-bg-hover};
-  --#{$variable-prefix}component-active-color-hover: #{$component-active-color-hover};
+  --#{$variable-prefix}active-bg: #{$active-bg};
+  --#{$variable-prefix}active-color: #{$active-color};
+  --#{$variable-prefix}active-bg-hover: #{$active-bg-hover};
+  --#{$variable-prefix}active-color-hover: #{$active-color-hover};
 
   --#{$variable-prefix}card-bg: #{$card-bg};
   --#{$variable-prefix}card-color: #{$card-color};
