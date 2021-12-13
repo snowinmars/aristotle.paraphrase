@@ -8,6 +8,7 @@ import {usePushParagraphMutation} from "../accessor";
 import {EditorParameters} from "../../types/types";
 import Loader from "../Loader/Loader";
 import { toast } from 'react-toast'
+import Alert from "react-bootstrap/Alert";
 
 enum Status {
     editing = 'editing',
@@ -123,9 +124,9 @@ const Editor: FunctionComponent<EditorParameters> = (parameters: EditorParameter
                   {
                     validationText &&
                     <div className={styles.prfEditorValidationText}>
-                      <div>
+                      <Alert variant={'danger'}>
                         Изменения не были сохранены сервером. Скопируйте ваши изменения себе, иначе они будут утеряны
-                      </div>
+                      </Alert>
                       <div>
                           <Bug> </Bug> {validationText}
                       </div>

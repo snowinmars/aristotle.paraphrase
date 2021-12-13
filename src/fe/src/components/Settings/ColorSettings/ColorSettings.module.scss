@@ -1,0 +1,111 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+
+.prfColorSettings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .textCopied {
+    color: var(--bs-primary);
+  }
+
+  .colorInput {
+    display: flex;
+  }
+
+  > * {
+    margin: 1em 0;
+  }
+
+  .fluidRow {
+    width: 100%;
+  }
+
+  .example {
+    display: flex;
+    flex-wrap: wrap;
+
+    .exampleMain,
+    .exampleMainHover,
+    .exampleActive,
+    .exampleActiveHover,
+    .exampleCard,
+    .exampleLink {
+      @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+        width: 100%;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 50%;
+      }
+      padding: 1em;
+    }
+
+    .exampleMain {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+
+      &:hover {
+        background-color: var(--bs-body-bg-hover);
+        color: var(--bs-body-color-hover);
+      }
+    }
+
+    .exampleMainHover {
+      background-color: var(--bs-body-bg-hover);
+      color: var(--bs-body-color-hover);
+    }
+
+    .exampleActive {
+      background-color: var(--bs-active-bg);
+      color: var(--bs-active-color);
+
+      &:hover {
+        background-color: var(--bs-active-bg-hover);
+        color: var(--bs-active-color-hover);
+      }
+    }
+
+    .exampleActiveHover {
+      background-color: var(--bs-active-bg-hover);
+      color: var(--bs-active-color-hover);
+    }
+
+    .exampleCard {
+      background-color: var(--bs-card-bg);
+      color: var(--bs-card-color);
+    }
+
+    .exampleLink {
+      color: var(--bs-link-color);
+
+      &:hover {
+        color: var(--bs-link-hover-color);
+      }
+    }
+  }
+
+  .prfColorSettingsPicker {
+    display: flex;
+
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .prfColorSettingsGroup {
+    flex-wrap: wrap;
+  }
+
+  label.prfColorSettingsItem {
+    flex: 50%;
+    text-align: start;
+  }
+
+  :global {
+    .react-colorful {
+      width: 100%;
+      height: 300px;
+    }
+  }
+}

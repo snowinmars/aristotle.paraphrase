@@ -3,6 +3,7 @@ import {ControlChange, ControlProperties} from '../types';
 import styles from './Controls.module.scss';
 import {ParagraphHeader} from "../../../types/types";
 import {bus} from '../../../utils/bus';
+import {loadTextSettings} from "../../../utils/text-settings";
 
 type ControlArguments = {
   paragraphKey: string;
@@ -52,7 +53,17 @@ const renderControl = ({paragraphKey, blockType, title, paragraphHeaderId, selec
 const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKey, selectedTextId, parentChangeCallback }) => {
   const [selectedId, setSelectedId] = useState(selectedTextId);
   useEffect(() => setSelectedId(selectedTextId), [selectedTextId]);
-  const isNotes = [ ParagraphHeader.paraphraseNotes, ParagraphHeader.qBitSkyNotes, ParagraphHeader.rossNotes ].includes(selectedId);
+  const {
+    enableParaphrase,
+    enableQbitSky,
+    enableRoss,
+    enabledCount,
+  } = loadTextSettings();
+  const isNotes = [
+    enableParaphrase && ParagraphHeader.paraphraseNotes,
+    enableQbitSky && ParagraphHeader.qBitSkyNotes,
+    enableRoss && ParagraphHeader.rossNotes
+  ].filter(x => x).includes(selectedId);
 
   const onChange = (change: ControlChange) => {
     setSelectedId(change.paragraphHeaderId);
@@ -73,10 +84,14 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
     };
   }, []);
 
+  if (enabledCount === 1) {
+    return <></>
+  }
+
   return (
       <ul className={styles.prfControlList}>
         {
-          renderControl({
+          enableParaphrase && renderControl({
             title: 'Парафраз',
             paragraphHeaderId: isNotes ? ParagraphHeader.paraphraseNotes : ParagraphHeader.paraphrase,
             paragraphKey: paragraphKey,
@@ -88,7 +103,7 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
         }
 
         {
-          renderControl({
+          enableQbitSky && renderControl({
             title: 'Кубицкий',
             paragraphHeaderId: isNotes ? ParagraphHeader.qBitSkyNotes : ParagraphHeader.qBitSky,
             paragraphKey: paragraphKey,
@@ -100,7 +115,7 @@ const Controls: FunctionComponent<ControlProperties> = ({ blockType, paragraphKe
         }
 
         {
-          renderControl({
+          enableRoss && renderControl({
             title: 'Ross',
             paragraphHeaderId: isNotes ? ParagraphHeader.rossNotes : ParagraphHeader.ross,
             paragraphKey: paragraphKey,

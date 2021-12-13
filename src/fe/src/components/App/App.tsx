@@ -8,6 +8,7 @@ import {
 import Menu from '../Menu/Menu';
 import Footer from "../Footer/Footer";
 import Loader from "../Loader/Loader";
+import {colors, loadColorTheme} from "../../utils/color-settings";
 
 const About = React.lazy(() => import('../About/About'))
 const Contacts = React.lazy(() => import('../Contacts/Contacts'));
@@ -16,10 +17,9 @@ const GeneralBookView = React.lazy(() => import("../GeneralBookView/GeneralBookV
 const Container = React.lazy(() => import("react-bootstrap/Container"));
 const BooksListView = React.lazy(() => import("../BooksListView/BooksListView"));
 const Settings = React.lazy(() => import("../Settings/Settings"));
-import {loadColorTheme} from "../Settings/helpers";
 
 const App = (): JSX.Element => {
-  loadColorTheme();
+  loadColorTheme(colors);
 
   return (
     <div className={styles.prfApp}>

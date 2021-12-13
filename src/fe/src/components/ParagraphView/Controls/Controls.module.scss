@@ -42,7 +42,8 @@ $op: 0.1;
   }
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     .prf-control-list-item {
-      width: 33%;
+      flex-grow: 1;
+      flex-basis: 0;
     }
   }
 

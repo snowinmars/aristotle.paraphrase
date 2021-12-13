@@ -97,6 +97,8 @@ export const updateRamParagraph = (multiText: MultiText, header: ParagraphHeader
 };
 
 export async function buildBooks(): Promise<Book[]> {
+    logger.info(`git hash: ${git('rev-parse HEAD')}`)
+
     const paths = await walk(booksRoot);
     const books = getBooks(booksRoot, paths.map(x => x.substring(booksRoot.length + 1))); // +1 removes first slash
 
@@ -329,6 +331,6 @@ if (isInDocker) {
     git(`config --global user.name "snowinmars"`);
     git(`remote set-url origin https://snowinmars:${gitKey}@github.com/snowinmars/aristotle.paraphrase.data`)
     git(`fetch origin`);
-    git(`checkout -b author origin/author`, true);
+    git(`checkout author`, true);
     git('pull');
 }
