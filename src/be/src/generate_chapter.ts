@@ -28,6 +28,9 @@ const [ bookId, chapterId, lastParagraphId ]: number[] = process.argv.slice(2).m
 const bookKey = `b${bookId.toString().padStart(2, "0")}`;
 const chapterKey = `c${chapterId.toString().padStart(2, "0")}`;
 
+const filesInBook = [
+  'qBitSky.summary.html',
+]
 const filesInChapter = [
     'qBitSky.epigraph.html',
     'ross.epigraph.html',
@@ -43,6 +46,10 @@ const filesInParagraph = [
 
 const bookDirectory = join(root, bookKey);
 touchDirectory(bookDirectory);
+filesInBook.forEach(filename => {
+    const path = join(bookDirectory, filename);
+    touchFile(path);
+});
 
 const chapterDirectory = join(bookDirectory, chapterKey);
 touchDirectory(chapterDirectory);
