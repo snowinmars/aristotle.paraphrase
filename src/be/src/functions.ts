@@ -1,4 +1,4 @@
-﻿import {existsSync, promises, readFileSync, writeFileSync} from "fs";
+import {existsSync, promises, readFileSync, writeFileSync} from "fs";
 import {join} from 'path';
 import {Book, Chapter, MultiText, Paragraph, ParagraphHeader} from "./types";
 import {resolve} from 'path';
@@ -192,7 +192,8 @@ export const getBooks = (root: string, paths: string[]): Book[] => {
 
             if (isEpigraph) {
                 const summary = bookIdSummaryMap.get(bookId);
-                if (!summary) throw new Error(`Summary for book ${bookId} not found`)
+                // can be empty
+                if (summary === undefined) throw new Error(`Summary for book ${bookId} not found`)
 
                 const chapter = createRelatedChapter(books, bookId, chapterId!, summary);
 
@@ -208,7 +209,8 @@ export const getBooks = (root: string, paths: string[]): Book[] => {
                 const existingParagraph = paragraphs.filter(x => x.key === newParagraph.key).shift();
 
                 const summary = bookIdSummaryMap.get(bookId);
-                if (!summary) throw new Error(`Summary for book ${bookId} not found`)
+                // can be empty
+                if (summary === undefined) throw new Error(`Summary for book ${bookId} not found`)
                 const chapter = createRelatedChapter(books, bookId, chapterId!, summary);
 
                 if (existingParagraph) {

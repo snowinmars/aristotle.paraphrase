@@ -23,13 +23,22 @@ if (process.argv.length !== 5) {
     throw new Error('Too few arguments');
 }
 
-const [ bookId, chapterId, lastParagraphId ]: number[] = process.argv.slice(2).map(x => parseInt(x));
+const [ bookIds, chapterIds, lastParagraphIds ]: number[][] = process.argv.slice(2).map(x => {
+    if (x.includes(',')) {
+        return x.split(',').map(y => parseInt(y));
+    }
 
-const bookKey = `b${bookId.toString().padStart(2, "0")}`;
-const chapterKey = `c${chapterId.toString().padStart(2, "0")}`;
+    if (x.includes('-')) {
+        const [min, max] = x.split('-').map(x => parseInt(x));
+
+        return new Array(max - min + 1).fill(0).map((d, i) => i + min - 1)
+    }
+
+    return [parseInt(x)]
+});
 
 const filesInBook = [
-  'qBitSky.summary.html',
+    'qBitSky.summary.html',
 ]
 const filesInChapter = [
     'qBitSky.epigraph.html',
@@ -44,30 +53,40 @@ const filesInParagraph = [
     'ross.notes.html',
 ];
 
-const bookDirectory = join(root, bookKey);
-touchDirectory(bookDirectory);
-filesInBook.forEach(filename => {
-    const path = join(bookDirectory, filename);
-    touchFile(path);
-});
+bookIds.forEach(bookId => {
+    const bookKey = `b${bookId.toString().padStart(2, "0")}`;
 
-const chapterDirectory = join(bookDirectory, chapterKey);
-touchDirectory(chapterDirectory);
+    const bookDirectory = join(root, bookKey);
+    console.log('  Building ', bookKey, ' book in ', bookDirectory);
 
-console.log('  Building chapter in ', chapterDirectory);
+    touchDirectory(bookDirectory);
 
-filesInChapter.forEach(filename => {
-    const path = join(chapterDirectory, filename);
-    touchFile(path);
-});
-
-for (const paragraphId in [...Array(lastParagraphId).keys()]) {
-    const stringParagraphId = (parseInt(paragraphId) + 1).toString().padStart(2, "0");
-    const paragraphDirectory = join(chapterDirectory, `p${stringParagraphId}`);
-    touchDirectory(paragraphDirectory);
-
-    filesInParagraph.forEach(filename => {
-        const path = join(paragraphDirectory, filename);
+    filesInBook.forEach(filename => {
+        const path = join(bookDirectory, filename);
         touchFile(path);
     });
-}
+
+    chapterIds.forEach(chapterId => {
+        const chapterKey = `c${chapterId.toString().padStart(2, "0")}`;
+        const chapterDirectory = join(bookDirectory, chapterKey);
+        touchDirectory(chapterDirectory);
+
+        console.log('    Building ', chapterKey, ' chapter in ', chapterDirectory);
+
+        filesInChapter.forEach(filename => {
+            const path = join(chapterDirectory, filename);
+            touchFile(path);
+        });
+
+        lastParagraphIds.forEach(lastParagraphId => {
+            const stringParagraphId = (lastParagraphId + 1).toString().padStart(2, "0");
+            const paragraphDirectory = join(chapterDirectory, `p${stringParagraphId}`);
+            touchDirectory(paragraphDirectory);
+
+            filesInParagraph.forEach(filename => {
+                const path = join(paragraphDirectory, filename);
+                touchFile(path);
+            });
+        })
+    })
+})

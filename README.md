@@ -71,7 +71,9 @@ Using a developer build, you will not be able to push changes elsewhere: all git
 
 ### Create new empty chapter
 1. `cd src/be`
-1. `yarn chapter 1 2 3` , where `1` is book id, `2` is chapter id and `3` is paragraphs count (f.e., from 1 to 3 included). Existing files will be touched, unexisting files will be created as empty.
+2. `yarn chapter 1 2 3` , where `1` is book id, `2` is chapter id and `3` is paragraphs count (f.e., from 1 to 3 included). Existing files will be touched, unexisting files will be created as empty.
+   1. `yarn chapter 1 2 1,4` - create book 1, chapter 2, paragraphs 1 and 4 only
+   2. `yarn chapter 1 2 1-4` - create book 1, chapter 2, paragraphs 1, 2, 3 and 4
 
 ### Wikificate
 1. `cd src/be`
