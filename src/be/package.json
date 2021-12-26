@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node -r dotenv/config --loader ts-node/esm src/app.ts",
     "chapter": "node --loader ts-node/esm src/generate_chapter.ts",
+    "count": "node --loader ts-node/esm src/count_chars.ts",
     "wiki": "node --loader ts-node/esm src/wikificate.ts",
     "lint": "eslint --ext .ts src/ --color"
   },

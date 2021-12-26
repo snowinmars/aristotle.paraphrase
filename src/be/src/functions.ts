@@ -20,6 +20,14 @@ const logger = pino({
     level: 'info',
 });
 
+if (gitKey) {
+    logger.info(`Found git key ${gitKey.slice(0, 6)}****`);
+} else {
+    logger.warn('No git key found, will not be able to push updates from a browser')
+}
+
+
+
 const booksRoot = resolve('./src/data/');
 logger.info('Root is %s', booksRoot);
 
@@ -335,4 +343,5 @@ if (isInDocker) {
     git(`fetch origin`);
     git(`checkout author`, true);
     git('pull');
+    git('push', true);
 }

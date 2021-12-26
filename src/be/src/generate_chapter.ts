@@ -1,42 +1,23 @@
 ﻿import {join, resolve} from "path";
-import {closeSync, existsSync, mkdirSync, openSync, utimesSync} from 'fs';
+import {promises} from 'fs'
+const {access, mkdir, open, utimes} = promises
 
-
-const touchFile = (path: string) => {
+const touchFile = async (path: string): Promise<void> => {
     const time = new Date();
     try {
-        utimesSync(path, time, time);
+        await utimes(path, time, time);
     } catch (err) {
-        closeSync(openSync(path, 'w'));
+        const handle = await open(path, 'w');
+        await handle.close();
     }
 };
 
-const touchDirectory = (path: string): void => {
-    if (!existsSync(path)){
-        mkdirSync(path, { recursive: true });
-    }
+const touchDirectory = async (path: string): Promise<void> => {
+    await access(path)
+      .catch(async () => await mkdir(path, { recursive: true }))
 };
 
 const root = resolve('./src/data/');
-
-if (process.argv.length !== 5) {
-    throw new Error('Too few arguments');
-}
-
-const [ bookIds, chapterIds, lastParagraphIds ]: number[][] = process.argv.slice(2).map(x => {
-    if (x.includes(',')) {
-        return x.split(',').map(y => parseInt(y));
-    }
-
-    if (x.includes('-')) {
-        const [min, max] = x.split('-').map(x => parseInt(x));
-
-        return new Array(max - min + 1).fill(0).map((d, i) => i + min - 1)
-    }
-
-    return [parseInt(x)]
-});
-
 const filesInBook = [
     'qBitSky.summary.html',
 ]
@@ -53,40 +34,77 @@ const filesInParagraph = [
     'ross.notes.html',
 ];
 
-bookIds.forEach(bookId => {
+const main = async () => {
+
+    if (process.argv.length !== 5) {
+        throw new Error('Too few arguments');
+    }
+
+    const [ bookIds, chapterIds, lastParagraphIds ]: number[][] = process.argv.slice(2).map(x => {
+        if (x.includes(',')) {
+            return x.split(',').map(y => parseInt(y));
+        }
+
+        if (x.includes('-')) {
+            const [min, max] = x.split('-').map(x => parseInt(x));
+
+            return new Array(max - min + 1).fill(0).map((d, i) => i + min - 1)
+        }
+
+        return [parseInt(x)]
+    });
+
+    await Promise.all(bookIds.map(async bookId => {
+        await buildBook(bookId, chapterIds, lastParagraphIds);
+    }))
+}
+
+const buildBook = async (bookId: number, chapterIds: number[], lastParagraphIds: number[]): Promise<void> => {
     const bookKey = `b${bookId.toString().padStart(2, "0")}`;
 
     const bookDirectory = join(root, bookKey);
     console.log('  Building ', bookKey, ' book in ', bookDirectory);
 
-    touchDirectory(bookDirectory);
+    await touchDirectory(bookDirectory);
 
-    filesInBook.forEach(filename => {
-        const path = join(bookDirectory, filename);
-        touchFile(path);
-    });
+    await Promise.all(
+      filesInBook.map(async filename => {
+          const path = join(bookDirectory, filename);
+          await touchFile(path);
+      })
+    );
 
-    chapterIds.forEach(chapterId => {
-        const chapterKey = `c${chapterId.toString().padStart(2, "0")}`;
-        const chapterDirectory = join(bookDirectory, chapterKey);
-        touchDirectory(chapterDirectory);
+    await Promise.all(chapterIds.map(async chapterId => {
+        await buildChapter(bookDirectory, chapterId, lastParagraphIds);
+    }))
+}
 
-        console.log('    Building ', chapterKey, ' chapter in ', chapterDirectory);
+const buildChapter = async (bookDirectory: string, chapterId: number, lastParagraphIds: number[]): Promise<void> => {
+    const chapterKey = `c${chapterId.toString().padStart(2, "0")}`;
+    const chapterDirectory = join(bookDirectory, chapterKey);
+    await touchDirectory(chapterDirectory);
 
-        filesInChapter.forEach(filename => {
-            const path = join(chapterDirectory, filename);
-            touchFile(path);
-        });
+    console.log('    Building ', chapterKey, ' chapter in ', chapterDirectory);
 
-        lastParagraphIds.forEach(lastParagraphId => {
-            const stringParagraphId = (lastParagraphId + 1).toString().padStart(2, "0");
-            const paragraphDirectory = join(chapterDirectory, `p${stringParagraphId}`);
-            touchDirectory(paragraphDirectory);
+    await Promise.all(filesInChapter.map(async filename => {
+        const path = join(chapterDirectory, filename);
+        await touchFile(path);
+    }));
 
-            filesInParagraph.forEach(filename => {
-                const path = join(paragraphDirectory, filename);
-                touchFile(path);
-            });
-        })
-    })
-})
+    await Promise.all(lastParagraphIds.map(async lastParagraphId => {
+        await buildParagraph(chapterDirectory, lastParagraphId);
+    }))
+}
+
+const buildParagraph = async (chapterDirectory: string, lastParagraphId: number): Promise<void> => {
+    const stringParagraphId = (lastParagraphId + 1).toString().padStart(2, "0");
+    const paragraphDirectory = join(chapterDirectory, `p${stringParagraphId}`);
+    await touchDirectory(paragraphDirectory);
+
+    await Promise.all(filesInParagraph.map(async filename => {
+        const path = join(paragraphDirectory, filename);
+        await touchFile(path);
+    }));
+}
+
+(async () => await main())();
