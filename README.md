@@ -37,7 +37,7 @@ REACT_APP_PROTOCOL=https
 
 ### Variables explanation
 
-- `GIT_KEY` - your github personal access token, that should have push access to [data repository](https://github.com/snowinmars/aristotle.paraphrase.data)
+- `GIT_KEY` - your github personal access token, that should have push access to [data repository](https://github.com/snowinmars/aristotle.paraphrase.data). This variable will be partially exposed to fe `window.env` variable.
 - `IS_IN_DOCKER` - you can't test git data editor if you start be server outside of docker. The root of this issue is security: to test this flow, you should inject your `GIT_KEY` in git submodule origin url, and the git submodule sometimes will not understand what you want. Idk how to fix it right now.
 - `REACT_APP_HOST` - a browser will send requests to this backend host
 - `REACT_APP_PORT` - a browser will send requests to this backend port
