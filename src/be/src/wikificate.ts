@@ -31,14 +31,22 @@ files.map(filepath => {
 
         // [^\u0000-\u007F]|\w - any unicode letter
         const result = content
-            .replaceAll('---', '-')
-            // .replace(' - ', '—') // long russian dash
-            .replace(/([ ])"([^\u0000-\u007F]|\w)/g, '$1«$2')
-            .replace(/([ ])'([^\u0000-\u007F]|\w)/g, '$1«$2')
-            .replace(/([^\u0000-\u007F]|\w)"([.,;:!?) ])/g, '$1»$2')
-            .replace(/([^\u0000-\u007F]|\w)'([.,;:!?) ])/g, '$1»$2')
-            .replace(/\n\n\n/g, '\n\n<br />\n\n')
-        ;
+          .replaceAll(/ +--- +/g, ' - ') // это --- я > это - я
+          .replaceAll(/ +-- +/g, ' - ') // это -- я > это - я
+          .replaceAll(' - ', ' — ') // это - я > это — я
+          .replaceAll('-', '—') // что-нибудь > что—нибудь
+          .replaceAll(/  +/g, ' ')
+          .replaceAll(/ +\./g, '.')
+          .replaceAll(/ +,/g, ',')
+          .replaceAll(/ +!/g, '!')
+          .replaceAll(/ +\?/g, '?')
+          .replaceAll(/ +:/g, ':')
+          .replaceAll(/ +;/g, ';')
+          .replaceAll(/([ >])"([^\u0000-\u007F]|\w)/g, '$1«$2')
+          .replaceAll(/([ >])'([^\u0000-\u007F]|\w)/g, '$1«$2')
+          .replaceAll(/([^\u0000-\u007F]|\w)"([.,;:!?) ])/g, '$1»$2')
+          .replaceAll(/([^\u0000-\u007F]|\w)'([.,;:!?) ])/g, '$1»$2')
+          .replaceAll(/\n\n\n/g, '\n\n<br />\n\n');
 
         writeFile(filepath, result, 'utf8', err => {
             if (err) {
