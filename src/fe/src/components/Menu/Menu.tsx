@@ -33,7 +33,10 @@ const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps
             <NavDropdown className={styles.prfNavBooksDropdown} active={activeKey === '/books/'} title={<Book />} id={styles.prfNavBooksDropdown}>
               <NavDropdown.Item as={NavLink} to="/books/">Список</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={NavLink} to="/books/1">Метафизика, 1</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/books/1">Метафизика, книга 1</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/books/2">Метафизика, книга 2</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/books/3">Метафизика, книга 3</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/books/4">Метафизика, книга 4</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link as={NavLink} isActive={() => activeKey === '/contacts/'} to="/contacts/"> <At /> </Nav.Link>
             <Nav.Link as={NavLink} isActive={() => activeKey === '/settings/'} to={"/settings/"}><Gear /></Nav.Link>
