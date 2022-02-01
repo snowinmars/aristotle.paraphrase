@@ -5,6 +5,8 @@ import {paths} from "./webpack/paths";
 import {getClientEnvironment} from "./webpack/env";
 import {git} from "./webpack/git";
 import {getScssLoadersRules} from "./webpack/scss-loaders";
+import {ObfuscateParameters} from "./webpack/css-var-obfuscate";
+import {obfuscate} from "./webpack/obfuscator";
 
 const os = require('os');
 const path = require('path');
@@ -31,6 +33,7 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const CssVarObfuscatePlugin = require('./webpack/css-var-obfuscate');
 
 type WebpackEnv = {
   readonly development: boolean | undefined;
@@ -128,19 +131,6 @@ const configure = (webpackEnv: WebpackEnv) => {
         {
           test: /\.(scss|css)$/,
           use: getScssLoadersRules(buildEnv === BuildEnv.development),
-        },
-        {
-          test: /\.bscss$/,
-          use: [
-            buildEnv === BuildEnv.development ? MiniCssExtractPlugin.loader : {
-              loader: "style-loader",
-              options: {
-                insert: '#insert-bcss-here',
-              }
-            },
-            'css-loader',
-            "sass-loader",
-          ],
         },
         {
           test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
@@ -276,6 +266,12 @@ const configure = (webpackEnv: WebpackEnv) => {
       }),
       new SourceMapDevToolPlugin({
         filename: "[file].map"
+      }),
+      new CssVarObfuscatePlugin({
+        buildFolder: paths.appBuild,
+        obfuscate: obfuscate,
+        excludeName: buildEnv === BuildEnv.production,
+        hashLength: 4,
       }),
     ].filter(Boolean),
     optimization: {
