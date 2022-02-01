@@ -1,6 +1,7 @@
-import {Book, Chapter, EditorParameters, Paragraph, ParagraphUpdate} from '../types/types';
-import {config} from "../utils/config";
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+import {Book, Chapter, EditorParameters, ParagraphUpdate} from '../types/types';
+import {config} from "../utils/config";
 
 export const booksApi = createApi({
   reducerPath: 'books',

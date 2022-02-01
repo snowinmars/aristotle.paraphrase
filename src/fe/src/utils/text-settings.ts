@@ -21,14 +21,14 @@ export const loadTextSettings = (): TextSettings => {
     enableQbitSky,
     enableRoss,
   ].reduce((acc, cur) => {
-    if (cur) acc++
+    if (cur) acc++;
     return acc;
-  }, 0)
+  }, 0);
 
   return {
     enableParaphrase,
     enableQbitSky,
     enableRoss,
     enabledCount,
-  }
+  };
 };

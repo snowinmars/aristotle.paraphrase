@@ -1,0 +1,14 @@
+.prfEllipsisY {
+  text-overflow: ellipsis;
+  overflow-x: visible;
+  overflow-y: clip;
+  white-space: nowrap;
+}
+
+.prfEllipsisX {
+  text-overflow: ellipsis;
+  overflow-x: clip;
+  overflow-y: visible;
+  white-space: nowrap;
+}
+

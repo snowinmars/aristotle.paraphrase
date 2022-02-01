@@ -16,6 +16,7 @@ const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClie
 const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlayInterop');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
@@ -34,10 +35,12 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CssVarObfuscatePlugin = require('./webpack/css-var-obfuscate');
+const CompressionPlugin = require("compression-webpack-plugin");
 
 type WebpackEnv = {
   readonly development: boolean | undefined;
   readonly production: boolean | undefined;
+  readonly analyze: boolean | undefined;
 }
 
 enum BuildEnv {
@@ -52,6 +55,7 @@ const configure = (webpackEnv: WebpackEnv) => {
   if (webpackEnv.development === true) buildEnv = BuildEnv.development;
   if (webpackEnv.production === true) buildEnv = BuildEnv.production;
   if (buildEnv === BuildEnv.none) throw new Error(`Unknown env to build: ${JSON.stringify(webpackEnv)}`);
+  const analyze = webpackEnv.analyze === true;
 
   process.env.BABEL_ENV = buildEnv;
   process.env.NODE_ENV = buildEnv;
@@ -94,6 +98,12 @@ const configure = (webpackEnv: WebpackEnv) => {
       ],
     },
     resolve: {
+      alias: {
+        "react": "preact/compat",
+        "react-dom/test-utils": "preact/test-utils",
+        "react-dom": "preact/compat",     // Must be below test-utils
+        "react/jsx-runtime": "preact/jsx-runtime"
+      },
       modules: [
         'node_modules',
         paths.appNodeModules,
@@ -187,8 +197,12 @@ const configure = (webpackEnv: WebpackEnv) => {
       ]),
       new CopyPlugin({
         patterns: [
-          { from: paths.appPublic, to: "public" },
-        ],
+          'env-config.js.gen',
+          'manifest.json',
+          'robots.txt',
+        ].map(name => {
+          return { from: path.join(paths.appPublic, name), to: "public" }
+        }),
       }),
       buildEnv === BuildEnv.production && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
       new InterpolateHtmlPlugin(HtmlWebPackPlugin, env.raw), // Makes some environment variables available in index.html.
@@ -264,6 +278,7 @@ const configure = (webpackEnv: WebpackEnv) => {
         filename: "[name].css",
         insert: '#insert-css-here',
       }),
+      buildEnv === BuildEnv.production && new CompressionPlugin(),
       new SourceMapDevToolPlugin({
         filename: "[file].map"
       }),
@@ -273,6 +288,7 @@ const configure = (webpackEnv: WebpackEnv) => {
         excludeName: buildEnv === BuildEnv.production,
         hashLength: 4,
       }),
+      analyze && new BundleAnalyzerPlugin(),
     ].filter(Boolean),
     optimization: {
       usedExports: true,

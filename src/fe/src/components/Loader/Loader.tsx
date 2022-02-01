@@ -1,4 +1,4 @@
-﻿import React, { FunctionComponent } from 'react';
+﻿import React, { FunctionComponent } from 'preact/compat';
 import styles from './Loader.module.scss';
 
 const Loader: FunctionComponent = (): JSX.Element => {

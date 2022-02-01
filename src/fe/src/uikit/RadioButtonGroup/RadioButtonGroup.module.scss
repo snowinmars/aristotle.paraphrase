@@ -1,0 +1,27 @@
+@value prfButton from '../Button/Button.module.scss';
+@value prfDefaultButton from '../Button/Button.module.scss';
+@value prfSuccessButton from '../Button/Button.module.scss';
+@value prfDangerButton from '../Button/Button.module.scss';
+@value prfWarningButton from '../Button/Button.module.scss';
+@value prfInfoButton from '../Button/Button.module.scss';
+@value prfActionButton from '../Button/Button.module.scss';
+
+.prfCheckboxGroup {
+  margin: 0;
+  padding: 0;
+}
+
+.prfRadioInput {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  pointer-events: none;
+
+  &:focus+.prfCheckbox,
+  &:checked+.prfCheckbox {
+    filter: brightness(var(--prf-change));
+  }
+}
+
+.prfRadioLabel {
+  width: 100%;
+}

@@ -1,48 +1,25 @@
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
+@value prfButton from '../../uikit/Button/Button.module.scss';
 
 .prfMenu {
-  .search {
-      width: 100%;
-  }
+  display: flex;
+  align-items: center;
 
-  .prfNav > .prfNavWrapper {
-    align-items: flex-end;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
+  .prfLogo {
+    padding-left: 0;
+    padding-right: 0;
 
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      a:last-of-type {
-        margin-left: auto
-      }
-    }
+    margin-left: 0;
+    margin-right: 2em;
 
-    .prfNavBooksDropdown {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    }
-  }
-
-  .prfNav {
-    justify-content: space-between;
+    font-size: 125%;
   }
 
   :global {
-    .navbar-toggler-icon,
-    .navbar-brand,
-    .navbar-nav .nav-link {
-      color: var(--bs-body-color);
-    }
-
-    .dropdown-menu[data-bs-popper] {
-      top: 80%;
-    }
-
-    .navbar-nav .dropdown-menu {
-      position: absolute;
-      border: 2px solid var(--bs-border);
+    .prfButton {
+      min-width: 2em;
+      border: none;
     }
   }
 }
+
+

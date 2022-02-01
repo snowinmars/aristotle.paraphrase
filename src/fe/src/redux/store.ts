@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {booksApi} from "../components/accessor";
 import {setupListeners} from "@reduxjs/toolkit/query";
+
+import {booksApi} from "../components/accessor";
 
 const store = configureStore({
   reducer: {

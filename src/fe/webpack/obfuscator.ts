@@ -10,7 +10,7 @@ export const obfuscate = ({buildFolder, filename, content, excludeName, hashLeng
     if (hashes.has(id)) {
       hash = hashes.get(id);
     } else {
-      hash = Math.random().toString(hashLength + 2).slice(2);
+      hash = Math.random().toString(16).slice(2, hashLength + 2);
       hashes.set(id, hash)
     }
 

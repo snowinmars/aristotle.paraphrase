@@ -1,65 +1,67 @@
-import React, { FunctionComponent } from 'react';
+import RadioButtonGroup from "../../uikit/RadioButtonGroup/RadioButtonGroup";
+import React, { FunctionComponent } from 'preact/compat';
 import styles from './Menu.module.scss';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Container from 'react-bootstrap/Container';
-import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
-import { Github, QuestionCircle, At, Book, Gear } from "react-bootstrap-icons";
+import Button from "../../uikit/Button/Button";
+import {classes} from "../../uikit/_common/classes";
+import { route } from 'preact-router';
 
 const getActiveKey = (pathname: string): string => {
   // '/' to '/'
-  // '/other/another' to '/other/'
+  // '/other/another' to 'other'
 
   if (pathname === '/') return pathname;
 
-  return `/${pathname.split('/')[1]}/`;
+  return `${pathname.split('/')[1]}`;
 };
 
-const Menu: FunctionComponent<RouteComponentProps> = (props: RouteComponentProps): JSX.Element => {
-  const { location } = props;
+const Menu: FunctionComponent = (props): JSX.Element => {
   const activeKey = getActiveKey(location.pathname);
 
   return (
-    <Container>
-      <Navbar className={styles.prfMenu} expand="md">
-        <Navbar.Brand as={NavLink} to={'/'}>Prf - β</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse className={styles.prfNav} id="basic-navbar-nav">
-          <Nav className={['mr-auto', styles.prfNavWrapper].join(' ')}>
-            <Nav.Link as={NavLink} to={'/'} isActive={() => activeKey === '/'}><QuestionCircle /></Nav.Link>
-            <NavDropdown className={styles.prfNavBooksDropdown} active={activeKey === '/books/'} title={<Book />} id={styles.prfNavBooksDropdown}>
-              <NavDropdown.Item as={NavLink} to="/books/">Список</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={NavLink} to="/books/1">Метафизика, книга 1</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/books/2">Метафизика, книга 2</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/books/3">Метафизика, книга 3</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/books/4">Метафизика, книга 4</NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link as={NavLink} isActive={() => activeKey === '/contacts/'} to="/contacts/"> <At /> </Nav.Link>
-            <Nav.Link as={NavLink} isActive={() => activeKey === '/settings/'} to={"/settings/"}><Gear /></Nav.Link>
-            <Nav.Link
-              active={false}
-              href={'https://github.com/snowinmars/aristotle.paraphrase'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Github />
-            </Nav.Link>
-          </Nav>
-          <Form>
-            <FormControl
-              type="text"
-              placeholder="TBD"
-              disabled
-              className={['mr-sm-2', styles.search].join(" ")} />
-          </Form>
-        </Navbar.Collapse>
-      </Navbar>
-    </Container>
-  );
-};
+    <div className={styles.prfMenu}>
+      <Button
+        className={styles.prfLogo}
+        label={'prf - β'}
+        click={() => route('/')}
+      >
+      </Button>
 
-export default withRouter(Menu);
+      <RadioButtonGroup
+        name={'prf-menu'}
+        selectedId={activeKey}
+        onChange={id => {
+          console.log(id)
+          route(id);
+        }}
+        buttons={[
+          {
+            id: '/',
+            label: <span
+              className={classes(
+                styles.prfMenuItem,
+                styles.prfQuestionMark,
+              )}>?</span>
+          }, {
+            id: '/contacts',
+            label: <span
+              className={classes(
+                styles.prfMenuItem,
+                styles.prfQuestionMark,
+              )}>@</span>
+          }, {
+            id: '/settings',
+            label: <span
+              className={classes(
+                styles.prfMenuItem,
+                styles.prfQuestionMark,
+              )}>⛭</span>
+          },
+        ]}
+      >
+
+      </RadioButtonGroup>
+    </div>
+  )
+}
+
+export default Menu;
