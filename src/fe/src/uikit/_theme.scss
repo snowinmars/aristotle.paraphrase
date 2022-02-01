@@ -1,0 +1,115 @@
+$variable-prefix: 'prf';
+
+@mixin buttonColor(
+  $name,
+  $bgColor,
+  $bgHoverColor,
+  $rippleColor,
+  $fgColor,
+  $fgHoverColor,
+  $borderColor,
+  $borderHoverColor,
+  $bgDisabledColor,
+  $fgDisabledColor,
+  ) {
+
+  $change: 0;
+
+  --#{$variable-prefix}-#{$name}-button-bg: #{$bgColor};
+  --#{$variable-prefix}-#{$name}-hover-button-bg: #{$bgHoverColor};
+  --#{$variable-prefix}-#{$name}-ripple: #{$rippleColor};
+  --#{$variable-prefix}-#{$name}-button-fg: #{$fgColor};
+  --#{$variable-prefix}-#{$name}-hover-button-fg: #{$fgHoverColor};
+  --#{$variable-prefix}-#{$name}-button-border: #{$borderColor};
+  --#{$variable-prefix}-#{$name}-hover-button-border: #{$borderHoverColor};
+  --#{$variable-prefix}-#{$name}-disabled-button-bg: #{$bgDisabledColor};
+  --#{$variable-prefix}-#{$name}-disabled-button-fg: #{$fgDisabledColor};
+}
+
+$bodyBgColor: #192236;
+$bodyFgColor: #c6c2b6;
+$bodyHoverBgColor: #1b294b;
+$bodyHoverFgColor: #ebf6f7;
+
+// powered by https://github.com/snowinmars/Kuretake-Gansai-Tambi-pallete
+:root {
+  --prf-body-bg: #{$bodyBgColor};
+  --prf-body-fg: #{$bodyFgColor};
+  --prf-body-hover-bg: #{$bodyHoverBgColor};
+  --prf-body-hover-fg: #{$bodyHoverFgColor};
+  --#{$variable-prefix}-link-fg: #1d697c;
+
+  @include buttonColor(
+    $name: 'default',
+    $bgColor: $bodyBgColor,
+    $bgHoverColor: $bodyHoverBgColor,
+    $rippleColor: $bodyFgColor,
+    $fgColor: $bodyFgColor,
+    $fgHoverColor: $bodyHoverFgColor,
+    $borderColor: transparentize($bodyFgColor, 0.5),
+    $borderHoverColor: $bodyHoverFgColor,
+    $bgDisabledColor: $bodyFgColor,
+    $fgDisabledColor: $bodyBgColor,
+  );
+  @include buttonColor(
+    $name: 'action',
+    $bgColor: #1d697c,
+    $bgHoverColor: #4d646c,
+    $rippleColor: $bodyFgColor,
+    $fgColor: $bodyFgColor,
+    $fgHoverColor: $bodyHoverFgColor,
+    $borderColor: transparentize($bodyFgColor, 0.5),
+    $borderHoverColor: #ebf6f7,
+    $bgDisabledColor: $bodyFgColor,
+    $fgDisabledColor: #1d697c,
+  );
+  @include buttonColor(
+    $name: 'success',
+    $bgColor: #2a603b,
+    $bgHoverColor: #407a52,
+    $rippleColor: #a5ba93,
+    $fgColor: #a5ba93,
+    $fgHoverColor: #8db255,
+    $borderColor: transparentize(#a5ba93, 0.5),
+    $borderHoverColor: #8db255,
+    $bgDisabledColor: #a5ba93,
+    $fgDisabledColor: #2a603b,
+  );
+  @include buttonColor(
+    $name: 'warning',
+    $bgColor: #b7702d,
+    $bgHoverColor: #c57f2e,
+    $rippleColor: #f7bb7d,
+    $fgColor: #f7bb7d,
+    $fgHoverColor: #ffb94e,
+    $borderColor: transparentize(#f7bb7d, 0.5),
+    $borderHoverColor: #ffb95a,
+    $bgDisabledColor: #f7bb7d,
+    $fgDisabledColor: #985629,
+  );
+  @include buttonColor(
+    $name: 'danger',
+    $bgColor: #8b352d,
+    $bgHoverColor: #9d2b22,
+    $rippleColor: #f58f84,
+    $fgColor: #f58f84,
+    $fgHoverColor: #ffb3a7,
+    $borderColor: transparentize(#f58f84, 0.5),
+    $borderHoverColor: #ff4e20,
+    $bgDisabledColor: #f58f84,
+    $fgDisabledColor: #8b352d,
+  );
+  @include buttonColor(
+    $name: 'info',
+    $bgColor: #3d4035,
+    $bgHoverColor: #4d4b3a,
+    $rippleColor: #bcb58c,
+    $fgColor: #bcb58c,
+    $fgHoverColor: #c6c2b6,
+    $borderColor: transparentize(#bcb58c, 0.5),
+    $borderHoverColor: #bba46d,
+    $bgDisabledColor: #bcb58c,
+    $fgDisabledColor: #3d4035,
+  );
+
+}

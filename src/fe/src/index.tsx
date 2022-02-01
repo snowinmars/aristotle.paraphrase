@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './_bootstrap.bscss';
 import './index.scss';
 import { Provider } from 'react-redux';
 import App from './components/App/App';

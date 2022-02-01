@@ -1,0 +1,17 @@
+@value prfButton from '../Button/Button.module.scss';
+@value prfButtonGroup from '../ButtonGroup/ButtonGroup.module.scss';
+
+.prfTabGroup {
+  display: flex;
+  flex-direction: column;
+
+  .prfButtonGroup {
+    .prfButton {
+      width: 100%;
+    }
+  }
+}
+
+.prfTab {
+  padding: 1em 2em;
+}

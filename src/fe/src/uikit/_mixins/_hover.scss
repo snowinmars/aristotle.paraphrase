@@ -1,0 +1,17 @@
+@mixin hover ($bg, $fg, $border) {
+  &[data-selected='true'] {
+    background-color: $bg;
+    color: $fg;
+    border-color: $border;
+  }
+
+  &:not([disabled]) {
+    // hover before focus
+    &:hover,
+    &:focus {
+      background-color: $bg;
+      color: $fg;
+      border-color: $border;
+    }
+  }
+}

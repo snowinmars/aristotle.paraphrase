@@ -1,0 +1,206 @@
+@use '../common';
+@use '../_mixins/ripple' as prfRipple;
+@use '../_mixins/hover' as prfHover;
+
+$labelZ: 1;
+$wrapperZ: 2;
+$loaderZ: 3;
+$rippleZ: 4;
+$loaderWidth: 1em;
+$loaderRotationPeriod: 0.8s;
+$transitionTime: 0.2s;
+$transition:
+  width $transitionTime ease,
+  opacity $transitionTime ease,
+  color $transitionTime ease,
+  border $transitionTime ease,
+  transform $transitionTime cubic-bezier(0.18, 0.89, 0.3, 1.02);
+
+.prfButton {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+
+  background-color: inherit;
+  color: inherit;
+  margin: 0.2em 0.2em ;
+  font-family: inherit;
+
+  text-decoration: none;
+  border-radius: 5px;
+
+  padding: 0.3em 0.5em;
+  border-width: 1px;
+  border-style: solid;
+  outline: none;
+  overflow: hidden;
+
+  cursor: pointer;
+  text-align: center;
+
+  &[data-disabled=true] {
+    pointer-events: none;
+    filter: opacity(0.5);
+    cursor: wait;
+  }
+}
+
+// label
+
+.prfLabel {
+  transition: $transition;
+}
+
+.prfLabel[data-disabled=true],
+.prfIcon[data-visible=true] {
+  transform: translateX(-$loaderWidth * 1.5);
+}
+
+.prfLabel[data-disabled=false],
+.prfIcon[data-visible=false] {
+  transform: translateX(0);
+}
+
+// loader
+
+.prfLoader {
+  position: absolute;
+  left: 0;
+  transition: $transition;
+  width: 100%;
+
+  z-index: $loaderZ;
+
+  &[data-visible=true] {
+    transform: translateX(calc(50% - #{$loaderWidth}));
+  }
+
+  &[data-visible=false] {
+    transform: translateX(100%);
+  }
+}
+
+// icons
+
+.prfIcon {
+  transition: $transition;
+}
+
+.prfRightIcon {
+  margin-left: 0.3em;
+}
+
+.prfLeftIcon {
+  margin-right: 0.3em;
+}
+
+.prfVisibleIcon {
+  opacity: 1;
+}
+
+.prfInvisibleIcon {
+  opacity: 0;
+}
+
+// spin
+
+.prfSpin {
+  display: inline-block;
+
+  -webkit-animation-name: rotateOut;
+  animation-name: rotateOut;
+  -webkit-animation-duration: $loaderRotationPeriod;
+  animation-duration: $loaderRotationPeriod;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rotateOut {
+  0% {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    opacity: 0.3;
+  }
+  15% {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: rotate3d(0, 0, 1, 360deg);
+    transform: rotate3d(0, 0, 1, 360deg);
+    opacity: 0.3;
+  }
+}
+
+// variant classes
+
+@mixin buttonVariants($name) {
+  $firstUpperLetter: to-upper-case(str-slice($name, 1, 1));
+  $firstLowerLetter: to-lower-case(str-slice($name, 1, 1));
+  $otherLetters: str-slice($name, 2);
+
+  $upperName: #{$firstUpperLetter}#{$otherLetters};
+  $lowerName: #{$firstLowerLetter}#{$otherLetters};
+
+  .prf#{$upperName}Button {
+    background-color: var(--prf-#{$lowerName}-button-bg);
+    color: var(--prf-#{$lowerName}-button-fg);
+    border-color: var(--prf-#{$lowerName}-button-border);
+
+    @include prfHover.hover(
+        var(--prf-#{$lowerName}-hover-button-bg),
+        var(--prf-#{$lowerName}-hover-button-fg),
+        var(--prf-#{$lowerName}-hover-button-border)
+    );
+
+    @include prfRipple.ripple(
+      var(--prf-#{$lowerName}-hover-button-bg),
+      var(--prf-#{$lowerName}-ripple)
+    );
+
+    transition-property: background, border-color;
+
+    .prf#{$upperName}Loader {
+      color: var(--prf-#{$lowerName}-button-fg);
+    }
+
+    &[data-selected=true] {
+      background: var(--prf-#{$lowerName}-hover-button-bg) radial-gradient(circle, transparent 1%, var(--prf-#{$name}-hover-button-bg) 1%) center/15000%;
+      color: var(--prf-#{$lowerName}-hover-button-fg);
+      border-color: var(--prf-#{$lowerName}-hover-button-border);
+    }
+
+    &[data-disabled=true] {
+      background: var(--prf-#{$lowerName}-disabled-button-bg);
+      background-color: var(--prf-#{$lowerName}-disabled-button-bg);
+      color: var(--prf-#{$lowerName}-disabled-button-fg);
+      cursor: not-allowed;
+
+      .prf#{$upperName}Loader {
+        color: var(--prf-#{$lowerName}-button-bg);
+      }
+    }
+  }
+}
+
+$variants: [
+  'default',
+  'success',
+  'danger',
+  'warning',
+  'info',
+  'action',
+];
+
+@each $variant in $variants {
+  @include buttonVariants($variant);
+}
+
+
+
+

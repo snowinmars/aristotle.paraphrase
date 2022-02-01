@@ -1,0 +1,129 @@
+@use "sass:math";
+@use '../_mixins/ripple' as prfRipple;
+@use '../_mixins/hover' as prfHover;
+
+$bodyZ: 1;
+$collapsableZ: 2;
+$summaryLineHeight: 2em;
+$transitionTime: 0.1s;
+$transition:
+  height $transitionTime linear,
+  top $transitionTime linear,
+  transform $transitionTime ease-out;
+
+.prfCollapsable {
+  position: relative;
+}
+
+.prfOpenedDetails {
+  .prfBody {
+    // transform: scaleY(1);
+    animation: sweep-open $transitionTime ease-out;
+  }
+
+  .prfSummary {
+    background-color: var(--prf-body-hover-bg);
+    color: var(--prf-body-hover-fg);
+  }
+}
+
+.prfClosedDetails {
+  .prfBody {
+    // transform: scaleY(0);
+  }
+}
+
+@keyframes sweep-open {
+  0%    { transform: scaleY(0); }
+  100%  { transform: scaleY(1); }
+}
+
+@keyframes sweep-close {
+  0%    { transform: scaleY(1); }
+  100%  { transform: scaleY(0); }
+}
+
+.prfBody {
+  padding: 1em 2em;
+  border: var(--prf-body-hover-bg) 1px solid;
+  border-top: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  transition: $transition;
+
+  transform-origin: top;
+  overflow: hidden;
+}
+
+// summary
+
+.prfSummary {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: $collapsableZ;
+  font-size: 110%;
+
+  padding: 0.5em 0.5em 0;
+  background-color: var(--prf-body-bg);
+  color: var(--prf-body-fg);
+  border: var(--prf-body-hover-bg) 1px solid;
+
+  &::marker {
+    display: none;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: var(--prf-body-hover-bg);
+    color: var(--prf-body-hover-fg);
+  }
+
+  @include prfHover.hover(
+      var(--prf-body-hover-bg),
+      var(--prf-body-hover-fg),
+      var(--prf-body-hover-border)
+  );
+
+}
+
+.prfLeftSummaryIcon {
+  flex-direction: row-reverse;
+}
+
+.prfRightSummaryIcon {
+  flex-direction: row;
+}
+
+// icons
+
+.prfIconContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+
+  padding: math.div($summaryLineHeight, 4) 0;
+  height: math.div($summaryLineHeight, 2);
+}
+
+.prfIcon {
+  transition: $transition;
+}
+
+.prfOpenIconVisible {
+  transform: translateY(0);
+}
+
+.prfOpenIconHidden {
+  transform: translateY($summaryLineHeight);
+}
+
+.prfCloseIconVisible {
+  transform: translateY(-$summaryLineHeight);
+}
+
+.prfCloseIconHidden {
+  transform: translateY(-$summaryLineHeight * 2);
+}

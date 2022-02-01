@@ -1,17 +1,6 @@
-@import 'accordion';
-@import 'buttonGroup';
-@import 'card';
-@import 'nav-dropdown';
-@import 'theme';
+@use './uikit/theme';
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: all 0.5s ease;
-
   position: absolute;
   top: 0;
   right: 0;
@@ -21,13 +10,17 @@ body {
   margin: 0;
   padding: 0;
 
-  color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
+  color: var(--prf-body-fg);
+  background-color: var(--prf-body-bg);
 }
 
 :global {
   #root {
     height: 100%;
     width: 100%;
+  }
+
+  a {
+    color: var(--prf-link-fg);
   }
 }

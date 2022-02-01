@@ -1,0 +1,23 @@
+@value prfButton from '../Button/Button.module.scss';
+@value prfDefaultButton from '../Button/Button.module.scss';
+@value prfSuccessButton from '../Button/Button.module.scss';
+@value prfDangerButton from '../Button/Button.module.scss';
+@value prfWarningButton from '../Button/Button.module.scss';
+@value prfInfoButton from '../Button/Button.module.scss';
+@value prfActionButton from '../Button/Button.module.scss';
+
+.prfCheckboxGroup {
+
+}
+
+.prfCheckboxInput {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  pointer-events: none;
+}
+
+.prfCheckboxMark {
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 1em
+}
