@@ -1,312 +1,497 @@
-import {InternalOptions, Manifest} from "webpack-manifest-plugin";
-import {FileDescriptor} from   "webpack-manifest-plugin/dist/helpers";
-import {Compiler} from "webpack";
-import {paths} from "./webpack/paths";
-import {getClientEnvironment} from "./webpack/env";
-import {git} from "./webpack/git";
-import {getScssLoadersRules} from "./webpack/scss-loaders";
-import {ObfuscateParameters} from "./webpack/css-var-obfuscate";
-import {obfuscate} from "./webpack/obfuscator";
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import path, { join } from 'path';
 
-const os = require('os');
-const path = require('path');
-const fs = require('fs');
-const resolve = require('resolve');
-const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
-const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlayInterop');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import { config } from 'dotenv';
+import { expand } from 'dotenv-expand';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import HtmlWebPackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import { DefinePlugin, RuleSetRule, SourceMapDevToolPlugin, WebpackPluginInstance } from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { WebpackConfiguration } from 'webpack-cli';
+import { InternalOptions, WebpackManifestPlugin } from 'webpack-manifest-plugin';
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const CopyPlugin = require("copy-webpack-plugin");
-const { DefinePlugin, SourceMapDevToolPlugin } = require('webpack');
-const TerserPlugin = require("terser-webpack-plugin");
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const CssVarObfuscatePlugin = require('./webpack/css-var-obfuscate');
-const CompressionPlugin = require("compression-webpack-plugin");
+import packageJson from './package.json';
+import { getDevtool } from './webpack/src/helpers/getDevtool';
+import { parseExternalConfiguration } from './webpack/src/helpers/parseExternalConfiguration';
+import { getPaths } from './webpack/src/helpers/paths';
+import { WebpackEnv } from './webpack/src/helpers/types';
+import { EnvGeneratorPlugin } from './webpack/src/plugins/env-generator-plugin';
+import { PackageJsonGeneratorPlugin } from './webpack/src/plugins/package-json-generator-plugin';
 
-type WebpackEnv = {
-  readonly development: boolean | undefined;
-  readonly production: boolean | undefined;
-  readonly analyze: boolean | undefined;
-}
+// FIXME: xxx
+const emptyEnv: NodeJS.ProcessEnv = {} as NodeJS.ProcessEnv;
 
-enum BuildEnv {
-  none = 'none',
-  development = 'development',
-  production = 'production',
-}
+// FIXME: xxx
+const parseEnv = (dotenvFiles: string[] | null | undefined): NodeJS.ProcessEnv => {
+  if (!dotenvFiles) return emptyEnv;
 
-const configure = (webpackEnv: WebpackEnv) => {
-  let buildEnv: BuildEnv = BuildEnv.none;
+  return dotenvFiles.reduce<NodeJS.ProcessEnv>((acc: NodeJS.ProcessEnv, dotenvFile) => {
+    if (existsSync(dotenvFile)) {
+      console.log(`Found env file at ${dotenvFile}`);
 
-  if (webpackEnv.development === true) buildEnv = BuildEnv.development;
-  if (webpackEnv.production === true) buildEnv = BuildEnv.production;
-  if (buildEnv === BuildEnv.none) throw new Error(`Unknown env to build: ${JSON.stringify(webpackEnv)}`);
-  const analyze = webpackEnv.analyze === true;
+      return {
+        ...acc,
+        ...expand(config({
+          path : dotenvFile,
+        }))
+          .parsed,
+      };
+    }
 
-  process.env.BABEL_ENV = buildEnv;
-  process.env.NODE_ENV = buildEnv;
+    return acc;
+  }, emptyEnv);
+};
 
-  const env = getClientEnvironment();
-  if (buildEnv === BuildEnv.development) {
-    process.env.REACT_GIT_HASH = git('describe --always');
+const configure = (webpackEnv: WebpackEnv): WebpackConfiguration => {
+  const parsedEnv = parseEnv([ './.env' ]);
+  const paths = getPaths({ publicUrlOrPath: parsedEnv.ARPH_PUBLIC_URL_OR_PATH });
+  [
+    paths.distPublic,
+  ].forEach((x) => {
+    if (!existsSync(x)) mkdirSync(x);
+  });
+
+  [
+    paths.distManifest,
+    paths.publicManifest,
+  ].forEach((x) => {
+    if (!existsSync(x)) writeFileSync(x, '', { encoding: 'utf-8' });
+  });
+
+  const [ vars, env ] = parseExternalConfiguration(webpackEnv, {
+    dotenvFiles : [
+      paths.dotenv,
+    ],
+    allowedPrefixes : [
+      /NODE_ENV/,
+      /BABEL_ENV/,
+      /ARPH_.*/,
+    ],
+    processEnv : {
+      ...process.env,
+      ARPH_BASE_HREF : paths.publicUrlOrPath,
+    },
+  });
+
+  let sourceMapFilename: string | undefined = undefined;
+
+  if (vars.sourceMap) {
+    if (vars.isDev) sourceMapFilename = '[name].map';
+    else sourceMapFilename = '[name].[contenthash].map';
   }
-  console.log(`Building in ${buildEnv}`);
 
   return {
-    mode: buildEnv,
-    bail: buildEnv === BuildEnv.production,
-    devtool: buildEnv === BuildEnv.development ? 'source-map' : undefined,
-    entry: paths.appIndexJs,
-    output: {
-      libraryTarget: 'umd',
-      path: paths.appBuild,
-      pathinfo: buildEnv === BuildEnv.development,
-      publicPath: paths.publicUrlOrPath,
-      chunkLoadingGlobal: `webpackJsonpPrf`,
-      filename: () => buildEnv === BuildEnv.development
-          ? 'static/js/[name].js'
-          : 'static/js/[name].[contenthash:8].js',
-      chunkFilename: () => buildEnv === BuildEnv.development
-          ? 'static/js/[name].chunk.js'
-          : 'static/js/[name].[contenthash:8].chunk.js',
-      devtoolModuleFilenameTemplate: () => buildEnv === BuildEnv.development
-          ? (info: { absoluteResourcePath: string }) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
-          : (info: { absoluteResourcePath: string }) => path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/'),
-      // this defaults to 'window', but by setting it to 'this' then
-      // module chunks which are built will work in web workers as well.
-      globalObject: 'this',
+    mode    : vars.configuration,
+    bail    : vars.isProd,
+    devtool : getDevtool(vars),
+    entry   : paths.srcIndex,
+    target  : 'web',
+
+    output : {
+      uniqueName          : packageJson.name,
+      library             : packageJson.name,
+      libraryTarget       : 'umd',
+      path                : paths.dist,
+      publicPath          : paths.publicUrlOrPath,
+      filename            : vars.isDev ? '[name].js' : '[name].[contenthash].js',
+      chunkFilename       : vars.isDev ? '[name].js' : '[name].[contenthash].js',
+      cssFilename         : vars.isDev ? '[name].[ext]' : '[name].[contenthash].[ext]',
+      assetModuleFilename : vars.isDev ? '[name].[ext]' : '[name].[contenthash].[ext]',
+      sourceMapFilename   : sourceMapFilename,
+      clean               : true,
+      globalObject        : 'this',
     },
-    watch: buildEnv === BuildEnv.development,
-    watchOptions: {
-      ignored: [
-        paths.appNodeModules,
-        paths.appEnvGen,
+
+    watch        : vars.isDev,
+    watchOptions : {
+      ignored : [
+        paths.nodeModules,
+        paths.publicEnvGen,
+        paths.dist,
       ],
     },
-    resolve: {
-      alias: {
-        "react": "preact/compat",
-        "react-dom/test-utils": "preact/test-utils",
-        "react-dom": "preact/compat",     // Must be below test-utils
-        "react/jsx-runtime": "preact/jsx-runtime"
+
+    resolve : {
+      alias : {
+        'src'   : paths.src,
       },
-      modules: [
+      fallback : {
+      },
+      modules : [
         'node_modules',
-        paths.appNodeModules,
-        buildEnv === BuildEnv.development && paths.appSrc,
-      ].filter(Boolean),
-      extensions: paths.moduleFileExtensions.map(ext => `.${ext}`),
-      plugins: [
-        // appBuild is a hack
-        new ModuleScopePlugin(paths.appBuild, [
-          'node_modules',
-          paths.appNodeModules,
-          paths.appPackageJson,
-          reactRefreshOverlayEntry,
-        ]),
-      ],
+        paths.nodeModules,
+        vars.isDev && paths.src,
+      ].filter(Boolean) as string[],
+      extensions : paths.moduleFileExtensions.map((ext: string) => `.${ext}`),
     },
-    devServer: {
-      port: 3000,
-      historyApiFallback: true
-    },
-    module: {
-      strictExportPresence: true,
-      rules: [
-        {
-          parser: {
-            requireEnsure: false
-          }
-        },
-        {
-          test: /\.(js|mjs|jsx|ts|tsx)$/,
-          include: paths.appSrc,
-          exclude: /node_modules/,
-          loader: require.resolve('babel-loader'),
-        },
-        {
-          test: /\.(scss|css)$/,
-          use: getScssLoadersRules(buildEnv === BuildEnv.development),
-        },
-        {
-          test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
-          type: 'asset/resource',
-        },
-        {
-          test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-          type: 'asset/inline',
-        },
-      ],
-    },
-    plugins: [
-      new CleanWebpackPlugin(),
-      {
-        apply(compiler: Compiler) {
-          compiler.hooks.compile.tap('Generate env', () => {
-            console.log('\nGenerate env\n');
 
-            // require('dotenv') was called in getClientEnvironment()
-            const env = {
-              MODE: buildEnv,
-              GIT_KEY: process.env.REACT_GIT_HASH,
-              IS_IN_DOCKER: process.env.IS_IN_DOCKER,
-              REACT_APP_HOST: process.env.REACT_APP_HOST,
-              REACT_APP_PORT: process.env.REACT_APP_PORT,
-              REACT_APP_PROTOCOL: process.env.REACT_APP_PROTOCOL,
-            };
-
-            const envGen = './public/env-config.js.gen';
-
-            if (fs.existsSync(envGen)) {
-              fs.unlinkSync(envGen);
-            }
-            fs.writeFileSync(envGen, `window._env_ = ${JSON.stringify(env, null, 2)}\n`);
-          })
-        }
+    devServer : {
+      port               : vars.port,
+      historyApiFallback : {
+        index    : `/${paths.publicUrlOrPath}/index.html`,
+        rewrites : [ {
+          from : new RegExp(paths.publicUrlOrPath.slice(0, paths.publicUrlOrPath.length - 1)), // /url/ -> /url
+          to   : paths.publicUrlOrPath,
+        }, {
+          from : new RegExp('^/$'),
+          to   : paths.publicUrlOrPath,
+        }, {
+          from : new RegExp('^$'),
+          to   : paths.publicUrlOrPath,
+        } ],
       },
-      new HtmlWebPackPlugin({
-        title: 'Prf',
-        filename: 'index.html',
-        template: 'public/index.html',
-        inject: true,
-        favicon: paths.appFavicon,
-        meta: {
-          'viewport': 'width=device-width, initial-scale=1, shrink-to-fit=no',
-          'theme-color': '#495057',
-          'description': 'Парафраз Метафизики Аристотеля',
-          'charset': 'utf-8',
-          'gitHash': process.env.REACT_GIT_HASH,
-        }
-      }),
-      new HtmlInlineScriptPlugin([
-        paths.appEnvGen,
-      ]),
-      new CopyPlugin({
-        patterns: [
-          'env-config.js.gen',
-          'manifest.json',
-          'robots.txt',
-        ].map(name => {
-          return { from: path.join(paths.appPublic, name), to: "public" }
-        }),
-      }),
-      buildEnv === BuildEnv.production && new InlineChunkHtmlPlugin(HtmlWebPackPlugin, [/runtime-.+[.]js/]),
-      new InterpolateHtmlPlugin(HtmlWebPackPlugin, env.raw), // Makes some environment variables available in index.html.
-      new ModuleNotFoundPlugin(paths.appPath),
-      new DefinePlugin(env.stringified),
-      buildEnv === BuildEnv.development && new ReactRefreshWebpackPlugin({
-        overlay: {
-          entry: webpackDevClientEntry,
-          module: reactRefreshOverlayEntry,
-          sockIntegration: false,
-        },
-      }),
-      buildEnv === BuildEnv.development && new CaseSensitivePathsPlugin(),
-      buildEnv === BuildEnv.development && new WatchMissingNodeModulesPlugin(paths.appNodeModules),
-      new WebpackManifestPlugin({
-        fileName: 'asset-manifest.json',
-        publicPath: paths.publicUrlOrPath,
-        generate: (seed: Record<string, string>, files: FileDescriptor[], entries: Record<string, string[]>): Manifest => {
-          const manifestFiles = files.reduce((manifest: Record<string, string>, file: FileDescriptor): Record<string, string> => {
-            manifest[file.name] = file.path;
-            return manifest;
-          }, seed);
+      static : {
+        directory : paths.public,
+      },
+      hot           : true,
+      devMiddleware : {
+        writeToDisk : true,
+      },
+    },
 
-          const entrypointFiles = entries.main.filter(
-              fileName => !fileName.endsWith('.map')
-          ).join(';');
-
-          return {
-            ...manifestFiles,
-            "entrypoints": entrypointFiles,
-          };
+    module : {
+      strictExportPresence : true,
+      rules                : [
+        {
+          test    : /\.gen.ts$/,
+          loader  : 'string-replace-loader',
+          options : {
+            search : '\\<%= currentFolderName %\\>',
+            replace(): string {
+              // @ts-ignore
+              const dirPath = path.dirname(this.resource as string);
+              const dirName = path.parse(dirPath).name;
+              return dirName;
+            },
+            flags : 'g',
+          },
         },
-      } as Partial<InternalOptions>),
-      // Generate a service worker script that will precache, and keep up to date,
-      // the HTML & assets that are part of the webpack build.
-      buildEnv === BuildEnv.production &&
-      fs.existsSync(paths.swSrc) &&
-      new WorkboxWebpackPlugin.InjectManifest({
-        swSrc: paths.swSrc,
-        dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-        exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 2mb
+        // Handle node_modules packages that contain sourcemaps
+        vars.sourceMap && {
+          enforce : 'pre',
+          exclude : [ /@babel(?:\/|\\{1,2})runtime/, /node_modules/ ],
+          test    : /\.(js|mjs|jsx|ts|tsx|css)$/,
+          loader  : require.resolve('source-map-loader'),
+        },
+
+        {
+          oneOf : [
+            {
+              test : /\.graphql/,
+              type : 'asset/source',
+            },
+            // TODO: Merge this config once `image/avif` is in the mime-db
+            // https://github.com/jshttp/mime-db
+            {
+              test     : [ /\.avif$/ ],
+              type     : 'asset',
+              mimetype : 'image/avif',
+              parser   : {
+                dataUrlCondition : {
+                  maxSize : 10_000,
+                },
+              },
+            },
+            // "url" loader works like "file" loader except that it embeds assets
+            // smaller than specified limit in bytes as data URLs to avoid requests.
+            // A missing `test` is equivalent to a match.
+            {
+              test   : [ /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/ ],
+              type   : 'asset',
+              parser : {
+                dataUrlCondition : {
+                  maxSize : 10_000,
+                },
+              },
+            },
+            {
+              test    : [ /\.svg$/ ],
+              include : [ paths.src ],
+              use     : [
+                {
+                  loader : 'babel-loader',
+                },
+                {
+                  loader  : 'react-svg-loader',
+                  options : {
+                    presets : [
+                      [ 'es2020', { modules: false } ],
+                    ],
+                    svgo : {
+                      plugins : [
+                        { removeTitle: false },
+                      ],
+                      floatPrecision : 2,
+                    },
+                    jsx : true,
+                  },
+                },
+              ],
+            },
+            {
+              // - apply class name hashing
+              // - inject into html head
+              test : [ /\.module\.(scss|css)$/ ],
+              use  : [
+                vars.isDev ? {
+                  loader  : MiniCssExtractPlugin.loader,
+                  options : {
+                    esModule : true,
+                  },
+                } : {
+                  loader  : 'style-loader',
+                  options : {
+                    insert   : '#insert-css-here',
+                    esModule : true,
+                  },
+                },
+                {
+                  loader  : 'css-loader',
+                  options : {
+                    importLoaders : 1,
+                    modules       : {
+                      namedExport            : false,
+                      localIdentName         : vars.isDev ? '[local]--[hash:base64:4]' : '[hash:base64:4]',
+                      exportLocalsConvention : 'camelCaseOnly',
+                    },
+                    sourceMap : vars.sourceMap,
+                  },
+                },
+                {
+                  loader  : 'sass-loader',
+                  options : {
+                    sourceMap : vars.sourceMap,
+                  },
+                },
+              ],
+            },
+            {
+              // - do not apply class name hashing
+              // - serve as separate files to allow exporting
+              test : [ /\.global\.(scss|css)$/ ],
+              use  : [
+                {
+                  loader  : MiniCssExtractPlugin.loader,
+                  options : {
+                    esModule : false,
+                  },
+                },
+                {
+                  loader  : 'css-loader',
+                  options : {
+                    importLoaders : 1,
+                    modules       : false,
+                    sourceMap     : vars.sourceMap,
+                  },
+                },
+                {
+                  loader  : 'sass-loader',
+                  options : {
+                    sourceMap : vars.sourceMap,
+                  },
+                },
+              ],
+            },
+            {
+              // - do not apply class name hashing
+              test : [ /\.(scss|css)$/ ],
+              use  : [
+                vars.isDev ? {
+                  loader  : MiniCssExtractPlugin.loader,
+                  options : {
+                    esModule : false,
+                  },
+                } : {
+                  loader  : 'style-loader',
+                  options : {
+                    insert   : '#insert-css-here',
+                    esModule : false,
+                  },
+                },
+                {
+                  loader  : 'css-loader',
+                  options : {
+                    importLoaders : 1,
+                    modules       : false,
+                    sourceMap     : vars.sourceMap,
+                  },
+                },
+                {
+                  loader  : 'sass-loader',
+                  options : {
+                    sourceMap : vars.sourceMap,
+                  },
+                },
+              ],
+            },
+            // Process application JS with Babel.
+            // The preset includes JSX, Flow, TypeScript, and some ESnext features.
+            {
+              test    : [ /\.js$/, /\.mjs$/, /\.jsx$/, /\.ts$/, /\.tsx$/ ],
+              include : [ paths.src ],
+              loader  : 'babel-loader',
+              options : {
+                sourceMaps     : vars.sourceMap,
+                inputSourceMap : vars.sourceMap,
+
+                // This is a feature of `babel-loader` for webpack (not Babel itself).
+                // It enables caching results in ./node_modules/.cache/babel-loader/
+                // directory for faster rebuilds.
+                cacheDirectory   : true,
+                // See #6846 for context on why cacheCompression is disabled
+                cacheCompression : false,
+                compact          : vars.isProd,
+              },
+            },
+            // Process any JS outside of the app with Babel.
+            // Unlike the application JS, we only compile the standard ES features.
+            {
+              test    : [ /\.js$/, /\.mjs$/, /\.jsx$/ ],
+              exclude : /@babel(?:\/|\\{1,2})runtime/,
+              loader  : require.resolve('babel-loader'),
+              options : {
+                babelrc    : false,
+                configFile : true,
+                compact    : false,
+
+                cacheDirectory   : true,
+                // See #6846 for context on why cacheCompression is disabled
+                cacheCompression : false,
+
+                // Babel sourcemaps are needed for debugging into node_modules
+                // code.  Without the options below, debuggers like VSCode
+                // show incorrect code and set breakpoints on the wrong lines.
+                sourceMaps     : vars.sourceMap,
+                inputSourceMap : vars.sourceMap,
+              },
+            },
+            {
+              test : /\.(woff(2)?|eot|ttf|otf|)$/,
+              type : 'asset/inline',
+            },
+            // "file" loader makes sure those assets get served by WebpackDevServer.
+            // When you `import` an asset, you get its (virtual) filename.
+            // In production, they would get copied to the `build` folder.
+            // This loader doesn't use a "test" so it will catch all modules
+            // that fall through the other loaders.
+            {
+              // Exclude `js` files to keep "css" loader working as it injects
+              // its runtime that would otherwise be processed through "file" loader.
+              // Also exclude `html` and `json` extensions so they get processed
+              // by webpacks internal loaders.
+              exclude : [ /^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/ ],
+              type    : 'asset/resource',
+            },
+            // ** STOP ** Are you adding a new loader?
+            // Make sure to add the new loader(s) before the "file" loader.
+          ],
+        },
+      ].filter(Boolean) as RuleSetRule[],
+    },
+    plugins : [
+      new CleanWebpackPlugin(),
+      vars.isDev && new ReactRefreshWebpackPlugin(),
+      new PackageJsonGeneratorPlugin({
+        buildFolder        : paths.dist,
+        currentPackageJson : packageJson,
       }),
-      new ForkTsCheckerWebpackPlugin({
-        typescript: resolve.sync('typescript', {
-          basedir: paths.appNodeModules,
-        }),
-        async: buildEnv === BuildEnv.development,
-        checkSyntacticErrors: true,
-        resolveModuleNameModule: process.versions.pnp
-            ? `${__dirname}/pnpTs.js`
-            : undefined,
-        resolveTypeReferenceDirectiveModule: process.versions.pnp
-            ? `${__dirname}/pnpTs.js`
-            : undefined,
-        tsconfig: paths.appTsConfig,
-        reportFiles: [
-          // This one is specifically to match during CI tests,
-          // as micromatch doesn't match
-          // '../cra-template-typescript/template/src/App.tsx'
-          // otherwise.
-          '../**/src/**/*.{ts,tsx}',
-          '**/src/**/*.{ts,tsx}',
-          '!**/src/**/__tests__/**',
-          '!**/src/**/?(*.)(spec|test).*',
-          '!**/src/setupProxy.*',
-          '!**/src/setupTests.*',
+      // generate env during webpack build for dev
+      // generate env during docker  start for prod
+      new EnvGeneratorPlugin({
+        filePaths : [
+          paths.distEnvGen.replace(paths.dist, ''),
         ],
-        silent: false,
-        formatter: buildEnv === BuildEnv.production ? typescriptFormatter : undefined,
+        env : env.raw,
+      }),
+      new HtmlWebPackPlugin({
+        filename   : 'index.html',
+        template   : 'public/index.html',
+        inject     : true,
+        favicon    : paths.publicFavicon,
+        publicPath : paths.publicUrlOrPath,
+        minify     : vars.isProd && {
+          removeComments                : true,
+          collapseWhitespace            : true,
+          removeRedundantAttributes     : true,
+          useShortDoctype               : true,
+          removeEmptyAttributes         : true,
+          removeStyleLinkTypeAttributes : true,
+          keepClosingSlash              : true,
+          minifyJS                      : true,
+          minifyCSS                     : true,
+          minifyURLs                    : true,
+        },
+      }),
+      new CopyPlugin({
+        patterns : [
+          paths.publicRobots,
+          ...paths.publicCssThemes,
+        ].filter(Boolean).map((name) => ({ from: name, to: 'public' })),
+      }),
+      new CopyPlugin({
+        patterns : [
+          ...paths.publicFtpIcons,
+        ].filter(Boolean).map((name) => ({ from: name.replaceAll('\\', '/'), to: '.' })), // using glob '**' for some reason add 'public' folder
+      }),
+      new CopyPlugin({
+        patterns : [
+          ...paths.publicFonts,
+        ].filter(Boolean).map((name) => ({ from: name, to: 'public/icons' })),
+      }),
+      new DefinePlugin(env.stringified),
+      vars.isDev && new CaseSensitivePathsPlugin(),
+      new WebpackManifestPlugin({
+        fileName   : paths.distManifest,
+        publicPath : paths.publicUrlOrPath,
+      } as Partial<InternalOptions>),
+      new ForkTsCheckerWebpackPlugin({
+        async      : vars.isDev,
+        typescript : {
+          build           : true,
+          configFile      : paths.tsConfig,
+          configOverwrite : {
+            compilerOptions : {
+            },
+          },
+          mode : 'write-references',
+        },
       }),
       new MiniCssExtractPlugin({
-        filename: "[name].css",
-        insert: '#insert-css-here',
+        filename : vars.isDev ? '[name].css' : '[name].[contenthash].css',
+        insert   : '#insert-css-here',
       }),
-      buildEnv === BuildEnv.production && new CompressionPlugin(),
-      new SourceMapDevToolPlugin({
-        filename: "[file].map"
+      vars.isProd && new CompressionPlugin(),
+      vars.sourceMap && new SourceMapDevToolPlugin({
+        filename : '[file].map',
       }),
-      new CssVarObfuscatePlugin({
-        buildFolder: paths.appBuild,
-        obfuscate: obfuscate,
-        excludeName: buildEnv === BuildEnv.production,
-        hashLength: 4,
-      }),
-      analyze && new BundleAnalyzerPlugin(),
-    ].filter(Boolean),
-    optimization: {
-      usedExports: true,
-      nodeEnv: process.env.NODE_ENV,
-      minimize: buildEnv === BuildEnv.production,
-      minimizer: [new TerserPlugin({
-        parallel: os.cpus().length - 1,
-        terserOptions: {
-          sourceMap: buildEnv === BuildEnv.development,
-          ecma: 6,
-        }
-      })],
+      vars.analyze && new BundleAnalyzerPlugin(),
+    ].filter(Boolean) as WebpackPluginInstance[],
+
+    optimization : {
+      sideEffects : false,
+      usedExports : true,
+      nodeEnv     : process.env.NODE_ENV,
+      minimize    : vars.isProd,
+      minimizer   : [ new TerserPlugin({
+        terserOptions : {
+          sourceMap : vars.isDev,
+          ecma      : 2020,
+        },
+      }) ],
     },
-    stats: {
-      children: false,
-      errorDetails: true,
+
+    stats : {
+      children     : false,
+      errorDetails : true,
     },
   };
-}
+};
 
 module.exports = configure;
